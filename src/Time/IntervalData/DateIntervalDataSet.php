@@ -37,16 +37,17 @@ use function sprintf;
 
 /**
  * @implements IteratorAggregate<DateIntervalData>
+ * @template TData
  */
 class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var DateIntervalData[] */
+    /** @var list<DateIntervalData<TData>> */
     private $intervals;
 
     /**
-     * @param DateIntervalData[] $intervals
+     * @param list<DateIntervalData<TData>> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -59,8 +60,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param mixed|null $data
-     * @return DateIntervalDataSet
+     * @param TData $data
+     * @return DateIntervalDataSet<TData>
      */
     public static function createFromDateIntervalSet(DateIntervalSet $set, $data): self
     {
@@ -123,7 +124,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     public function toDateIntervalSet(): DateIntervalSet
     {
         $intervals = [];
-        /** @var DateIntervalData $interval */
+        /** @var DateIntervalData<TData> $interval */
         foreach ($this->intervals as $interval) {
             $intervals[] = $interval->toDateInterval();
         }
@@ -132,7 +133,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return list<array{0: Date, 1: TData}>
      */
     public function toDateDataArray(): array
     {
@@ -144,7 +145,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return DateIntervalData[]
+     * @return list<DateIntervalData<TData>>
      */
     public function getIntervals(): array
     {
@@ -152,7 +153,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Traversable<DateIntervalData>
+     * @return Traversable<DateIntervalData<TData>>
      */
     public function getIterator(): Traversable
     {
@@ -165,7 +166,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -206,8 +207,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Join overlapping intervals in set, if they have the same data.
-     * @param DateIntervalData[] $intervals
-     * @return DateIntervalData[]
+     * @param DateIntervalData<TData>[] $intervals
+     * @return list<DateIntervalData<TData>>
      */
     private static function normalizeIntervals(array $intervals): array
     {
@@ -218,7 +219,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var DateIntervalData[] $intervals */
+        /** @var list<DateIntervalData<TData>> $intervals */
         $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -241,36 +242,47 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Add another set of intervals to this one without normalization.
      *
      * @phpstan-pure
-     * @return self
+     * @param self<TData> $set
+     * @return self<TData>
      */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param DateIntervalData<TData> ...$intervals
+     * @return self<TData>
+     */
     public function addIntervals(DateIntervalData ...$intervals): self
     {
-        return new static(array_merge($this->intervals, $intervals));
+        /** @var list<DateIntervalData<TData>> $merge */
+        $merge = array_merge($this->intervals, $intervals);
+
+        return new static($merge);
     }
 
     /**
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
+     * @return self<TData>
      */
     public function subtract(DateIntervalSet $set): self
     {
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @return self<TData>
+     */
     public function subtractIntervals(DateInterval ...$intervals): self
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var DateIntervalData $result */
+        /** @var DateIntervalData<TData> $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
@@ -286,7 +298,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var DateIntervalData[] $results */
+        /** @var DateIntervalData<TData>[] $results */
         $results = $results;
 
         return new static($results);
@@ -296,14 +308,17 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
+     * @return self<TData>
      */
     public function intersect(DateIntervalSet $set): self
     {
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @return self<TData>
+     */
     public function intersectIntervals(DateInterval ...$intervals): self
     {
         $results = [];
@@ -318,7 +333,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @template TNewData
+     * @param callable(DateIntervalData<TData> $data): (self<TNewData>|DateIntervalData<TNewData>|array<DateIntervalData<TNewData>>) $mapper
+     * @return self<TNewData>
+     */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -338,7 +358,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @template TNewData
+     * @param callable(DateIntervalData<TData> $data): (self<TNewData>|DateIntervalData<TNewData>|array<DateIntervalData<TNewData>>|null) $mapper
+     * @return self<TNewData>
+     */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -364,8 +389,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Maps data with mapper and collects intervals with non-null results.
      *
      * @phpstan-pure
-     * @param callable $mapper (mixed $data, DateInterval $interval): mixed|null $data
-     * @return self
+     * @template TOtherData
+     * @param callable(TData, DateInterval): (TOtherData|null) $mapper
+     * @return self<TOtherData>
      */
     public function collectData(callable $mapper): self
     {
@@ -386,8 +412,10 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
      * @phpstan-pure
-     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
-     * @return self
+     * @template TOther
+     * @param self<TOther> $other
+     * @param callable(TData, TOther, DateInterval): TData $reducer
+     * @return self<TData>
      */
     public function modifyData(self $other, callable $reducer): self
     {
@@ -435,10 +463,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
      * @phpstan-pure
-     * @param iterable|mixed[] $inputs
-     * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
-     * @param callable $reducer (mixed $oldData, mixed $input, DateInterval $interval): mixed $newData
-     * @return self
+     * @template TInput
+     * @param iterable<TInput> $inputs
+     * @param callable(TInput): array{0: Date, 1: Date} $mapper
+     * @param callable(TData, TInput, DateInterval): TData $reducer
+     * @return self<TData>
      */
     public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
     {
@@ -551,8 +580,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Splitter maps original data to a group of data. Should return array with keys indicating the data set group.
      *
      * @phpstan-pure
-     * @param callable $splitter (mixed $data, DateInterval $interval): array<int|string $group, mixed $data>
-     * @return self[]
+     * @template TOther
+     * @param callable(TData, DateInterval): array<int|string, TOther> $splitter
+     * @return list<self<TOther>>
      */
     public function splitData(callable $splitter): array
     {

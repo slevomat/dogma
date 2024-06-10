@@ -1101,8 +1101,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @param array<T>|array<array<T>> $array
+     * @return list<T>
+     *
+     * @template T
      */
     public static function flatten(array $array): array
     {
@@ -1314,8 +1316,10 @@ class Arr
     }
 
     /**
-     * @param Comparable[] $array
-     * @return mixed[]
+     * @param array<T> $array
+     * @return list<T>
+     *
+     * @template T of Comparable
      */
     public static function sortComparable(array $array, int $flags = Sorting::REGULAR): array
     {
