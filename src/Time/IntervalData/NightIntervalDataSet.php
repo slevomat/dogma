@@ -36,16 +36,17 @@ use function sprintf;
 
 /**
  * @implements IteratorAggregate<NightIntervalData>
+ * @template TData
  */
 class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 {
     use StrictBehaviorMixin;
 
-    /** @var NightIntervalData[] */
+    /** @var list<NightIntervalData<TData>> */
     private $intervals;
 
     /**
-     * @param NightIntervalData[] $intervals
+     * @param list<NightIntervalData<TData>> $intervals
      */
     final public function __construct(array $intervals)
     {
@@ -55,8 +56,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param mixed|null $data
-     * @return NightIntervalDataSet
+     * @param TData $data
+     * @return NightIntervalDataSet<TData>
      */
     public static function createFromNightIntervalSet(NightIntervalSet $set, $data): self
     {
@@ -105,7 +106,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     public function toNightIntervalSet(): NightIntervalSet
     {
         $intervals = [];
-        /** @var NightIntervalData $interval */
+        /** @var NightIntervalData<TData> $interval */
         foreach ($this->intervals as $interval) {
             $intervals[] = $interval->toNightInterval();
         }
@@ -114,7 +115,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Date[][]|mixed[][] array of pairs: (Date $date, Equalable $data)
+     * @return list<array{0: Date, 1: TData}>
      */
     public function toDateDataArray(): array
     {
@@ -126,7 +127,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return NightIntervalData[]
+     * @return list<NightIntervalData<TData>>
      */
     public function getIntervals(): array
     {
@@ -134,7 +135,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Traversable<NightIntervalData>
+     * @return Traversable<NightIntervalData<TData>>
      */
     public function getIterator(): Traversable
     {
@@ -147,7 +148,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param self $other
+     * @param self<TData> $other
      * @return bool
      */
     public function equals(Equalable $other): bool
@@ -180,11 +181,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Join overlapping intervals in set, if they have the same data.
-     * @return self
+     * @return self<TData>
      */
     public function normalize(): self
     {
-        /** @var NightIntervalData[] $intervals */
+        /** @var list<NightIntervalData<TData>> $intervals */
         $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -205,32 +206,43 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Add another set of intervals to this one without normalization.
-     * @return self
+     * @param self<TData> $set
+     * @return self<TData>
      */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /**
+     * @param NightIntervalData<TData> ...$intervals
+     * @return static
+     */
     public function addIntervals(NightIntervalData ...$intervals): self
     {
-        return new static(array_merge($this->intervals, $intervals));
+        /** @var list<NightIntervalData<TData>> $merge */
+        $merge = array_merge($this->intervals, $intervals);
+
+        return new static($merge);
     }
 
     /**
      * Remove another set of intervals from this one.
-     * @return self
+     * @return self<TData>
      */
     public function subtract(NightIntervalSet $set): self
     {
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
+    /**
+     * @return static
+     */
     public function subtractIntervals(NightInterval ...$intervals): self
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var NightIntervalData $result */
+        /** @var NightIntervalData<TData> $result */
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
@@ -246,7 +258,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        /** @var NightIntervalData[] $results */
+        /** @var NightIntervalData<TData>[] $results */
         $results = $results;
 
         return new static($results);
@@ -254,13 +266,16 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
-     * @return self
+     * @return self<TData>
      */
     public function intersect(NightIntervalSet $set): self
     {
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
+    /**
+     * @return static
+     */
     public function intersectIntervals(NightInterval ...$intervals): self
     {
         $results = [];
@@ -275,6 +290,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /**
+     * @template TNewData
+     * @param callable(NightIntervalData<TData> $data): (self<TNewData>|NightIntervalData<TNewData>|array<NightIntervalData<TNewData>>) $mapper
+     * @return self<TNewData>
+     */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -294,6 +314,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /**
+     * @template TNewData
+     * @param callable(NightIntervalData<TData> $data): (self<TNewData>|NightIntervalData<TNewData>|array<NightIntervalData<TNewData>>|null) $mapper
+     * @return self<TNewData>
+     */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -315,6 +340,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /**
+     * @template TOtherData
+     * @param callable(TData $data):(TOtherData|null) $mapper
+     * @return self<TOtherData>
+     */
     public function collectData(callable $mapper): self
     {
         $results = [];
@@ -333,8 +363,10 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
-     * @return self
+     * @template TOther
+     * @param self<TOther> $other
+     * @param callable(TData, TOther): TData $reducer
+     * @return self<TData>
      */
     public function modifyData(self $other, callable $reducer): self
     {
@@ -377,10 +409,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Both $this and inputs must be ordered to work properly, $this must be normalized.
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
-     * @param iterable|mixed[] $inputs
-     * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
-     * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
-     * @return self
+     * @template TInput
+     * @param iterable<TInput> $inputs
+     * @param callable(TInput): array{0: Date, 1: Date} $mapper
+     * @param callable(TData, TInput): TData $reducer
+     * @return self<TData>
      */
     public function modifyDataByStream(iterable $inputs, callable $mapper, callable $reducer): self
     {
@@ -466,13 +499,14 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new NightIntervalDataSet($results);
+        return new static($results);
     }
 
     /**
      * Split interval set to more interval sets with different subsets of original data.
-     * @param callable $splitter Maps original data set to a group of data sets. Should return array with keys indicating the data set group.
-     * @return self[] $this
+     * @template TOther
+     * @param callable(TData): array<int|string, TOther> $splitter
+     * @return list<self<TOther>>
      */
     public function splitData(callable $splitter): array
     {
