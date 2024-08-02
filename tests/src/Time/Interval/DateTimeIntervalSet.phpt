@@ -176,6 +176,11 @@ Assert::equal($emptySet->envelope(), $emptyInterval);
 normalize:
 Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
 
+$i1 = new DateTimeInterval(new DateTime('2024-09-01'), new DateTime('2024-09-10'));
+$i2 = new DateTimeInterval(new DateTime('2024-08-01'), new DateTime('2024-08-10'));
+$i3 = new DateTimeInterval(new DateTime('2024-07-20'), new DateTime('2024-09-02'));
+Assert::count((new DateTimeIntervalSet([$i1, $i2, $i3]))->normalize()->getIntervals(), 1);
+
 
 add:
 Assert::equal($s($i(1, 2), $i(3, 4), $i(5, 6)), $s($i(1, 2))->add($s($i(3, 4), $i(5, 6))));

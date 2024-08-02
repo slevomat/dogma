@@ -271,7 +271,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
     public function normalize(): self
     {
         /** @var DateTimeInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
+        $intervals = Arr::sortComparableValues($this->intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
