@@ -205,13 +205,13 @@ Assert::equal($set->map(static function (DateTimeInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 3), $i(3, 5)));
 
-$set = $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2), $i(1, 3));
+$set = $s(DateTimeInterval::empty(), $i(1, 1), $i(3, 4), $i(6, 8));
 
 
 filterByLength:
-Assert::equal($set->filterByLength('>', Microseconds::DAY), $s($i(1, 3)));
-Assert::equal($set->filterByLength('>=', Microseconds::DAY), $s($i(1, 2), $i(1, 3)));
-Assert::equal($set->filterByLength('=', Microseconds::DAY), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 3)));
-Assert::equal($set->filterByLength('<=', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(1, 2)));
+Assert::equal($set->filterByLength('>', Microseconds::DAY), $s($i(6, 8)));
+Assert::equal($set->filterByLength('>=', Microseconds::DAY), $s($i(3, 4), $i(6, 8)));
+Assert::equal($set->filterByLength('=', Microseconds::DAY), $s($i(3, 4)));
+Assert::equal($set->filterByLength('<>', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(6, 8)));
+Assert::equal($set->filterByLength('<=', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1), $i(3, 4)));
 Assert::equal($set->filterByLength('<', Microseconds::DAY), $s(DateTimeInterval::empty(), $i(1, 1)));

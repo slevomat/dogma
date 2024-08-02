@@ -96,22 +96,22 @@ Assert::equal($set->map(static function (NightInterval $interval) {
     return $interval->split(2)->getIntervals();
 }), $s($i(1, 4), $i(4, 6)));
 
-$set = $s($emptyInterval, $i(1, 2), $i(1, 3), $i(1, 4));
+$set = $s($emptyInterval, $i(1, 2), $i(4, 6), $i(8, 11));
 
 
 filterByLength:
-Assert::equal($set->filterByLength('>', 1), $s($i(1, 3), $i(1, 4)));
-Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(1, 3), $i(1, 4)));
+Assert::equal($set->filterByLength('>', 1), $s($i(4, 6), $i(8, 11)));
+Assert::equal($set->filterByLength('>=', 1), $s($i(1, 2), $i(4, 6), $i(8, 11)));
 Assert::equal($set->filterByLength('=', 1), $s($i(1, 2)));
-Assert::equal($set->filterByLength('<>', 1), $s($emptyInterval, $i(1, 3), $i(1, 4)));
+Assert::equal($set->filterByLength('<>', 1), $s($emptyInterval, $i(4, 6), $i(8, 11)));
 Assert::equal($set->filterByLength('<=', 1), $s($emptyInterval, $i(1, 2)));
 Assert::equal($set->filterByLength('<', 1), $s($emptyInterval));
 
 
 filterByCount:
-Assert::equal($set->filterByNightsCount('>', 1), $s($i(1, 3), $i(1, 4)));
-Assert::equal($set->filterByNightsCount('>=', 1), $s($i(1, 2), $i(1, 3), $i(1, 4)));
+Assert::equal($set->filterByNightsCount('>', 1), $s($i(4, 6), $i(8, 11)));
+Assert::equal($set->filterByNightsCount('>=', 1), $s($i(1, 2), $i(4, 6), $i(8, 11)));
 Assert::equal($set->filterByNightsCount('=', 1), $s($i(1, 2)));
-Assert::equal($set->filterByNightsCount('<>', 1), $s($emptyInterval, $i(1, 3), $i(1, 4)));
+Assert::equal($set->filterByNightsCount('<>', 1), $s($emptyInterval, $i(4, 6), $i(8, 11)));
 Assert::equal($set->filterByNightsCount('<=', 1), $s($emptyInterval, $i(1, 2)));
 Assert::equal($set->filterByNightsCount('<', 1), $s($emptyInterval));

@@ -29,10 +29,11 @@ use function is_array;
 class IntIntervalSet implements IntervalSet
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var IntInterval[] */
-    private $intervals = [];
+    private $intervals;
 
     /**
      * @param IntInterval[] $intervals
@@ -41,11 +42,7 @@ class IntIntervalSet implements IntervalSet
     {
         Check::itemsOfType($intervals, IntInterval::class);
 
-        foreach ($intervals as $interval) {
-            if (!$interval->isEmpty()) {
-                $this->intervals[] = $interval;
-            }
-        }
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -121,29 +118,6 @@ class IntIntervalSet implements IntervalSet
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var IntInterval[] $intervals */
-        $intervals = Arr::sortComparable($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);

@@ -329,7 +329,14 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
      */
     public function touches(self $interval): bool
     {
-        return $this->start->equals($interval->end->addDay()) || $this->end->equals($interval->start->subtractDay());
+        return (
+            $interval->end->getJulianDay() < Date::MAX_DAY_NUMBER
+            && $this->start->equals($interval->end->addDay())
+        )
+        || (
+            $interval->start->getJulianDay() > Date::MIN_DAY_NUMBER
+            && $this->end->equals($interval->start->subtractDay())
+        );
     }
 
     // actions ---------------------------------------------------------------------------------------------------------

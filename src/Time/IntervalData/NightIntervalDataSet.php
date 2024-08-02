@@ -29,6 +29,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_splice;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -49,9 +50,12 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
+        /** @var NightIntervalData[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -193,13 +197,29 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * Join overlapping intervals in set, if they have the same data.
-     * @return self
+     * @deprecated Unnecessary anymore, intervals always normalized.
      */
     public function normalize(): self
     {
+        return $this;
+    }
+
+    /**
+     * Join overlapping intervals in set, if they have the same data.
+     * @param NightIntervalData[] $intervals
+     * @return NightIntervalData[]
+     */
+    private static function normalizeIntervals(array $intervals): array
+    {
+        $intervals = array_values($intervals);
+        foreach ($intervals as $i => $interval) {
+            if ($interval->isEmpty()) {
+                unset($intervals[$i]);
+            }
+        }
+
         /** @var NightIntervalData[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
+        $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];
@@ -214,7 +234,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($intervals);
+        return array_values($intervals);
     }
 
     /**

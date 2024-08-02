@@ -29,6 +29,7 @@ use function array_map;
 use function array_merge;
 use function array_shift;
 use function array_splice;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -49,9 +50,12 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
+        /** @var DateIntervalData[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     /**
@@ -132,7 +136,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function toDateDataArray(): array
     {
-        $intervals = $this->normalize()->getIntervals();
+        $intervals = $this->getIntervals();
 
         return array_merge(...array_map(static function (DateIntervalData $interval) {
             return $interval->toDateDataArray();
@@ -193,13 +197,29 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * Join overlapping intervals in set, if they have the same data.
-     * @return self
+     * @deprecated Unnecessary anymore, intervals always normalized.
      */
     public function normalize(): self
     {
+        return $this;
+    }
+
+    /**
+     * Join overlapping intervals in set, if they have the same data.
+     * @param DateIntervalData[] $intervals
+     * @return DateIntervalData[]
+     */
+    private static function normalizeIntervals(array $intervals): array
+    {
+        $intervals = array_values($intervals);
+        foreach ($intervals as $i => $interval) {
+            if ($interval->isEmpty()) {
+                unset($intervals[$i]);
+            }
+        }
+
         /** @var DateIntervalData[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
+        $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             $first = $intervals[$n];
@@ -214,7 +234,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($intervals);
+        return array_values($intervals);
     }
 
     /**

@@ -16,6 +16,7 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -36,6 +37,7 @@ use function sort;
 class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
+    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var NightInterval[] */
@@ -46,9 +48,12 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
      */
     final public function __construct(array $intervals)
     {
-        $this->intervals = Arr::values(Arr::filter($intervals, static function (NightInterval $interval): bool {
+        /** @var NightInterval[] $intervals */
+        $intervals = Arr::values(Arr::filter($intervals, static function (NightInterval $interval): bool {
             return !$interval->isEmpty();
         }));
+
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     public static function createFromDateIntervalSet(DateIntervalSet $set): self
@@ -206,29 +211,6 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         }
     }
 
-    /**
-     * Join overlapping intervals in set.
-     * @return self
-     */
-    public function normalize(): self
-    {
-        /** @var NightInterval[] $intervals */
-        $intervals = Arr::sortComparableValues($this->intervals);
-        $count = count($intervals) - 1;
-        for ($n = 0; $n < $count; $n++) {
-            if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
-                unset($intervals[$n]);
-            }
-        }
-
-        return new static($intervals);
-    }
-
-    /**
-     * Add another set of intervals to this one without normalization.
-     * @return self
-     */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
