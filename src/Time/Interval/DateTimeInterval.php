@@ -190,6 +190,11 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return new DateInterval($start, $end);
     }
 
+	public function toDateTimeIntervalSet(): DateTimeIntervalSet
+	{
+		return new DateTimeIntervalSet([$this]);
+	}
+
     public function getLengthInMicroseconds(): int
     {
         return $this->isEmpty() ? 0 : $this->end->getMicroTimestamp() - $this->start->getMicroTimestamp();

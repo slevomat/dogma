@@ -23,6 +23,7 @@ use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
 use Traversable;
+use function array_map;
 use function array_merge;
 use function array_shift;
 use function count;
@@ -259,6 +260,16 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 
         return false;
     }
+
+	public function toDateIntervalSet(): DateIntervalSet
+	{
+		return new DateIntervalSet(array_map(
+			static function (DateTimeInterval $interval): DateInterval {
+				return $interval->toDateInterval();
+			},
+			$this->intervals,
+		));
+	}
 
     public function envelope(): DateTimeInterval
     {
