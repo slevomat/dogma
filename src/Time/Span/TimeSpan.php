@@ -159,6 +159,7 @@ class TimeSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function add(self ...$other): self
     {
         $hours = $this->hours;
@@ -176,6 +177,7 @@ class TimeSpan implements DateOrTimeSpan
         return new static($hours, $minutes, $seconds, $microseconds);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
@@ -183,11 +185,13 @@ class TimeSpan implements DateOrTimeSpan
         }));
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return new self(-$this->hours, -$this->minutes, -$this->seconds, -$this->microseconds);
     }
 
+    /** @phpstan-pure */
     public function abs(): self
     {
         if ($this->getHoursFraction() >= 0.0) {

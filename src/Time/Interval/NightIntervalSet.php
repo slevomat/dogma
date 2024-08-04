@@ -202,6 +202,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return false;
     }
 
+    /** @phpstan-pure */
     public function envelope(): NightInterval
     {
         if ($this->intervals === []) {
@@ -211,11 +212,13 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         }
     }
 
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(NightInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -223,6 +226,8 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -230,6 +235,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(NightInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -255,6 +261,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([NightInterval::all()]))->subtract($this);
@@ -262,6 +269,8 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -269,6 +278,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(NightInterval ...$intervals): self
     {
         $results = [];
@@ -283,11 +293,13 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $days): self
     {
         return $this->filterByNightsCount($operator, $days);
     }
 
+    /** @phpstan-pure */
     public function filterByNightsCount(string $operator, int $days): self
     {
         $results = [];
@@ -330,6 +342,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -349,6 +362,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

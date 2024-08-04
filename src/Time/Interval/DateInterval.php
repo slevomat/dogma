@@ -153,6 +153,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-pure
      * @return static
      */
     public function shift(string $value): self
@@ -160,11 +161,13 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    /** @phpstan-pure */
     public function setStart(Date $start): self
     {
         return new static($start, $this->end);
     }
 
+    /** @phpstan-pure */
     public function setEnd(Date $end): self
     {
         return new static($this->start, $end);
@@ -346,6 +349,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): DateIntervalSet
     {
         Check::min($parts, 1);
@@ -368,6 +372,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
+     * @phpstan-pure
      * @param Date[] $intervalStarts
      * @return DateIntervalSet
      */
@@ -393,6 +398,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -412,6 +418,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static(new Date($start), new Date($end));
     }
 
+    /** @phpstan-pure */
     public function intersect(self ...$items): self
     {
         $items[] = $this;
@@ -431,6 +438,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return $result;
     }
 
+    /** @phpstan-pure */
     public function union(self ...$items): DateIntervalSet
     {
         $items[] = $this;
@@ -456,6 +464,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function difference(self ...$items): DateIntervalSet
     {
         $items[] = $this;
@@ -471,6 +480,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$items): DateIntervalSet
     {
         $intervals = [$this];
@@ -495,6 +505,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         return new DateIntervalSet(array_values($intervals));
     }
 
+    /** @phpstan-pure */
     public function invert(): DateIntervalSet
     {
         return self::all()->subtract($this);

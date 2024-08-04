@@ -199,11 +199,13 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         }
     }
 
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DateInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -211,6 +213,8 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -218,6 +222,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DateInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -243,6 +248,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([DateInterval::all()]))->subtract($this);
@@ -250,6 +256,8 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -257,6 +265,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DateInterval ...$intervals): self
     {
         $results = [];
@@ -271,11 +280,13 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $days): self
     {
         return $this->filterByDayCount($operator, $days + 1);
     }
 
+    /** @phpstan-pure */
     public function filterByDayCount(string $operator, int $days): self
     {
         $results = [];
@@ -318,6 +329,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -337,6 +349,7 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

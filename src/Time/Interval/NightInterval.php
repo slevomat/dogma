@@ -160,6 +160,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-pure
      * @return static
      */
     public function shift(string $value): self
@@ -167,11 +168,13 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static($this->start->modify($value), $this->end->modify($value));
     }
 
+    /** @phpstan-pure */
     public function setStart(Date $start): self
     {
         return new static($start, $this->end);
     }
 
+    /** @phpstan-pure */
     public function setEnd(Date $end): self
     {
         return new static($this->start, $end);
@@ -337,6 +340,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function split(int $parts): NightIntervalSet
     {
         Check::min($parts, 1);
@@ -359,6 +363,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
+     * @phpstan-pure
      * @param Date[] $intervalStarts
      * @return NightIntervalSet
      */
@@ -384,6 +389,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new NightIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function envelope(self ...$items): self
     {
         $items[] = $this;
@@ -403,6 +409,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new static(new Date($start), new Date($end));
     }
 
+    /** @phpstan-pure */
     public function intersect(self ...$items): self
     {
         $items[] = $this;
@@ -422,6 +429,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return $result;
     }
 
+    /** @phpstan-pure */
     public function union(self ...$items): NightIntervalSet
     {
         $items[] = $this;
@@ -447,6 +455,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new NightIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function difference(self ...$items): NightIntervalSet
     {
         $items[] = $this;
@@ -462,6 +471,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new NightIntervalSet($results);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$items): NightIntervalSet
     {
         $intervals = [$this];
@@ -486,6 +496,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return new NightIntervalSet(array_values($intervals));
     }
 
+    /** @phpstan-pure */
     public function invert(): NightIntervalSet
     {
         return self::all()->subtract($this);

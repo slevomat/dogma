@@ -132,11 +132,13 @@ class DayOfYearIntervalSet implements IntervalSet
         }
     }
 
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(DayOfYearInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -144,6 +146,8 @@ class DayOfYearIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -151,6 +155,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(DayOfYearInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -178,6 +183,8 @@ class DayOfYearIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -185,6 +192,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(DayOfYearInterval ...$intervals): self
     {
         $results = [];
@@ -199,6 +207,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -218,6 +227,7 @@ class DayOfYearIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

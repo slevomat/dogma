@@ -150,6 +150,7 @@ class DateSpan implements DateOrTimeSpan
 
     // actions ---------------------------------------------------------------------------------------------------------
 
+    /** @phpstan-pure */
     public function add(self ...$other): self
     {
         $years = $this->years;
@@ -165,6 +166,7 @@ class DateSpan implements DateOrTimeSpan
         return new static($years, $months, $days);
     }
 
+    /** @phpstan-pure */
     public function subtract(self ...$other): self
     {
         return $this->add(...Arr::map($other, static function (DateTimeSpan $span): DateTimeSpan {
@@ -172,11 +174,13 @@ class DateSpan implements DateOrTimeSpan
         }));
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return new self(-$this->years, -$this->months, -$this->days);
     }
 
+    /** @phpstan-pure */
     public function abs(): self
     {
         if ($this->getYearsFraction() >= 0.0) {

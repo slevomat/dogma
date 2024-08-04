@@ -109,6 +109,7 @@ class IntIntervalSet implements IntervalSet
         return false;
     }
 
+    /** @phpstan-pure */
     public function envelope(): IntInterval
     {
         if ($this->intervals === []) {
@@ -118,11 +119,13 @@ class IntIntervalSet implements IntervalSet
         }
     }
 
+    /** @phpstan-pure */
     public function add(self $set): self
     {
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(IntInterval ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -130,6 +133,8 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(self $set): self
@@ -137,6 +142,7 @@ class IntIntervalSet implements IntervalSet
         return $this->subtractIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(IntInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -162,6 +168,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function invert(): self
     {
         return (new static([IntInterval::all()]))->subtract($this);
@@ -169,6 +176,8 @@ class IntIntervalSet implements IntervalSet
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(self $set): self
@@ -176,6 +185,7 @@ class IntIntervalSet implements IntervalSet
         return $this->intersectIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(IntInterval ...$intervals): self
     {
         $results = [];
@@ -190,11 +200,13 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function filterByLength(string $operator, int $length): self
     {
         return $this->filterByCount($operator, $length + 1);
     }
 
+    /** @phpstan-pure */
     public function filterByCount(string $operator, int $count): self
     {
         $results = [];
@@ -237,6 +249,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -256,6 +269,7 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];

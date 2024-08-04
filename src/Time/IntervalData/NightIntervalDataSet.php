@@ -239,6 +239,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Add another set of intervals to this one without normalization.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function add(self $set): self
@@ -246,6 +248,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->addIntervals(...$set->intervals);
     }
 
+    /** @phpstan-pure */
     public function addIntervals(NightIntervalData ...$intervals): self
     {
         return new static(array_merge($this->intervals, $intervals));
@@ -253,6 +256,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Remove another set of intervals from this one.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function subtract(NightIntervalSet $set): self
@@ -260,6 +265,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->subtractIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function subtractIntervals(NightInterval ...$intervals): self
     {
         $sources = $this->intervals;
@@ -288,6 +294,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Intersect with another set of intervals.
+     *
+     * @phpstan-pure
      * @return self
      */
     public function intersect(NightIntervalSet $set): self
@@ -295,6 +303,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->intersectIntervals(...$set->getIntervals());
     }
 
+    /** @phpstan-pure */
     public function intersectIntervals(NightInterval ...$intervals): self
     {
         $results = [];
@@ -309,6 +318,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function map(callable $mapper): self
     {
         $results = [];
@@ -328,6 +338,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -349,6 +360,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static($results);
     }
 
+    /** @phpstan-pure */
     public function collectData(callable $mapper): self
     {
         $results = [];
@@ -367,6 +379,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Only modifies and splits intersecting intervals. Does not insert new ones nor remove things.
      * Complexity O(m*n). For bigger sets use modifyDataByStream()
      *
+     * @phpstan-pure
      * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
      * @return self
      */
@@ -411,6 +424,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * Both $this and inputs must be ordered to work properly, $this must be normalized.
      * Complexity ~O(m+n), worst case O(m*n) if all inputs cover whole interval set.
      *
+     * @phpstan-pure
      * @param iterable|mixed[] $inputs
      * @param callable $mapper (mixed $input): array{0: Date $start, 1: Date $end}
      * @param callable $reducer (mixed $oldData, mixed $input): mixed $newData
@@ -505,6 +519,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Split interval set to more interval sets with different subsets of original data.
+     *
+     * @phpstan-pure
      * @param callable $splitter Maps original data set to a group of data sets. Should return array with keys indicating the data set group.
      * @return self[] $this
      */
