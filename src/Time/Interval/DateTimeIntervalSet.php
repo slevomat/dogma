@@ -205,6 +205,11 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return $this->intervals;
     }
 
+	public function count(): int
+	{
+		return count($this->intervals);
+	}
+
     /**
      * @return Traversable<DateTimeInterval>
      */

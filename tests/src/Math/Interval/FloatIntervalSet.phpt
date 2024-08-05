@@ -5,6 +5,7 @@ namespace Dogma\Tests\Math\Interval;
 use Dogma\Math\Interval\FloatInterval;
 use Dogma\Math\Interval\FloatIntervalSet;
 use Dogma\Tester\Assert;
+use function count;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -24,6 +25,12 @@ $s = static function (FloatInterval ...$items) {
 getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
+
+
+count:
+Assert::same(count($set), 1);
+Assert::same(count($s($emptyInterval)), 0);
+Assert::same(count($s($i(6, 9), $i(2, 2), $i(4, 7))), 2);
 
 
 isEmpty:

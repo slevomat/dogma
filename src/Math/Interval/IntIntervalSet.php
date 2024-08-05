@@ -61,6 +61,11 @@ class IntIntervalSet implements IntervalSet
         return new ArrayIterator($this->intervals);
     }
 
+	public function count(): int
+	{
+		return count($this->intervals);
+	}
+
     public function isEmpty(): bool
     {
         return $this->intervals === [];

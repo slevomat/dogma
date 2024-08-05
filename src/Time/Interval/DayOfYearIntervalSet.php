@@ -67,6 +67,11 @@ class DayOfYearIntervalSet implements IntervalSet
         return $this->intervals;
     }
 
+	public function count(): int
+	{
+		return count($this->intervals);
+	}
+
     /**
      * @return Traversable<DayOfYearInterval>
      */

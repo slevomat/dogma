@@ -146,6 +146,11 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return $this->intervals;
     }
 
+	public function count(): int
+	{
+		return count($this->intervals);
+	}
+
     /**
      * @return Traversable<NightInterval>
      */

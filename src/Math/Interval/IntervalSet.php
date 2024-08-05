@@ -9,6 +9,7 @@
 
 namespace Dogma\Math\Interval;
 
+use Countable;
 use Dogma\Dumpable;
 use Dogma\Equalable;
 use IteratorAggregate;
@@ -17,7 +18,7 @@ use IteratorAggregate;
  * @template T
  * @extends IteratorAggregate<int, T>
  */
-interface IntervalSet extends Equalable, Dumpable, IteratorAggregate
+interface IntervalSet extends Equalable, Dumpable, IteratorAggregate, Countable
 {
 
     /**

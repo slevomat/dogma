@@ -6,6 +6,7 @@ use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\Interval\DateInterval;
 use Dogma\Time\Interval\DateIntervalSet;
+use function count;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -43,6 +44,12 @@ getIntervals:
 getIterator:
 Assert::same($set->getIntervals(), iterator_to_array($set->getIterator()));
 Assert::equal($empty->getIntervals(), []);
+
+
+count:
+Assert::same(count($set), 1);
+Assert::same(count($empty), 0);
+Assert::same(count($s($i(6, 9), $i(2, 2), $i(4, 7))), 2);
 
 
 isEmpty:
