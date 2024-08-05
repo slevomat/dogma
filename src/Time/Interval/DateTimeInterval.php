@@ -9,6 +9,7 @@
 
 namespace Dogma\Time\Interval;
 
+use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Dogma\Arr;
@@ -59,8 +60,15 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     /** @var DateTime */
     private $end;
 
-    final public function __construct(DateTime $start, DateTime $end)
+    final public function __construct(DateTimeImmutable $start, DateTimeImmutable $end)
     {
+		if (!$start instanceof DateTime) {
+			$start = DateTime::createFromDateTimeInterface($start);
+		}
+		if (!$end instanceof DateTime) {
+			$end = DateTime::createFromDateTimeInterface($end);
+		}
+
         if ($start > $end) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
         }
