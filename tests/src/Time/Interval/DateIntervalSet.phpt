@@ -64,6 +64,13 @@ Assert::true($set->equals($s($i(1, 5))));
 Assert::false($set->equals($s($i(1, 6))));
 
 
+contains:
+Assert::true($set->contains($s($i(2, 4))));
+Assert::true($set->contains($s($i(4, 5), $i(1, 2))));
+Assert::false($set->contains($s($i(4, 6), $i(1, 2))));
+Assert::false($set->contains($s($i(7, 8))));
+
+
 containsValue:
 Assert::true($set->containsValue($d(1)));
 Assert::true($set->containsValue($d(5)));

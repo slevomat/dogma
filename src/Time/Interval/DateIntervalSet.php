@@ -173,6 +173,29 @@ class DateIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return true;
     }
 
+	public function contains(self $other): bool
+	{
+		if ($other->isEmpty()) {
+			return false;
+		}
+
+		$otherIntervals = $other->intervals;
+		foreach ($this->intervals as $interval) {
+			foreach ($otherIntervals as $i => $otherInterval) {
+				if (!$interval->contains($otherInterval)) {
+					continue;
+				}
+
+				unset($otherIntervals[$i]);
+				if ($otherIntervals === []) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
     public function containsValue(Date $value): bool
     {
         foreach ($this->intervals as $interval) {
