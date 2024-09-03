@@ -307,11 +307,14 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): TimeIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts): array
     {
         if ($this->isEmpty()) {
-            return new TimeIntervalSet([]);
+            return [];
         }
 
         $partSize = ($this->end->getMicroTime() - $this->start->getMicroTime()) / $parts;
@@ -331,12 +334,12 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     /**
      * @phpstan-pure
      * @param Time[] $intervalStarts
-     * @return TimeIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts): TimeIntervalSet
+    public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {
-            return new TimeIntervalSet([]);
+            return [];
         }
 
         $intervalStarts = Arr::sort($intervalStarts);
@@ -351,7 +354,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
             }
         }
 
-        return new TimeIntervalSet($results);
+        return $results;
     }
 
     /**

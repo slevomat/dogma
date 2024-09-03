@@ -340,13 +340,16 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): NightIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts): array
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new NightIntervalSet([]);
+            return [];
         }
 
         $partSize = ($this->end->getJulianDay() - $this->start->getJulianDay()) / $parts;
@@ -365,12 +368,12 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     /**
      * @phpstan-pure
      * @param Date[] $intervalStarts
-     * @return NightIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts): NightIntervalSet
+    public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {
-            return new NightIntervalSet([]);
+            return [];
         }
 
         $intervalStarts = Arr::sort($intervalStarts);
@@ -386,7 +389,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
             }
         }
 
-        return new NightIntervalSet($results);
+        return $results;
     }
 
     /** @phpstan-pure */

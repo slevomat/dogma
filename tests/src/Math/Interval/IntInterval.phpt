@@ -94,17 +94,17 @@ Assert::false($interval->touches($r(5, 10)));
 
 
 split:
-Assert::equal($interval->split(1), $s($interval));
-Assert::equal($interval->split(2), $s($r(1, 3), $r(4, 5)));
-Assert::equal($interval->split(3), $s($r(1, 2), $r(3, 3), $r(4, 5)));
-Assert::equal($interval->split(4), $s($r(1, 1), $r(2, 3), $r(4, 4), $r(5, 5)));
-Assert::equal($interval->split(5), $s($r(1, 1), $r(2, 2), $r(3, 3), $r(4, 4), $r(5, 5)));
-Assert::equal($interval->split(9), $s($r(1, 1), $r(2, 2), $r(3, 3), $r(4, 4), $r(5, 5)));
-Assert::equal($empty->split(5), $s($empty));
+Assert::equal($interval->split(1), [$interval]);
+Assert::equal($interval->split(2), [$r(1, 3), $r(4, 5)]);
+Assert::equal($interval->split(3), [$r(1, 2), $r(3, 3), $r(4, 5)]);
+Assert::equal($interval->split(4), [$r(1, 1), $r(2, 3), $r(4, 4), $r(5, 5)]);
+Assert::equal($interval->split(5), [$r(1, 1), $r(2, 2), $r(3, 3), $r(4, 4), $r(5, 5)]);
+Assert::equal($interval->split(9), [$r(1, 1), $r(2, 2), $r(3, 3), $r(4, 4), $r(5, 5)]);
+Assert::equal($empty->split(5), [$empty]);
 
 
 splitBy:
-Assert::equal($interval->splitBy([-10, 2, 4, 10]), $s($r(1, 1), $r(2, 3), $r(4, 5)));
+Assert::equal($interval->splitBy([-10, 2, 4, 10]), [$r(1, 1), $r(2, 3), $r(4, 5)]);
 
 
 envelope:

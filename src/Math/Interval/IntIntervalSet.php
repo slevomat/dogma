@@ -254,8 +254,11 @@ class IntIntervalSet implements IntervalSet
         return new static($results);
     }
 
-    /** @phpstan-pure */
-    public function map(callable $mapper): self
+    /**
+     * @phpstan-pure
+     * @return IntInterval[]
+     */
+    public function map(callable $mapper): array
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -271,7 +274,7 @@ class IntIntervalSet implements IntervalSet
             }
         }
 
-        return new static($results);
+        return $results;
     }
 
     /** @phpstan-pure */

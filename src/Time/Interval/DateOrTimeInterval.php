@@ -28,6 +28,6 @@ interface DateOrTimeInterval
     public function getSpan(): DateTimeSpan;
 
     // todo: not implemented in DateInterval and TimeInterval
-    //public function splitByUnit(DateTimeUnit $unit): DateOrTimeIntervalSet
+    //public function splitByUnit(DateTimeUnit $unit): static[]
 
 }

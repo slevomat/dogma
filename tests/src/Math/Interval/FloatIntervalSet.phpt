@@ -72,13 +72,13 @@ Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s
 map:
 Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval;
-}), $set);
+}), $set->getIntervals());
 Assert::equal($set->map(static function (FloatInterval $interval) {
     return $interval->split(2, FloatInterval::SPLIT_CLOSED);
-}), $s($i(1, 3), $i(3, 5)));
-Assert::equal($set->map(static function (FloatInterval $interval) {
-    return $interval->split(2, FloatInterval::SPLIT_CLOSED)->getIntervals();
-}), $s($i(1, 3), $i(3, 5)));
+}), [$i(1, 3), $i(3, 5)]);
+Assert::equal($set->map(static function (FloatInterval $interval) use ($s, $i) {
+    return $s($i(1, 2), $i(3, 5));
+}), [$i(1, 2), $i(3, 5)]);
 
 $set = $s(FloatInterval::empty(), $i(1, 1), $i(3, 4), $i(6, 8));
 

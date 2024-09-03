@@ -154,19 +154,19 @@ Assert::false($interval->touches($empty));
 
 
 split:
-Assert::equal($interval->split(1), $s($interval));
-Assert::equal($interval->split(2), $s($i(10, 15), $i(15, 20)));
-Assert::equal($interval->split(3), $s(
+Assert::equal($interval->split(1), [$interval]);
+Assert::equal($interval->split(2), [$i(10, 15), $i(15, 20)]);
+Assert::equal($interval->split(3), [
     new TimeInterval(new Time('10:00:00'), new Time('13:20:00')),
     new TimeInterval(new Time('13:20:00'), new Time('16:40:00')),
     new TimeInterval(new Time('16:40:00'), new Time('20:00:00'))
-));
-Assert::equal($empty->split(5), $s());
+]);
+Assert::equal($empty->split(5), []);
 
 
 splitBy:
-Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)]), $s($i(10, 15), $i(15, 20)));
-Assert::equal($empty->splitBy([$t(5)]), $s());
+Assert::equal($interval->splitBy([$t(5), $t(15), $t(25)]), [$i(10, 15), $i(15, 20)]);
+Assert::equal($empty->splitBy([$t(5)]), []);
 
 
 envelope:

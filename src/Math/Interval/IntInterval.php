@@ -187,13 +187,16 @@ class IntInterval implements Interval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): IntIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts): array
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new IntIntervalSet([$this]);
+            return [$this];
         }
 
         $partSize = ($this->end - $this->start + 1) / $parts;
@@ -204,7 +207,7 @@ class IntInterval implements Interval
         $intervalStarts = array_unique($intervalStarts);
 
         if ($intervalStarts === []) {
-            return new IntIntervalSet([$this]);
+            return [$this];
         }
 
         return $this->splitBy($intervalStarts);
@@ -213,9 +216,9 @@ class IntInterval implements Interval
     /**
      * @phpstan-pure
      * @param int[] $intervalStarts
-     * @return IntIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts): IntIntervalSet
+    public function splitBy(array $intervalStarts): array
     {
         $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];
@@ -229,7 +232,7 @@ class IntInterval implements Interval
             }
         }
 
-        return new IntIntervalSet($results);
+        return $results;
     }
 
     /**

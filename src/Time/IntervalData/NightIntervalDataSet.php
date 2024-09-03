@@ -337,9 +337,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * @phpstan-pure
      * @template TNewData
      * @param callable(NightIntervalData<TData> $data): (self<TNewData>|NightIntervalData<TNewData>|array<NightIntervalData<TNewData>>) $mapper
-     * @return self<TNewData>
+     * @return NightIntervalData<TNewData>[]
      */
-    public function map(callable $mapper): self
+    public function map(callable $mapper): array
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -355,7 +355,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return $results;
     }
 
     /**

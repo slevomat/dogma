@@ -287,13 +287,16 @@ class FloatInterval implements OpenClosedInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts, int $splitMode = self::SPLIT_OPEN_ENDS): array
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new FloatIntervalSet([$this]);
+            return [$this];
         }
 
         $partSize = ($this->end - $this->start) / $parts;
@@ -309,9 +312,9 @@ class FloatInterval implements OpenClosedInterval
     /**
      * @phpstan-pure
      * @param float[] $intervalStarts
-     * @return FloatIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): FloatIntervalSet
+    public function splitBy(array $intervalStarts, int $splitMode = self::SPLIT_OPEN_ENDS): array
     {
         $intervalStarts = Arr::sort($intervalStarts);
         $results = [$this];
@@ -325,7 +328,7 @@ class FloatInterval implements OpenClosedInterval
             }
         }
 
-        return new FloatIntervalSet($results);
+        return $results;
     }
 
     /**

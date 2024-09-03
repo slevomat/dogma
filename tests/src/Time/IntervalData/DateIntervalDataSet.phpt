@@ -98,13 +98,13 @@ Assert::equal($ds('1-5, 10-15')->intersect($s('4-12, 14-20')), $ds('4-5, 10-12, 
 map:
 Assert::equal($set->map(static function (DateIntervalData $interval) {
     return $interval;
-}), $set);
+}), $set->getIntervals());
 Assert::equal($set->map(static function (DateIntervalData $interval) use ($i) {
     return $interval->subtract($i('3-3'));
-}), $ds('1-2, 4-5'));
+}), $ds('1-2, 4-5')->getIntervals());
 Assert::equal($set->map(static function (DateIntervalData $interval) use ($i) {
     return $interval->subtract($i('3-3'))->getIntervals();
-}), $ds('1-2, 4-5'));
+}), $ds('1-2, 4-5')->getIntervals());
 
 
 collect:

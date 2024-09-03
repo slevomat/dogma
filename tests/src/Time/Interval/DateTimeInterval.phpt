@@ -182,19 +182,19 @@ Assert::false($interval->touches($empty));
 
 
 split:
-Assert::equal($interval->split(1), $s($interval));
-Assert::equal($interval->split(2), $s($i(10, 15), $i(15, 20)));
-Assert::equal($interval->split(3), $s(
+Assert::equal($interval->split(1), [$interval]);
+Assert::equal($interval->split(2), [$i(10, 15), $i(15, 20)]);
+Assert::equal($interval->split(3), [
     new DateTimeInterval(new DateTime('2000-01-10 00:00:00'), new DateTime('2000-01-13 08:00:00')),
     new DateTimeInterval(new DateTime('2000-01-13 08:00:00'), new DateTime('2000-01-16 16:00:00')),
     new DateTimeInterval(new DateTime('2000-01-16 16:00:00'), new DateTime('2000-01-20 00:00:00'))
-));
-Assert::equal($empty->split(5), $s());
+]);
+Assert::equal($empty->split(5), []);
 
 
 splitBy:
-Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)]), $s($i(10, 15), $i(15, 20)));
-Assert::equal($empty->splitBy([$d(5)]), $s());
+Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)]), [$i(10, 15), $i(15, 20)]);
+Assert::equal($empty->splitBy([$d(5)]), []);
 
 
 envelope:

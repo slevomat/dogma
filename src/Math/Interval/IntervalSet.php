@@ -52,7 +52,7 @@ interface IntervalSet extends Equalable, Dumpable, IteratorAggregate, Countable
     //public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
 
     /**
-     * @return self|mixed
+     * @return T[]|mixed
      */
     public function map(callable $mapper);
 

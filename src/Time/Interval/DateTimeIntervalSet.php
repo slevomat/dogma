@@ -403,8 +403,11 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
         return new static($results);
     }
 
-    /** @phpstan-pure */
-    public function map(callable $mapper): self
+    /**
+     * @phpstan-pure
+     * @return DateTimeInterval[]
+     */
+    public function map(callable $mapper): array
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -420,7 +423,7 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
             }
         }
 
-        return new static($results);
+        return $results;
     }
 
     /** @phpstan-pure */

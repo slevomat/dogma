@@ -320,13 +320,16 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): DateTimeIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts): array
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new DateTimeIntervalSet([]);
+            return [];
         }
 
         $partSize = ($this->end->getMicroTimestamp() - $this->start->getMicroTimestamp() + 1) / $parts;
@@ -346,12 +349,12 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     /**
      * @phpstan-pure
      * @param DateTime[] $intervalStarts
-     * @return DateTimeIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts): DateTimeIntervalSet
+    public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {
-            return new DateTimeIntervalSet([]);
+            return [];
         }
 
         $intervalStarts = Arr::sort($intervalStarts);
@@ -366,16 +369,16 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             }
         }
 
-        return new DateTimeIntervalSet($results);
+        return $results;
     }
 
     /**
      * Splits interval into smaller by increments of given unit from the beginning of interval.
      *
      * @phpstan-pure
-     * @return DateTimeIntervalSet
+     * @return static[]
      */
-    public function splitByUnit(DateTimeUnit $unit, int $amount = 1): DateTimeIntervalSet
+    public function splitByUnit(DateTimeUnit $unit, int $amount = 1): array
     {
         Check::positive($amount);
 
@@ -399,9 +402,9 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
      *  e.g. for 5 months beginning of May or October will be used as base.
      *
      * @phpstan-pure
-     * @return DateTimeIntervalSet
+     * @return static[]
      */
-    public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): DateTimeIntervalSet
+    public function splitByUnitAligned(DateTimeUnit $unit, int $amount = 1, ?DateTime $reference = null): array
     {
         Check::positive($amount);
 
@@ -463,38 +466,26 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
                 return DateTime::createFromComponents($this->start->getYear(), $this->start->getMonth(), $day, 0, 0, 0, 0, $this->start->getTimezone());
             case DateTimeUnit::HOUR:
-                $hours = null;
-                if ($amount > 1) {
-                    $hours = range(0, 23, $amount);
-                }
+                $hours = range(0, 23, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
 
                 return $reference;
             case DateTimeUnit::MINUTE:
             case DateTimeUnit::SECOND:
-                $units = null;
-                if ($amount > 1) {
-                    $units = range(0, 59, $amount);
-                }
+                $units = range(0, 59, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
 
                 return $reference;
             case DateTimeUnit::MILISECOND:
-                $miliseconds = null;
-                if ($amount > 1) {
-                    $miliseconds = range(0, 999, $amount);
-                }
+                $miliseconds = range(0, 999, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
 
                 return $reference;
             case DateTimeUnit::MICROSECOND:
-                $microseconds = null;
-                if ($amount > 1) {
-                    $microseconds = range(0, 999999, $amount);
-                }
+                $microseconds = range(0, 999999, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);
 

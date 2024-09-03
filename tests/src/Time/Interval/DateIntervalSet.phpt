@@ -106,13 +106,13 @@ Assert::equal($s($i(1, 5), $i(10, 15))->intersect($s($i(4, 12), $i(14, 20))), $s
 map:
 Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval;
-}), $set);
+}), $set->getIntervals());
 Assert::equal($set->map(static function (DateInterval $interval) {
     return $interval->split(2);
-}), $s($i(1, 3), $i(4, 5)));
-Assert::equal($set->map(static function (DateInterval $interval) {
-    return $interval->split(2)->getIntervals();
-}), $s($i(1, 3), $i(4, 5)));
+}), [$i(1, 3), $i(4, 5)]);
+Assert::equal($set->map(static function (DateInterval $interval) use ($s, $i) {
+    return $s($i(1, 2), $i(4, 5));
+}), [$i(1, 2), $i(4, 5)]);
 
 $set = $s($emptyInterval, $i(1, 1), $i(3, 4), $i(6, 8));
 

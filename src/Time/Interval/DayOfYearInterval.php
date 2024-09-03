@@ -267,11 +267,14 @@ class DayOfYearInterval implements ModuloInterval
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): DayOfYearIntervalSet
+    /**
+     * @phpstan-pure
+     * @return static[]
+     */
+    public function split(int $parts): array
     {
         if ($this->isEmpty()) {
-            return new DayOfYearIntervalSet([]);
+            return [];
         }
 
         $partSize = ($this->end->getNumber() - $this->start->getNumber()) / $parts;
@@ -291,12 +294,12 @@ class DayOfYearInterval implements ModuloInterval
     /**
      * @phpstan-pure
      * @param DayOfYear[] $intervalStarts
-     * @return DayOfYearIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts): DayOfYearIntervalSet
+    public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {
-            return new DayOfYearIntervalSet([]);
+            return [];
         }
 
         $intervalStarts = Arr::sort($intervalStarts);
@@ -312,7 +315,7 @@ class DayOfYearInterval implements ModuloInterval
             }
         }
 
-        return new DayOfYearIntervalSet($results);
+        return $results;
     }
 
     /**

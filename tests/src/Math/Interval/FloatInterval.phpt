@@ -213,47 +213,47 @@ Assert::false($open->touches($r(5, 10, true, false), true));
 
 
 split:
-Assert::equal($closed->split(1), $s($closed));
-Assert::equal($closed->split(2, FloatInterval::SPLIT_CLOSED), $s($r(1, 3), $r(3, 5)));
+Assert::equal($closed->split(1), [$closed]);
+Assert::equal($closed->split(2, FloatInterval::SPLIT_CLOSED), [$r(1, 3), $r(3, 5)]);
 Assert::equal(
     $closed->split(2, FloatInterval::SPLIT_OPEN_STARTS),
-    $s($r(1, 3), $r(3, 5, true))
+    [$r(1, 3), $r(3, 5, true)]
 );
 Assert::equal(
     $closed->split(2, FloatInterval::SPLIT_OPEN_ENDS),
-    $s($r(1, 3, false, true), $r(3, 5))
+    [$r(1, 3, false, true), $r(3, 5)]
 );
 Assert::equal(
     $closed->split(4, FloatInterval::SPLIT_CLOSED),
-    $s($r(1, 2), $r(2, 3), $r(3, 4), $r(4, 5))
+    [$r(1, 2), $r(2, 3), $r(3, 4), $r(4, 5)]
 );
 Assert::equal(
     $closed->split(4, FloatInterval::SPLIT_OPEN_STARTS),
-    $s($r(1, 2), $r(2, 3, true), $r(3, 4, true), $r(4, 5, true))
+    [$r(1, 2), $r(2, 3, true), $r(3, 4, true), $r(4, 5, true)]
 );
 Assert::equal(
     $closed->split(4, FloatInterval::SPLIT_OPEN_ENDS),
-    $s($r(1, 2, false, true), $r(2, 3, false, true), $r(3, 4, false, true), $r(4, 5))
+    [$r(1, 2, false, true), $r(2, 3, false, true), $r(3, 4, false, true), $r(4, 5)]
 );
-Assert::equal($empty->split(5), $s($empty));
+Assert::equal($empty->split(5), [$empty]);
 
 
 splitBy:
 Assert::equal(
     $closed->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_CLOSED),
-    $s($r(1, 2), $r(2, 4), $r(4, 5))
+    [$r(1, 2), $r(2, 4), $r(4, 5)]
 );
 Assert::equal(
     $open->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_CLOSED),
-    $s($r(1, 2, true), $r(2, 4), $r(4, 5, false, true))
+    [$r(1, 2, true), $r(2, 4), $r(4, 5, false, true)]
 );
 Assert::equal(
     $closed->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_OPEN_STARTS),
-    $s($r(1, 2), $r(2, 4, true), $r(4, 5, true))
+    [$r(1, 2), $r(2, 4, true), $r(4, 5, true)]
 );
 Assert::equal(
     $closed->splitBy([-10, 2, 4, 10], FloatInterval::SPLIT_OPEN_ENDS),
-    $s($r(1, 2, false, true), $r(2, 4, false, true), $r(4, 5))
+    [$r(1, 2, false, true), $r(2, 4, false, true), $r(4, 5)]
 );
 
 

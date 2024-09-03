@@ -187,17 +187,17 @@ Assert::false($interval->touches($empty));
 
 
 split:
-Assert::equal($interval->split(1), $s($interval));
-Assert::equal($interval->split(2), $s($i(10, 16), $i(16, 21)));
-Assert::equal($interval->split(3), $s($i(10, 14), $i(14, 17), $i(17, 21)));
-Assert::equal($interval->split(4), $s($i(10, 13), $i(13, 16), $i(16, 18), $i(18, 21)));
-Assert::equal($interval->split(11), $s($i(10, 11), $i(11, 12), $i(12, 13), $i(13, 14), $i(14, 15), $i(15, 16), $i(16, 17), $i(17, 18), $i(18, 19), $i(19, 20), $i(20, 21)));
-Assert::equal($empty->split(5), $s());
+Assert::equal($interval->split(1), [$interval]);
+Assert::equal($interval->split(2), [$i(10, 16), $i(16, 21)]);
+Assert::equal($interval->split(3), [$i(10, 14), $i(14, 17), $i(17, 21)]);
+Assert::equal($interval->split(4), [$i(10, 13), $i(13, 16), $i(16, 18), $i(18, 21)]);
+Assert::equal($interval->split(11), [$i(10, 11), $i(11, 12), $i(12, 13), $i(13, 14), $i(14, 15), $i(15, 16), $i(16, 17), $i(17, 18), $i(18, 19), $i(19, 20), $i(20, 21)]);
+Assert::equal($empty->split(5), []);
 
 
 splitBy:
-Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)]), $s($i(10, 15), $i(15, 21)));
-Assert::equal($empty->splitBy([$d(5)]), $s());
+Assert::equal($interval->splitBy([$d(5), $d(15), $d(25)]), [$i(10, 15), $i(15, 21)]);
+Assert::equal($empty->splitBy([$d(5)]), []);
 
 
 envelope:

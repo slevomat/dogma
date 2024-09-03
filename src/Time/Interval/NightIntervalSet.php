@@ -347,8 +347,11 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
         return new static($results);
     }
 
-    /** @phpstan-pure */
-    public function map(callable $mapper): self
+    /**
+     * @phpstan-pure
+     * @return NightInterval[]
+     */
+    public function map(callable $mapper): array
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -364,7 +367,7 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
             }
         }
 
-        return new static($results);
+        return $results;
     }
 
     /** @phpstan-pure */

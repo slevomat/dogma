@@ -349,13 +349,16 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /** @phpstan-pure */
-    public function split(int $parts): DateIntervalSet
+	/**
+	 * @phpstan-pure
+	 * @return static[]
+	 */
+    public function split(int $parts): array
     {
         Check::min($parts, 1);
 
         if ($this->isEmpty()) {
-            return new DateIntervalSet([]);
+            return [];
         }
 
         $partSize = ($this->end->getJulianDay() - $this->start->getJulianDay() + 1) / $parts;
@@ -374,12 +377,12 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     /**
      * @phpstan-pure
      * @param Date[] $intervalStarts
-     * @return DateIntervalSet
-     */
-    public function splitBy(array $intervalStarts): DateIntervalSet
+	 * @return static[]
+	 */
+    public function splitBy(array $intervalStarts): array
     {
         if ($this->isEmpty()) {
-            return new DateIntervalSet([]);
+            return [];
         }
 
         $intervalStarts = Arr::sort($intervalStarts);
@@ -395,7 +398,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
             }
         }
 
-        return new DateIntervalSet($results);
+        return $results;
     }
 
     /** @phpstan-pure */

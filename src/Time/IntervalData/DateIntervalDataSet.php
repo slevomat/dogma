@@ -337,9 +337,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * @phpstan-pure
      * @template TNewData
      * @param callable(DateIntervalData<TData> $data): (self<TNewData>|DateIntervalData<TNewData>|array<DateIntervalData<TNewData>>) $mapper
-     * @return self<TNewData>
+     * @return DateIntervalData<TNewData>[]
      */
-    public function map(callable $mapper): self
+    public function map(callable $mapper): array
     {
         $results = [];
         foreach ($this->intervals as $interval) {
@@ -355,7 +355,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static($results);
+        return $results;
     }
 
     /**
