@@ -385,7 +385,7 @@ class DayOfYearInterval implements ModuloInterval
         $result1 = $a <= $b ? new static(new DayOfYear($a), new DayOfYear($b)) : static::empty();
         $result2 = $c <= $d ? new static(new DayOfYear($c), new DayOfYear($d)) : static::empty();
 
-        return (new DayOfYearIntervalSet([$result1, $result2]))->normalize();
+        return new DayOfYearIntervalSet([$result1, $result2]);
     }
 
     /** @phpstan-pure */

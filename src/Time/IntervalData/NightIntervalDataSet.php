@@ -137,7 +137,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function toDateDataArray(): array
     {
-        $intervals = $this->normalize()->getIntervals();
+        $intervals = $this->getIntervals();
 
         return array_merge(...array_map(static function (NightIntervalData $interval) {
             return $interval->toDateDataArray();
@@ -569,7 +569,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = (new NightIntervalDataSet($intervals))->normalize();
+            $intervalSets[] = new NightIntervalDataSet($intervals);
         }
 
         return $intervalSets;

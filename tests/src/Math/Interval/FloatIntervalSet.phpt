@@ -54,7 +54,7 @@ Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 
 
 normalize:
-Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
+Assert::equal($s($i(1, 4), $i(2, 5)), $set);
 
 
 add:

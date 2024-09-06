@@ -79,8 +79,8 @@ Assert::false($set->containsValue($d(6)));
 
 
 normalize:
-Assert::equal($ds('1-4, 2-5')->normalize(), $set);
-Assert::equal($ds('10-13, 5-9, 18-21, 5-6, 15-19')->normalize(), $ds('5-13, 15-21'));
+Assert::equal($ds('1-4, 2-5'), $set);
+Assert::equal($ds('10-13, 5-9, 18-21, 5-6, 15-19'), $ds('5-13, 15-21'));
 
 
 add:
@@ -123,7 +123,7 @@ Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $reducer):
     $orig = $ds($orig);
     $input = $ds($input);
     $output = $ds($output);
-    Assert::equal($orig->modifyData($input, $reducer)->normalize(), $output, (string) $i);
+    Assert::equal($orig->modifyData($input, $reducer), $output, (string) $i);
 }, [
     // data after "/", default 1
     ['10-15', '20-25', '10-15/1'], // no match
@@ -165,7 +165,7 @@ Call::withArgs(static function ($orig, $input, $output, $i) use ($ds, $data, $ma
     $orig = $ds($orig);
     $input = $data($input);
     $output = $ds($output);
-    Assert::equal($orig->modifyDataByStream($input, $mapper, $reducer)->normalize(), $output, (string) $i);
+    Assert::equal($orig->modifyDataByStream($input, $mapper, $reducer), $output, (string) $i);
 }, [
     // data after "/", default 1
     ['10-15', '20-25', '10-15/1'], // no match

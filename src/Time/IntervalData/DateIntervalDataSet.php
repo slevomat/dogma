@@ -595,7 +595,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
         $intervalSets = [];
         foreach ($intervalGroups as $intervals) {
-            $intervalSets[] = (new DateIntervalDataSet($intervals))->normalize();
+            $intervalSets[] = new DateIntervalDataSet($intervals);
         }
 
         return $intervalSets;

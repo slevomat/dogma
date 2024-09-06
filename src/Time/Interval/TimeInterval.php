@@ -424,7 +424,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         $result1 = $a <= $b ? new static(new Time($a), new Time($b)) : static::empty();
         $result2 = $c <= $d ? new static(new Time($c), new Time($d)) : static::empty();
 
-        return (new TimeIntervalSet([$result1, $result2]))->normalize();
+        return new TimeIntervalSet([$result1, $result2]);
     }
 
     /** @phpstan-pure */

@@ -82,13 +82,13 @@ Assert::equal($s($i(1, 2), $i(4, 5))->envelope(), $interval);
 
 
 normalize:
-Assert::equal($s($i(1, 4), $i(2, 5))->normalize(), $set);
-Assert::equal($s($i(10, 13), $i(5, 9), $i(18, 21), $i(5, 6), $i(15, 19))->normalize(), $s($i(5, 13), $i(15, 21)));
+Assert::equal($s($i(1, 4), $i(2, 5)), $set);
+Assert::equal($s($i(10, 13), $i(5, 9), $i(18, 21), $i(5, 6), $i(15, 19)), $s($i(5, 13), $i(15, 21)));
 
 $i1 = new DateInterval(new Date('2024-09-01'), new Date('2024-09-10'));
 $i2 = new DateInterval(new Date('2024-08-01'), new Date('2024-08-10'));
 $i3 = new DateInterval(new Date('2024-07-20'), new Date('2024-09-02'));
-Assert::count((new DateIntervalSet([$i1, $i2, $i3]))->normalize()->getIntervals(), 1);
+Assert::count((new DateIntervalSet([$i1, $i2, $i3]))->getIntervals(), 1);
 
 
 add:
