@@ -19,6 +19,7 @@ use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
+use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
@@ -26,11 +27,12 @@ use function count;
 use function implode;
 use function is_array;
 use function reset;
+use function sprintf;
 
 /**
  * @implements IntervalSet<DayOfYearInterval>
  */
-class DayOfYearIntervalSet implements IntervalSet
+class DayOfYearIntervalSet extends IntervalSet
 {
     use StrictBehaviorMixin;
     use IntervalSetNormalizeMixin;
@@ -70,6 +72,27 @@ class DayOfYearIntervalSet implements IntervalSet
 	public function count(): int
 	{
 		return count($this->intervals);
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	#[ReturnTypeWillChange]
+	public function offsetGet($offset): DayOfYearInterval
+	{
+		if (isset($this->intervals[$offset])) {
+			return $this->intervals[$offset];
+		}
+
+		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	public function offsetExists($offset): bool
+	{
+		return isset($this->intervals[$offset]);
 	}
 
     /**

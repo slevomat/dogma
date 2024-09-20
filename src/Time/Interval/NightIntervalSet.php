@@ -21,6 +21,7 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
+use ReturnTypeWillChange;
 use Traversable;
 use function array_map;
 use function array_merge;
@@ -30,11 +31,12 @@ use function implode;
 use function is_array;
 use function reset;
 use function sort;
+use function sprintf;
 
 /**
  * @implements IntervalSet<NightInterval>
  */
-class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
+class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
     use StrictBehaviorMixin;
     use IntervalSetNormalizeMixin;
@@ -149,6 +151,27 @@ class NightIntervalSet implements IntervalSet, DateOrTimeIntervalSet, Pokeable
 	public function count(): int
 	{
 		return count($this->intervals);
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	#[ReturnTypeWillChange]
+	public function offsetGet($offset): NightInterval
+	{
+		if (isset($this->intervals[$offset])) {
+			return $this->intervals[$offset];
+		}
+
+		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	public function offsetExists($offset): bool
+	{
+		return isset($this->intervals[$offset]);
 	}
 
     /**

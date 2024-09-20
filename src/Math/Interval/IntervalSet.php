@@ -9,6 +9,8 @@
 
 namespace Dogma\Math\Interval;
 
+use ArrayAccess;
+use BadMethodCallException;
 use Countable;
 use Dogma\Dumpable;
 use Dogma\Equalable;
@@ -18,48 +20,67 @@ use IteratorAggregate;
  * @template T
  * @extends IteratorAggregate<int, T>
  */
-interface IntervalSet extends Equalable, Dumpable, IteratorAggregate, Countable
+abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Countable, ArrayAccess
 {
 
     /**
      * @return Interval[]
      */
-    public function getIntervals(): array;
+    abstract public function getIntervals(): array;
 
-    public function isEmpty(): bool;
+	abstract public function isEmpty(): bool;
 
-    //public function containsValue(T $value): bool;
+    //abstract public function containsValue(T $value): bool;
 
     /**
      * @return mixed|Interval
      */
-    public function envelope();//: Interval<T>;
+	abstract public function envelope();//: Interval<T>;
 
-    //public function normalize(): IntervalSet<T>;
+    //abstract public function normalize(): IntervalSet<T>;
 
-    //public function add(IntervalSet<T> $set): IntervalSet<T>;
+    //abstract public function add(IntervalSet<T> $set): IntervalSet<T>;
 
-    //public function addIntervals(Interval<T> ...$intervals): IntervalSet<T>;
+    //abstract public function addIntervals(Interval<T> ...$intervals): IntervalSet<T>;
 
-    //public function subtract(IntervalSet<T> $set): IntervalSet<T>;
+    //abstract public function subtract(IntervalSet<T> $set): IntervalSet<T>;
 
-    //public function subtractIntervals(Interval<T> ...$intervals): IntervalSet<T>;
+    //abstract public function subtractIntervals(Interval<T> ...$intervals): IntervalSet<T>;
 
-    //public function intersect(IntervalSet<T> $set): IntervalSet<T>;
+    //abstract public function intersect(IntervalSet<T> $set): IntervalSet<T>;
 
-    //public function intersect(Interval<T> ...$intervals): IntervalSet<T>;
+    //abstract public function intersect(Interval<T> ...$intervals): IntervalSet<T>;
 
-    //public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
+    //abstract public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
 
     /**
      * @return T[]|mixed
      */
-    public function map(callable $mapper);
+	abstract public function map(callable $mapper);
 
     /**
      * Map and filter
      * @return self|mixed
      */
-    public function collect(callable $mapper);
+	abstract public function collect(callable $mapper);
+
+	/**
+	 * @param mixed $offset
+	 * @param mixed $value
+	 * @throws BadMethodCallException
+	 */
+	public function offsetSet($offset, $value): void
+	{
+		throw new BadMethodCallException('Class is immutable');
+	}
+
+	/**
+	 * @param mixed $offset
+	 * @throws BadMethodCallException
+	 */
+	public function offsetUnset($offset): void
+	{
+		throw new BadMethodCallException('Class is immutable');
+	}
 
 }

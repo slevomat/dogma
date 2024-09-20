@@ -22,6 +22,7 @@ use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
+use ReturnTypeWillChange;
 use Traversable;
 use function array_map;
 use function array_merge;
@@ -30,11 +31,12 @@ use function count;
 use function implode;
 use function is_array;
 use function reset;
+use function sprintf;
 
 /**
  * @implements IntervalSet<DateTimeInterval>
  */
-class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
+class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 {
     use StrictBehaviorMixin;
     use IntervalSetNormalizeMixin;
@@ -208,6 +210,27 @@ class DateTimeIntervalSet implements IntervalSet, DateOrTimeIntervalSet
 	public function count(): int
 	{
 		return count($this->intervals);
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	#[ReturnTypeWillChange]
+	public function offsetGet($offset): DateTimeInterval
+	{
+		if (isset($this->intervals[$offset])) {
+			return $this->intervals[$offset];
+		}
+
+		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	public function offsetExists($offset): bool
+	{
+		return isset($this->intervals[$offset]);
 	}
 
     /**

@@ -16,17 +16,19 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
+use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
 use function count;
 use function end;
 use function is_array;
+use function sprintf;
 
 /**
  * @implements IntervalSet<float>
  */
-class FloatIntervalSet implements IntervalSet
+class FloatIntervalSet extends IntervalSet
 {
     use StrictBehaviorMixin;
     use IntervalSetNormalizeMixin;
@@ -64,6 +66,27 @@ class FloatIntervalSet implements IntervalSet
 	public function count(): int
 	{
 		return count($this->intervals);
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	#[ReturnTypeWillChange]
+	public function offsetGet($offset): FloatInterval
+	{
+		if (isset($this->intervals[$offset])) {
+			return $this->intervals[$offset];
+		}
+
+		throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
+	}
+
+	/**
+	 * @param int $offset
+	 */
+	public function offsetExists($offset): bool
+	{
+		return isset($this->intervals[$offset]);
 	}
 
     public function isEmpty(): bool
