@@ -46,7 +46,7 @@ interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function intersect(IntervalSet<T> $set): ModuloIntervalSet<T>;
 
-    //public function intersect(Interval<T> ...$intervals): ModuloIntervalSet<T>;
+    //public function intersectIntervals(Interval<T> ...$intervals): ModuloIntervalSet<T>;
 
     //public function filterByLength(string $operator, int|float $length): ModuloIntervalSet<T>;
 
