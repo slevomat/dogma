@@ -216,6 +216,10 @@ Assert::equal($interval->subtract($empty), $s($interval));
 Assert::equal($interval->subtract($all), $s());
 Assert::equal($all->subtract($empty), $s($all));
 Assert::equal($empty->subtract($empty), $s());
+Assert::equal($i(1, 366)->subtract($i(57, 323)), $s($i(323, 57)));
+Assert::equal($i(320, 60)->subtract($i(350, 40)), $s($i(40, 60), $i(320, 350)));
+Assert::equal($i(1, 366)->subtract($empty), $s($all));
+Assert::equal($empty->subtract($all), $s($empty));
 
 
 invert:

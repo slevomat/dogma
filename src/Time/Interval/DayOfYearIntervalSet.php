@@ -15,7 +15,6 @@ use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
-use Dogma\Math\Interval\IntervalSetNormalizeMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
@@ -23,6 +22,7 @@ use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -35,7 +35,6 @@ use function sprintf;
 class DayOfYearIntervalSet extends IntervalSet
 {
     use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
     /** @var DayOfYearInterval[] */
@@ -279,5 +278,43 @@ class DayOfYearIntervalSet extends IntervalSet
 
         return new static($results);
     }
+
+	/**
+	 * Join overlapping intervals.
+	 *
+	 * @param DayOfYearInterval[] $intervals
+	 * @return DayOfYearInterval[]
+	 */
+	private static function normalizeIntervals(array $intervals): array
+	{
+		$intervals = array_values($intervals);
+		foreach ($intervals as $i => $interval) {
+			if ($interval->isEmpty()) {
+				unset($intervals[$i]);
+			}
+		}
+
+		$intervals = Arr::sortComparableValues($intervals);
+		$count = count($intervals) - 1;
+		for ($n = 0; $n < $count; $n++) {
+			$intervalA = $intervals[$n];
+			$intervalB = $intervals[$n + 1];
+			if (
+				$intervalA->containsValue($intervalB->getStart())
+				|| $intervalA->getEnd()->equals($intervalB->getStart()->subtractDay())
+			) {
+				$intervals[$n + 1] = new DayOfYearInterval($intervalA->getStart(), $intervalB->getEnd());
+				unset($intervals[$n]);
+			} elseif (
+				$intervalB->containsValue($intervalA->getStart())
+				|| $intervalB->getEnd()->equals($intervalA->getStart()->subtractDay())
+			) {
+				$intervals[$n + 1] = new DayOfYearInterval($intervalB->getStart(), $intervalA->getEnd());
+				unset($intervals[$n]);
+			}
+		}
+
+		return array_values($intervals);
+	}
 
 }
