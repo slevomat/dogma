@@ -170,6 +170,10 @@ Assert::equal($interval->envelope($i(4, 5), $i(21, 368)), $i(4, 368));
 Assert::equal($interval->envelope($empty), $interval);
 
 
+noramlize:
+Assert::equal($s($i(10, 40), $i(20, 30)), $s($i(10, 40)));
+
+
 intersect:
 Assert::equal($interval->intersect($i(1, 15)), $s($i(10, 15)));
 Assert::equal($interval->intersect($i(15, 375)), $s($i(15, 20)));
@@ -220,6 +224,7 @@ Assert::equal($i(1, 366)->subtract($i(57, 323)), $s($i(323, 57)));
 Assert::equal($i(320, 60)->subtract($i(350, 40)), $s($i(40, 60), $i(320, 350)));
 Assert::equal($i(1, 366)->subtract($empty), $s($all));
 Assert::equal($empty->subtract($all), $s($empty));
+Assert::equal($i(366, 57)->subtract($i(1, 57)), $s($empty));
 
 
 invert:

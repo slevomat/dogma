@@ -303,7 +303,7 @@ class DayOfYearIntervalSet extends IntervalSet
 				$intervalA->containsValue($intervalB->getStart())
 				|| $intervalA->getEnd()->equals($intervalB->getStart()->subtractDay())
 			) {
-				$intervals[$n + 1] = new DayOfYearInterval($intervalA->getStart(), $intervalB->getEnd());
+				$intervals[$n + 1] = new DayOfYearInterval($intervalA->getStart(), $intervalB->getEnd()->compare());
 				unset($intervals[$n]);
 			} elseif (
 				$intervalB->containsValue($intervalA->getStart())

@@ -439,14 +439,27 @@ class DayOfYearInterval implements ModuloInterval
             if ($item->isEmpty()) {
                 continue;
             }
+			// todo všechno blbě
             $itemStartTime = $item->getStart()->getNumber();
             $itemEndTime = $item->getEnd()->getNumber();
             foreach ($results as $r => $interval) {
+
+	            if ($interval->containsValue($item->getStart())) {
+		            unset($intervals[$n]);
+		            $intervals[$n + 1] = new DayOfYearInterval($interval->getStart(), $item->getEnd());
+	            } elseif ($item->containsValue($interval->getStart())) {
+		            unset($intervals[$n]);
+		            $intervals[$n + 1] = new DayOfYearInterval($item->getStart(), $interval->getEnd());
+	            }
+
+
+
+
                 $intervalStartTime = $interval->getStart()->getNumber();
                 $intervalEndTime = $interval->getEnd()->getNumber();
 
                 $startLower = $intervalStartTime < $itemStartTime;
-                $endHigher = $intervalEndTime > $itemEndTime;
+                $endHigher = $intervalEndTime % DayOfYear::MAX_NUMBER > $itemEndTime % DayOfYear::MAX_NUMBER;
                 if ($startLower && $endHigher) {
                     // r1****i1----i2****r2
                     unset($results[$r]);
