@@ -50,7 +50,7 @@ class DayOfYearIntervalSet extends IntervalSet
             return !$interval->isEmpty();
         }));
 
-        $this->intervals = self::normalizeIntervals($intervals);
+        $this->intervals = $intervals;
     }
 
     public function format(string $format = DayOfYearInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
@@ -157,6 +157,15 @@ class DayOfYearIntervalSet extends IntervalSet
         } else {
             return reset($this->intervals)->envelope(...$this->intervals);
         }
+    }
+
+    /**
+     * Join overlapping intervals in set.
+     * @return self
+     */
+    public function normalize(): self
+    {
+        return new static(self::normalizeIntervals($this->intervals));
     }
 
     /** @phpstan-pure */
