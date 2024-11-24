@@ -27,6 +27,7 @@ use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
+use ReturnTypeWillChange;
 use const DATE_RFC2822;
 use function array_keys;
 use function array_values;
@@ -139,7 +140,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
     }
 
-    public static function createFromTimestamp(int $timestamp, ?DateTimeZone $timeZone = null): self
+    #[ReturnTypeWillChange]
+    public static function createFromTimestamp(int|float $timestamp, ?DateTimeZone $timeZone = null): self
     {
         $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
         if ($timeZone === null) {
