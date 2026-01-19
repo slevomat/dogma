@@ -85,6 +85,13 @@ final class Colors
         if (!isset(self::$fg[$foreground]) && !isset(self::$bg[$background])) {
             return $string;
         }
+        if ($background === null) {
+            $background = '';
+        }
+
+        if ($foreground === null) {
+            $foreground = '';
+        }
 
         $out = '';
         if (isset(self::$fg[$foreground])) {
