@@ -46,11 +46,11 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     private $intervals;
 
     /**
-     * @param DateInterval[] $intervals
+     * @param list<DateInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
-        /** @var DateInterval[] $intervals */
+        /** @var list<DateInterval> $intervals */
         $intervals = Arr::values(Arr::filter($intervals, static function (DateInterval $interval): bool {
             return !$interval->isEmpty();
         }));
@@ -59,7 +59,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     }
 
     /**
-     * @param Date[] $dates
+     * @param list<Date> $dates
      * @return DateIntervalSet
      */
     public static function createFromDateArray(array $dates): self
@@ -104,7 +104,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     }
 
     /**
-     * @return Date[]
+     * @return list<Date>
      */
     public function toDateArray(): array
     {
@@ -168,6 +168,9 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         return new ArrayIterator($this->intervals);
     }
 
+    /**
+     * @phpstan-assert-if-true non-empty-list<DateInterval> $this->getIntervals()
+     */
     public function isEmpty(): bool
     {
         return $this->intervals === [];
@@ -380,7 +383,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
 
     /**
      * @phpstan-pure
-     * @return DateInterval[]
+     * @return list<DateInterval>
      */
     public function map(callable $mapper): array
     {

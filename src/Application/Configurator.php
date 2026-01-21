@@ -273,7 +273,7 @@ final class Configurator extends stdClass
 			}
 		}
 
-		return $value;  //@phpstan-ignore-line return.type
+		return $value;
 	}
 
     /**

@@ -216,7 +216,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return list<Date>
      */
     public function toDateArray(): array
     {
@@ -254,7 +254,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @return Date[]
+     * @return array{0: Date, 1: Date}
      */
     public function getStartEnd(): array
     {

@@ -42,15 +42,15 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
 
-    /** @var DateTimeInterval[] */
+    /** @var list<DateTimeInterval> */
     private $intervals;
 
     /**
-     * @param DateTimeInterval[] $intervals
+     * @param list<DateTimeInterval> $intervals
      */
     final public function __construct(array $intervals)
     {
-        /** @var DateTimeInterval[] $intervals */
+        /** @var list<DateTimeInterval> $intervals */
         $intervals = Arr::values(Arr::filter($intervals, static function (DateTimeInterval $interval): bool {
             return !$interval->isEmpty();
         }));
@@ -200,7 +200,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     }
 
     /**
-     * @return DateTimeInterval[]
+     * @return list<DateTimeInterval>
      */
     public function getIntervals(): array
     {
@@ -241,6 +241,9 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return new ArrayIterator($this->intervals);
     }
 
+    /**
+     * @phpstan-assert-if-true non-empty-list<DateTimeInterval> $this->getIntervals()
+     */
     public function isEmpty(): bool
     {
         return $this->intervals === [];
@@ -351,7 +354,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
             }
         }
 
-        /** @var DateTimeInterval[] $results */
+        /** @var list<DateTimeInterval> $results */
         $results = $results;
 
         return new static($results);
@@ -428,7 +431,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 
     /**
      * @phpstan-pure
-     * @return DateTimeInterval[]
+     * @return list<DateTimeInterval>
      */
     public function map(callable $mapper): array
     {

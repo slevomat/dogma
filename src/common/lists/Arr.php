@@ -149,8 +149,8 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @param list<mixed> $array
+     * @return list<mixed>
      */
     public static function values(array $array): array
     {
