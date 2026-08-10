@@ -14,14 +14,14 @@ use Dogma\Enum\StringEnum;
 class HttpMethod extends StringEnum
 {
 
-    public const GET = 'get';
-    public const HEAD = 'head';
-    public const POST = 'post';
-    public const PUT = 'put';
-    public const PATCH = 'patch';
-    public const DELETE = 'delete';
-    public const TRACE = 'trace';
-    public const OPTIONS = 'options';
-    public const CONNECT = 'connect';
+    public const GET = 'GET';
+    public const HEAD = 'HEAD';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
+    public const DELETE = 'DELETE';
+    public const TRACE = 'TRACE';
+    public const OPTIONS = 'OPTIONS';
+    public const CONNECT = 'CONNECT';
 
 }
