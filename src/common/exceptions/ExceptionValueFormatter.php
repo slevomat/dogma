@@ -19,7 +19,7 @@ use function is_resource;
 use function is_string;
 use function md5;
 use function serialize;
-use function spl_object_hash;
+use function spl_object_id;
 use function sprintf;
 use function strlen;
 use function substr;
@@ -35,7 +35,7 @@ class ExceptionValueFormatter
     public static function format($value): string
     {
         if (is_object($value)) {
-            return sprintf('%s #%s', get_class($value), substr(md5(spl_object_hash($value)), 0, 8));
+            return sprintf('%s #%s', get_class($value), substr(md5((string) spl_object_id($value)), 0, 8));
         } elseif (is_resource($value)) {
             return sprintf('resource (%s) #%d', get_resource_type($value), substr((string) $value, 13));
         } elseif (is_array($value)) {

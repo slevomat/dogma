@@ -278,6 +278,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param string $modify
      * @return self
      */
+    #[ReturnTypeWillChange]
     public function modify($modify): self
     {
         /** @var self|false $result */
@@ -294,6 +295,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
+    #[ReturnTypeWillChange]
     public function add($interval): self
     {
         if ($interval instanceof DateInterval) {
@@ -314,6 +316,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param DateInterval|DateOrTimeSpan $interval
      * @return self
      */
+    #[ReturnTypeWillChange]
     public function sub($interval): self
     {
         if ($interval instanceof DateOrTimeSpan) {
@@ -361,6 +364,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param int|null $microseconds
      * @return self
      */
+    #[ReturnTypeWillChange]
     public function setTime($time, $minutes = null, $seconds = null, $microseconds = null): self
     {
         if ($time instanceof Time) {
@@ -385,6 +389,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      * @param DateTimeZone|string $timeZone
      * @return DateTime
      */
+    #[ReturnTypeWillChange]
     public function setTimezone($timeZone): self
     {
         if (!$timeZone instanceof DateTimeZone) {

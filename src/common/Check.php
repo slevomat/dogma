@@ -948,7 +948,7 @@ final class Check
      */
     public static function instance($value, string $className): void
     {
-        if (!is_a($value, $className)) {
+        if (!$value instanceof $className) {
             throw new InvalidTypeException($className, $value);
         }
     }

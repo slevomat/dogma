@@ -13,7 +13,6 @@ namespace Dogma;
 
 use function is_object;
 use function md5;
-use function spl_object_hash;
 use function spl_object_id;
 use function substr;
 
@@ -26,7 +25,7 @@ class Obj
      */
     public static function dumpHash($object): string
     {
-        return substr(md5(spl_object_hash($object)), 0, 4);
+        return substr(md5((string) spl_object_id($object)), 0, 4);
     }
 
     /**

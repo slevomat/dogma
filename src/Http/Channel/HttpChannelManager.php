@@ -26,7 +26,7 @@ use function curl_multi_info_read;
 use function curl_multi_init;
 use function curl_multi_remove_handle;
 use function curl_multi_select;
-use function spl_object_hash;
+use function spl_object_id;
 use const CURLM_CALL_MULTI_PERFORM;
 use const PHP_INT_MIN;
 
@@ -90,7 +90,7 @@ class HttpChannelManager
 
     public function addChannel(HttpChannel $channel): void
     {
-        $this->channels[spl_object_hash($channel)] = $channel;
+        $this->channels[spl_object_id($channel)] = $channel;
         $this->updatePriorities();
         $this->startJobs();
     }
@@ -219,7 +219,7 @@ class HttpChannelManager
      */
     public function jobStarted($resource, HttpChannel $channel, $name, HttpRequest $request): void
     {
-        $this->resources[Obj::objectId($resource)] = [spl_object_hash($channel), $name, $request];
+        $this->resources[Obj::objectId($resource)] = [spl_object_id($channel), $name, $request];
     }
 
     public function getHeaderParser(): HttpHeaderParser

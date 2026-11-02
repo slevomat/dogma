@@ -17,7 +17,7 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function range;
-use function spl_object_hash;
+use function spl_object_id;
 
 class HttpMultiChannel
 {
@@ -26,7 +26,7 @@ class HttpMultiChannel
     /** @var HttpChannel[] */
     private $channels;
 
-    /** @var string[] */
+    /** @var string[] (int $channelId => string $channelName) */
     private $channelIds;
 
     /** @var int */
@@ -58,7 +58,7 @@ class HttpMultiChannel
         $this->channels = $channels;
 
         foreach ($channels as $channelName => $channel) {
-            $this->channelIds[spl_object_hash($channel)] = $channelName;
+            $this->channelIds[spl_object_id($channel)] = $channelName;
             $channel->setResponseHandler(function (HttpResponse $response, HttpChannel $channel, string $subJobName): void {
                 $this->responseHandler($response, $channel, $subJobName);
             });
@@ -67,7 +67,7 @@ class HttpMultiChannel
 
     public function responseHandler(HttpResponse $response, HttpChannel $channel, string $subJobName): void
     {
-        $channelId = spl_object_hash($channel);
+        $channelId = spl_object_id($channel);
         $channelName = $this->channelIds[$channelId];
         $jobName = $this->queue[$subJobName][$channelName];
         $this->finished[$jobName][$channelName] = $response;
