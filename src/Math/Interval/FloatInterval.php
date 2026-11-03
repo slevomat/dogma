@@ -34,8 +34,8 @@ class FloatInterval implements OpenClosedInterval
 {
     use StrictBehaviorMixin;
 
-    public const MIN = -INF;
-    public const MAX = INF;
+    public const float MIN = -INF;
+    public const float MAX = INF;
 
     private float $start;
 

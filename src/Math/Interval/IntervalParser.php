@@ -19,12 +19,12 @@ class IntervalParser
 {
     use StaticClassMixin;
 
-    public const CLOSED_START = '[';
-    public const CLOSED_END = ']';
-    public const OPEN_START = '(';
-    public const OPEN_END = ')';
+    public const string CLOSED_START = '[';
+    public const string CLOSED_END = ']';
+    public const string OPEN_START = '(';
+    public const string OPEN_END = ')';
 
-    public const SEPARATORS = [',', '|', '/', ' - ', '--'];
+    public const array SEPARATORS = [',', '|', '/', ' - ', '--'];
 
     /**
      * @return array{0: string, 1: string, 2: bool|null, 3: bool|null} (string $start, string $end, ?bool $openStart, ?bool $openEnd)

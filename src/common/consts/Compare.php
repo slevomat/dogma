@@ -13,11 +13,11 @@ class Compare
 {
     use StaticClassMixin;
 
-    public const LESSER = '<';
-    public const LESSER_OR_EQUAL = '<=';
-    public const EQUAL = '=';
-    public const NOT_EQUAL = '<>';
-    public const GREATER_OR_EQUAL = '>=';
-    public const GREATER = '>';
+    public const string LESSER = '<';
+    public const string LESSER_OR_EQUAL = '<=';
+    public const string EQUAL = '=';
+    public const string NOT_EQUAL = '<>';
+    public const string GREATER_OR_EQUAL = '>=';
+    public const string GREATER = '>';
 
 }

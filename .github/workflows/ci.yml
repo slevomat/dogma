@@ -43,7 +43,6 @@ jobs:
 
       - name: PHPCS source
         run: php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=build/CodeSniffer/ruleset.xml src
-        continue-on-error: true # TODO: make blocking after phpstan/phpcs cleanup phase
 
       - name: PHPCS tests
         run: php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=build/CodeSniffer/ruleset-tests.xml tests

@@ -40,18 +40,18 @@ final readonly class LocaleKeyword
         return $this->value === $other->value;
     }
 
-    public const CALENDAR = 'calendar';
-    public const COLLATION = 'collation';
-    public const CURRENCY = 'currency';
-    public const NUMBERS = 'numbers';
+    public const string CALENDAR = 'calendar';
+    public const string COLLATION = 'collation';
+    public const string CURRENCY = 'currency';
+    public const string NUMBERS = 'numbers';
 
-    public const COL_ALTERNATE = 'colalternate';
-    public const COL_BACKWARDS = 'colbackwards';
-    public const COL_CASE_FIRST = 'colcasefirst';
-    public const COL_HIRAGANA_QUATERNARY = 'colhiraganaquaternary';
-    public const COL_NORMALIZATION = 'colnormalization';
-    public const COL_NUMERIC = 'colnumeric';
-    public const COL_STRENGTH = 'colstrength';
+    public const string COL_ALTERNATE = 'colalternate';
+    public const string COL_BACKWARDS = 'colbackwards';
+    public const string COL_CASE_FIRST = 'colcasefirst';
+    public const string COL_HIRAGANA_QUATERNARY = 'colhiraganaquaternary';
+    public const string COL_NORMALIZATION = 'colnormalization';
+    public const string COL_NUMERIC = 'colnumeric';
+    public const string COL_STRENGTH = 'colstrength';
 
     /**
      * @return string[]

@@ -40,25 +40,25 @@ class Re
     use StaticClassMixin;
 
     // flags
-    public const PATTERN_ORDER = PREG_PATTERN_ORDER;
-    public const SET_ORDER = PREG_SET_ORDER;
+    public const int PATTERN_ORDER = PREG_PATTERN_ORDER;
+    public const int SET_ORDER = PREG_SET_ORDER;
 
-    public const CAPTURE_OFFSET = PREG_OFFSET_CAPTURE; // also PREG_SPLIT_OFFSET_CAPTURE
-    public const CAPTURE_DELIMITER = PREG_SPLIT_DELIM_CAPTURE;
+    public const int CAPTURE_OFFSET = PREG_OFFSET_CAPTURE; // also PREG_SPLIT_OFFSET_CAPTURE
+    public const int CAPTURE_DELIMITER = PREG_SPLIT_DELIM_CAPTURE;
 
-    public const FILTER_EMPTY = PREG_SPLIT_NO_EMPTY;
-    public const UNMATCHED_AS_NULL = PREG_UNMATCHED_AS_NULL;
+    public const int FILTER_EMPTY = PREG_SPLIT_NO_EMPTY;
+    public const int UNMATCHED_AS_NULL = PREG_UNMATCHED_AS_NULL;
 
-    public const INVERT = PREG_GREP_INVERT;
+    public const int INVERT = PREG_GREP_INVERT;
 
     // modifiers
-    public const CASE_INSENSITIVE = 'i';
-    public const MULTI_LINE = 'm';
-    public const DOT_MATCHES_NEW_LINES = 's';
-    public const IGNORE_WHITESPACE = 'x';
-    public const TRY_TO_OPTIMIZE = 'S';
-    public const UNGREEDY = 'U';
-    public const UTF_8 = 'u';
+    public const string CASE_INSENSITIVE = 'i';
+    public const string MULTI_LINE = 'm';
+    public const string DOT_MATCHES_NEW_LINES = 's';
+    public const string IGNORE_WHITESPACE = 'x';
+    public const string TRY_TO_OPTIMIZE = 'S';
+    public const string UNGREEDY = 'U';
+    public const string UTF_8 = 'u';
 
     /**
      * @see Str::count()

@@ -45,10 +45,10 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
     use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
-    public const MIN = Date::MIN;
-    public const MAX = Date::MAX;
+    public const string MIN = Date::MIN;
+    public const string MAX = Date::MAX;
 
-    public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
+    public const string DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
     private Date $start;
 
@@ -113,14 +113,14 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public static function future(?TimeProvider $timeProvider = null): self
     {
-        $tomorrow = $timeProvider !== null ? $timeProvider->getDate()->addDay() : new Date('tomorrow');
+        $tomorrow = $timeProvider?->getDate()->addDay() ?? new Date('tomorrow');
 
         return new static($tomorrow, new Date(self::MAX));
     }
 
     public static function past(?TimeProvider $timeProvider = null): self
     {
-        $yesterday = $timeProvider !== null ? $timeProvider->getDate()->subtractDay() : new Date('yesterday');
+        $yesterday = $timeProvider?->getDate()->subtractDay() ?? new Date('yesterday');
 
         return new static(new Date(self::MIN), $yesterday);
     }

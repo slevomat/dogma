@@ -13,10 +13,10 @@ class Round
 {
     use StaticClassMixin;
 
-    public const NORMAL = 0;
-    public const UP = 1;
-    public const DOWN = 2;
-    public const TOWARDS_ZERO = 3;
-    public const AWAY_FROM_ZERO = 4;
+    public const int NORMAL = 0;
+    public const int UP = 1;
+    public const int DOWN = 2;
+    public const int TOWARDS_ZERO = 3;
+    public const int AWAY_FROM_ZERO = 4;
 
 }

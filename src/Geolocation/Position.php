@@ -25,7 +25,7 @@ class Position
 {
     use StrictBehaviorMixin;
 
-    public const PLANET_EARTH_RADIUS = 6371000.0;
+    public const float PLANET_EARTH_RADIUS = 6371000.0;
 
     /** @var float [m] */
     private float $planetRadius;

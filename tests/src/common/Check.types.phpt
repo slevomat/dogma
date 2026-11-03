@@ -13,7 +13,6 @@ use stdClass;
 use Tester\AssertException;
 use Throwable;
 use Tracy\Debugger;
-use function get_class;
 use function in_array;
 use function is_float;
 use function is_object;
@@ -23,28 +22,22 @@ require_once __DIR__ . '/../bootstrap.php';
 class TestClass1
 {
 
-    /** @var int */
-    public $a = 1;
+    public int $a = 1;
 
-    /** @var int */
-    public $b = 2;
+    public int $b = 2;
 
-    /** @var int */
-    public $c = 3;
+    public int $c = 3;
 
 }
 
 class TestClass2
 {
 
-    /** @var int */
-    public $a = 1;
+    public int $a = 1;
 
-    /** @var int */
-    protected $b = 2;
+    protected int $b = 2;
 
-    /** @var bool */
-    private $c = true;
+    private bool $c = true;
 
     public function test(): bool
     {
@@ -163,7 +156,7 @@ foreach ($subjects as $name => $possibleTypes) {
                 Assert::fail("Subject $name `$before` should not be castable to type $type. Instead casted to value `$after`.");
             }
         } catch (Throwable $e) {
-            $class = get_class($e);
+            $class = $e::class;
             $before = trim(Debugger::dump($subject, true));
             if ($class === AssertException::class) {
                 throw $e;

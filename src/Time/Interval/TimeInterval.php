@@ -48,10 +48,10 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
-    public const MIN = Time::MIN;
-    public const MAX = '47:59:59.999999';
+    public const string MIN = Time::MIN;
+    public const string MAX = '47:59:59.999999';
 
-    public const DEFAULT_FORMAT = 'H:i:s.u| - H:i:s.u';
+    public const string DEFAULT_FORMAT = 'H:i:s.u| - H:i:s.u';
 
     private Time $start;
 

@@ -18,9 +18,9 @@ class Sorting
 {
     use StaticClassMixin;
 
-    public const REGULAR = SORT_REGULAR;
-    public const NUMERIC = SORT_NUMERIC;
-    public const STRING = SORT_STRING;
-    public const NATURAL = SORT_NATURAL;
+    public const int REGULAR = SORT_REGULAR;
+    public const int NUMERIC = SORT_NUMERIC;
+    public const int STRING = SORT_STRING;
+    public const int NATURAL = SORT_NATURAL;
 
 }

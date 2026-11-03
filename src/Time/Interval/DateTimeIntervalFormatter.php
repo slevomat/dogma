@@ -12,7 +12,7 @@ namespace Dogma\Time\Interval;
 interface DateTimeIntervalFormatter
 {
 
-    public const START_END_SEPARATOR = '|';
+    public const string START_END_SEPARATOR = '|';
 
     public function format(DateOrTimeInterval $interval, ?string $format = null): string;
 

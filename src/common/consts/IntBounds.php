@@ -16,25 +16,25 @@ class IntBounds
 {
     use StaticClassMixin;
 
-    public const UINT8_MAX = 255;
-    public const UINT16_MAX = 65535;
-    public const UINT24_MAX = 16777215;
-    public const UINT32_MAX = 4294967295;
-    public const UINT48_MAX = 281474976710655;
-    public const UINT64_MAX = PHP_INT_MAX; // this is actually 63 bits, since PHP int is always signed
+    public const int UINT8_MAX = 255;
+    public const int UINT16_MAX = 65535;
+    public const int UINT24_MAX = 16777215;
+    public const int UINT32_MAX = 4294967295;
+    public const int UINT48_MAX = 281474976710655;
+    public const int UINT64_MAX = PHP_INT_MAX; // this is actually 63 bits, since PHP int is always signed
 
-    public const INT8_MIN = -128;
-    public const INT8_MAX = 127;
-    public const INT16_MIN = -32768;
-    public const INT16_MAX = 32767;
-    public const INT24_MIN = -8388608;
-    public const INT24_MAX = 8388607;
-    public const INT32_MIN = -2147483648;
-    public const INT32_MAX = 2147483647;
-    public const INT48_MIN = -140737488355328;
-    public const INT48_MAX = 140737488355327;
-    public const INT64_MIN = PHP_INT_MIN;
-    public const INT64_MAX = PHP_INT_MAX;
+    public const int INT8_MIN = -128;
+    public const int INT8_MAX = 127;
+    public const int INT16_MIN = -32768;
+    public const int INT16_MAX = 32767;
+    public const int INT24_MIN = -8388608;
+    public const int INT24_MAX = 8388607;
+    public const int INT32_MIN = -2147483648;
+    public const int INT32_MAX = 2147483647;
+    public const int INT48_MIN = -140737488355328;
+    public const int INT48_MAX = 140737488355327;
+    public const int INT64_MIN = PHP_INT_MIN;
+    public const int INT64_MAX = PHP_INT_MAX;
 
     /**
      * @return int[]

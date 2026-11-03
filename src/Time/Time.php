@@ -48,14 +48,14 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    public const MIN = '00:00:00.000000';
-    public const MAX = '23:59:59.999999';
+    public const string MIN = '00:00:00.000000';
+    public const string MAX = '23:59:59.999999';
 
-    public const MIN_MICROSECONDS = 0;
-    public const MAX_MICROSECONDS = Microseconds::DAY - 1;
-    private const MAX_DENORMALIZED = self::MAX_MICROSECONDS + Microseconds::DAY;
+    public const int MIN_MICROSECONDS = 0;
+    public const int MAX_MICROSECONDS = Microseconds::DAY - 1;
+    private const int MAX_DENORMALIZED = self::MAX_MICROSECONDS + Microseconds::DAY;
 
-    public const DEFAULT_FORMAT = 'H:i:s.u';
+    public const string DEFAULT_FORMAT = 'H:i:s.u';
 
     private readonly int $microseconds;
 

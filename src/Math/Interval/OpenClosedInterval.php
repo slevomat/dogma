@@ -14,12 +14,12 @@ namespace Dogma\Math\Interval;
 interface OpenClosedInterval /*<T>*/ extends Interval /*<T>*/
 {
 
-    public const OPEN = true;
-    public const CLOSED = false;
+    public const true OPEN = true;
+    public const false CLOSED = false;
 
-    public const SPLIT_OPEN_STARTS = 1;
-    public const SPLIT_CLOSED = 0;
-    public const SPLIT_OPEN_ENDS = -1;
+    public const int SPLIT_OPEN_STARTS = 1;
+    public const int SPLIT_CLOSED = 0;
+    public const int SPLIT_OPEN_ENDS = -1;
 
     //public static function closed(T $start, T $end): self<T>;
 

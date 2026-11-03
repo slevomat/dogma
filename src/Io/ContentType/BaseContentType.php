@@ -37,16 +37,16 @@ final readonly class BaseContentType
         return $this->value === $other->value;
     }
 
-    public const APPLICATION = 'application';
-    public const AUDIO = 'audio';
-    public const FONT = 'font';
-    public const CHEMICAL = 'chemical';
-    public const IMAGE = 'image';
-    public const MESSAGE = 'message';
-    public const MODEL = 'model';
-    public const MULTIPART = 'multipart';
-    public const TEXT = 'text';
-    public const VIDEO = 'video';
+    public const string APPLICATION = 'application';
+    public const string AUDIO = 'audio';
+    public const string FONT = 'font';
+    public const string CHEMICAL = 'chemical';
+    public const string IMAGE = 'image';
+    public const string MESSAGE = 'message';
+    public const string MODEL = 'model';
+    public const string MULTIPART = 'multipart';
+    public const string TEXT = 'text';
+    public const string VIDEO = 'video';
 
     public static function getValueRegexp(): string
     {

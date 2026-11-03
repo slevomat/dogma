@@ -61,7 +61,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateAndTimeIntervalSet(
         Date $date,
         TimeIntervalSet $timeIntervalSet,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -75,7 +75,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalAndTimeInterval(
         DateInterval $dateInterval,
         TimeInterval $timeInterval,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -89,7 +89,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalAndTimeIntervalSet(
         DateInterval $dateInterval,
         TimeIntervalSet $timeIntervalSet,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -105,7 +105,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalSetAndTimeInterval(
         DateIntervalSet $dateIntervalSet,
         TimeInterval $timeInterval,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -121,7 +121,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalSetAndTimeIntervalSet(
         DateIntervalSet $dateIntervalSet,
         TimeIntervalSet $timeIntervalSet,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -139,7 +139,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalAndWeekDayHoursSet(
         DateInterval $dateInterval,
         WeekDayHoursSet $weekDayHoursSet,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -159,7 +159,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public static function createFromDateIntervalSetAndWeekDayHoursSet(
         DateIntervalSet $dateIntervalSet,
         WeekDayHoursSet $weekDayHoursSet,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         $intervals = [];
@@ -191,7 +191,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public function format(
         string $format = DateTimeInterval::DEFAULT_FORMAT,
         ?DateTimeIntervalFormatter $formatter = null,
-        string $separator = ', '
+        string $separator = ', ',
     ): string
     {
         return implode($separator, Arr::map($this->intervals, static function (DateTimeInterval $dateTimeInterval) use ($format, $formatter): string {

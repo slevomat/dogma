@@ -16,15 +16,15 @@ class BitSize
 {
     use StaticClassMixin;
 
-    public const BITS_8 = 8;
-    public const BITS_16 = 16;
-    public const BITS_24 = 24;
-    public const BITS_32 = 32;
-    public const BITS_48 = 48;
-    public const BITS_64 = 64;
+    public const int BITS_8 = 8;
+    public const int BITS_16 = 16;
+    public const int BITS_24 = 24;
+    public const int BITS_32 = 32;
+    public const int BITS_48 = 48;
+    public const int BITS_64 = 64;
 
-    public const DEFAULT_INT_SIZE = PHP_INT_SIZE * 8;
-    public const DEFAULT_FLOAT_SIZE = self::BITS_64;
+    public const int DEFAULT_INT_SIZE = PHP_INT_SIZE * 8;
+    public const int DEFAULT_FLOAT_SIZE = self::BITS_64;
 
     /**
      * @return int[]

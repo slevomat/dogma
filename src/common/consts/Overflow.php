@@ -13,8 +13,8 @@ class Overflow
 {
     use StaticClassMixin;
 
-    public const OVERFLOW = 1;
-    public const NONE = 0;
-    public const UNDERFLOW = -1;
+    public const int OVERFLOW = 1;
+    public const int NONE = 0;
+    public const int UNDERFLOW = -1;
 
 }

@@ -37,7 +37,7 @@ final readonly class LocaleVariant
         return $this->value === $other->value;
     }
 
-    public const TRADITIONAL = 'TRADITIONAL';
+    public const string TRADITIONAL = 'TRADITIONAL';
 
     public static function getValueRegexp(): string
     {

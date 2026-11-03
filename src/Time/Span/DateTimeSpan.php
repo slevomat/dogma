@@ -39,7 +39,7 @@ class DateTimeSpan implements DateOrTimeSpan
 {
     use StrictBehaviorMixin;
 
-    public const DEFAULT_FORMAT = 'y-m-d h:i:S';
+    public const string DEFAULT_FORMAT = 'y-m-d h:i:S';
 
     final public function __construct(private int $years, private int $months = 0, private int $days = 0, private int $hours = 0, private int $minutes = 0, private int $seconds = 0, private int $microseconds = 0)
     {

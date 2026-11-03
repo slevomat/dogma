@@ -48,10 +48,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
-    public const MIN = DateTime::MIN;
-    public const MAX = DateTime::MAX;
+    public const string MIN = DateTime::MIN;
+    public const string MAX = DateTime::MAX;
 
-    public const DEFAULT_FORMAT = 'Y-m-d H:i:s| - Y-m-d H:i:s';
+    public const string DEFAULT_FORMAT = 'Y-m-d H:i:s| - Y-m-d H:i:s';
 
     /** @var DateTime */
     private DateTimeInterface $start;
@@ -131,14 +131,14 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public static function future(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
-        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+        $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static($now, new DateTime(self::MAX, $timeZone));
     }
 
     public static function past(?DateTimeZone $timeZone = null, ?TimeProvider $timeProvider = null): self
     {
-        $now = $timeProvider !== null ? $timeProvider->getDateTime($timeZone) : new DateTime('now', $timeZone);
+        $now = $timeProvider?->getDateTime($timeZone) ?? new DateTime('now', $timeZone);
 
         return new static(new DateTime(self::MIN, $timeZone), $now);
     }

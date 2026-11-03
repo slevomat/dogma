@@ -84,13 +84,13 @@ class Locale
         ?Script $script = null,
         array $variants = [],
         array $private = [],
-        array $keywords = []
+        array $keywords = [],
     ): self
     {
         $components = [
             'language' => $language->value,
-            'region' => $country !== null ? $country->value : null,
-            'script' => $script !== null ? $script->value : null,
+            'region' => $country?->value,
+            'script' => $script?->value,
         ];
         foreach (array_values($variants) as $n => $value) {
             $components['variant' . $n] = $value;
@@ -142,7 +142,6 @@ class Locale
 
     /**
      * @param array<array-key, self|string> $locales
-     * @param self|string|null $default
      */
     public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {

@@ -30,7 +30,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    public const DEFAULT_FORMAT = 'Y-m';
+    public const string DEFAULT_FORMAT = 'Y-m';
 
     private readonly string $value;
 

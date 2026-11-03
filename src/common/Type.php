@@ -41,28 +41,28 @@ class Type
     use StrictBehaviorMixin;
 
     // types
-    public const BOOL = 'bool';
-    public const INT = 'int';
-    public const FLOAT = 'float';
-    public const STRING = 'string';
-    public const PHP_ARRAY = 'array';
-    public const OBJECT = 'object';
-    public const PHP_CALLABLE = 'callable';
-    public const RESOURCE = 'resource';
+    public const string BOOL = 'bool';
+    public const string INT = 'int';
+    public const string FLOAT = 'float';
+    public const string STRING = 'string';
+    public const string PHP_ARRAY = 'array';
+    public const string OBJECT = 'object';
+    public const string PHP_CALLABLE = 'callable';
+    public const string RESOURCE = 'resource';
 
     // pseudotypes
-    public const NULL = 'null';
-    public const NUMBER = 'number';
-    public const SCALAR = 'scalar';
-    public const MIXED = 'mixed';
-    public const VOID = 'void';
+    public const string NULL = 'null';
+    public const string NUMBER = 'number';
+    public const string SCALAR = 'scalar';
+    public const string MIXED = 'mixed';
+    public const string VOID = 'void';
 
     // strict type checks flag
-    public const STRICT = true;
+    public const true STRICT = true;
 
     // nullable type flag
-    public const NULLABLE = true;
-    public const NOT_NULLABLE = false;
+    public const true NULLABLE = true;
+    public const false NOT_NULLABLE = false;
 
     /** @var Type[] (string $id => $type) */
     private static array $instances = [];
@@ -79,7 +79,7 @@ class Type
         private readonly array|int|null $size = null,
         private readonly ?string $specific = null,
         private readonly ?Encoding $encoding = null,
-        private readonly ?Locale $locale = null
+        private readonly ?Locale $locale = null,
     )
     {
     }
@@ -90,7 +90,7 @@ class Type
         mixed $specific = null,
         mixed $encoding = null,
         mixed $locale = null,
-        mixed $nullable = null
+        mixed $nullable = null,
     ): self
     {
         $args = func_get_args();
@@ -650,7 +650,7 @@ class Type
         try {
             self::fromId($type);
             return true;
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return false;
         }
     }
