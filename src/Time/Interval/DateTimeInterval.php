@@ -333,8 +333,8 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             $intervalStarts[] = floor($this->start->getMicroTimestamp() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts); /// why unique???
-        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp): DateTime {
-            return DateTime::createFromMicroTimestamp($timestamp, $this->getStart()->getTimezone());
+        $intervalStarts = Arr::map($intervalStarts, function (float $timestamp): DateTime {
+            return DateTime::createFromMicroTimestamp((int) $timestamp, $this->getStart()->getTimezone());
         });
 
         return $this->splitBy($intervalStarts);
@@ -555,7 +555,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             }
         }
 
-        return new DateTimeIntervalSet($results);
+        return new DateTimeIntervalSet(array_values($results));
     }
 
     /** @phpstan-pure */

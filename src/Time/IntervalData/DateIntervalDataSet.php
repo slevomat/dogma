@@ -36,7 +36,7 @@ use function is_array;
 use function sprintf;
 
 /**
- * @implements IteratorAggregate<DateIntervalData>
+ * @implements IteratorAggregate<int, DateIntervalData<TData>>
  * @template TData
  */
 class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
@@ -353,8 +353,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * @phpstan-pure
      * @template TNewData
-     * @param callable(DateIntervalData<TData> $data): (self<TNewData>|DateIntervalData<TNewData>|array<DateIntervalData<TNewData>>) $mapper
-     * @return DateIntervalData<TNewData>[]
+     * @param callable(DateIntervalData<TData>): (self<TNewData>|DateIntervalData<TNewData>|list<DateIntervalData<TNewData>>) $mapper
+     * @return list<DateIntervalData<TNewData>>
      */
     public function map(callable $mapper): array
     {
@@ -378,7 +378,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * @phpstan-pure
      * @template TNewData
-     * @param callable(DateIntervalData<TData> $data): (self<TNewData>|DateIntervalData<TNewData>|array<DateIntervalData<TNewData>>|null) $mapper
+     * @param callable(DateIntervalData<TData>): (self<TNewData>|DateIntervalData<TNewData>|list<DateIntervalData<TNewData>>|null) $mapper
      * @return self<TNewData>
      */
     public function collect(callable $mapper): self
@@ -399,7 +399,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static(array_values($results));
+        return new static($results);
     }
 
     /**

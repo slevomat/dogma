@@ -316,8 +316,8 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
             $intervalStarts[] = round(($this->start->getMicroTime() + $partSize * $n) % (Time::MAX_MICROSECONDS + 1), 6);
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, static function (int $timestamp): Time {
-            return new Time($timestamp);
+        $intervalStarts = Arr::map($intervalStarts, static function (float $timestamp): Time {
+            return new Time((int) $timestamp);
         });
 
         return $this->splitBy($intervalStarts);
