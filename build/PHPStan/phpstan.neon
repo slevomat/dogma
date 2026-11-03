@@ -5,7 +5,9 @@ includes:
     - phpstan.conf.php
 
 parameters:
-    level: 8
+    level: 9
+
+    reportUnmatchedIgnoredErrors: true
 
     paths:
         - ../../src
@@ -16,29 +18,12 @@ parameters:
             - invalidClass
 
     ignoreErrors:
-        # misleading
-        - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
-        - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
-        - '~Parameter #(1|2) (\.\.\.)?\$arr(1|2)? of function array_[a-z_]+ expects array(<int\|string, mixed>|<mixed>)?, array(<mixed>)?\|\(callable\) given.~' # callables filtered out
+        # PHPStan's intl stub omits false from UConverter::convert(), which returns string|false.
         -
-            message: "~Result of && is always false~" # phpstan bug with is_subclass_of
-            path: "../../src/common/Check.php"
-            reportUnmatched: false
-        -
-            message: "~Strict comparison using === between string and false will always evaluate to false~"
+            message: '~Strict comparison using === between string and false will always evaluate to false~'
             path: "../../src/common/Str.php"
-        -
-            message: '~Negated boolean expression is always true~'
-            path: "../../src/common/lists/Arr.php"
-        -
-            message: '~Negated boolean expression is always true~'
-            path: "../../src/common/lists/ImmutableArray.php"
-        # Re flags & WTFs
-        - '~Parameter #4 \$flags of function preg_match expects TFlags of 0|256|512|768, int given.~'
-        - '~Method Dogma\\Re::match\(\) should return array<string>\|null but returns array<(array<int, int\|string\|null>|list<int\|string\|null>)\|string\|null>.~'
-        - '~Method Dogma\\Re::submatch\(\) should return string\|null but returns (array<int, int\|string\|null>|list<int\|string\|null>)\|string\|null.~'
 
-        # silence phpstan 2 purity noise to reveal other issues
+        # Existing pure APIs call value-object factories and shared helpers; without these, PHPStan 2 emits 881 purity diagnostics.
         -
             identifier: possiblyImpure.new
         -

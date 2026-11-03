@@ -24,6 +24,7 @@ use function spl_object_id;
 use function sprintf;
 use function strlen;
 use function substr;
+use function strval;
 use const INF;
 
 class ExceptionValueFormatter
@@ -51,7 +52,8 @@ class ExceptionValueFormatter
         } elseif ($value === -INF) {
             return '-INF';
         } else { // integer, float
-            return (string) $value;
+            /** @var int|float $value */
+            return strval($value);
         }
     }
 

@@ -58,8 +58,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param TData $data
-     * @return self<TData>
+     * @template TNewData
+     * @param TNewData $data
+     * @return self<TNewData>
      */
     public static function createFromNightInterval(NightInterval $interval, mixed $data): self
     {
@@ -67,8 +68,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param DateIntervalData<TData> $interval
-     * @return self<TData>
+     * @template TInputData
+     * @param DateIntervalData<TInputData> $interval
+     * @return self<TInputData>|self<null>
      */
     public static function createFromDateIntervalData(DateIntervalData $interval): self
     {
@@ -80,7 +82,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @return self<TData>
+     * @return self<null>
      */
     public static function empty(): self
     {
@@ -92,8 +94,9 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @param TData $data
-     * @return self<TData>
+     * @template TNewData
+     * @param TNewData $data
+     * @return self<TNewData>
      */
     public static function all(mixed $data): self
     {
@@ -128,7 +131,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @phpstan-pure
-     * @return static
+     * @return self<TData>
      */
     public function shift(string $value): self
     {
@@ -137,7 +140,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @phpstan-pure
-     * @return static
+     * @return self<TData>
      */
     public function setStart(Date $start): self
     {
@@ -146,7 +149,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @phpstan-pure
-     * @return static
+     * @return self<TData>
      */
     public function setEnd(Date $end): self
     {
@@ -230,9 +233,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->start->getJulianDay() > $this->end->getJulianDay();
     }
 
-    /**
-     * @param self<TData> $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -252,9 +252,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
         return $this->data === $otherData;
     }
 
-    /**
-     * @param self<TData> $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -263,9 +260,6 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
             ?: $this->end->compare($other->end);
     }
 
-    /**
-     * @param self<TData> $other
-     */
     public function compareIntersects(IntersectComparable $other): int
     {
         Check::instance($other, self::class);
@@ -316,7 +310,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
     }
 
     /**
-     * @return DateIntervalData<TData>
+     * @return DateIntervalData<TData>|DateIntervalData<null>
      */
     public function toDateIntervalData(): DateIntervalData
     {
@@ -331,7 +325,7 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 
     /**
      * @phpstan-pure
-     * @return self<TData>
+     * @return self<TData>|self<null>
      */
     public function intersect(NightInterval ...$items): self
     {

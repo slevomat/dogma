@@ -10,13 +10,20 @@
 namespace Dogma;
 
 use Throwable;
+use function is_resource;
+use function is_scalar;
+use function strval;
 
 class InvalidRegularExpressionException extends InvalidValueException
 {
 
     public function __construct(mixed $regexp, ?Throwable $previous = null)
     {
-        Exception::__construct("Value '$regexp' is not a valid regular expression.", $previous);
+        $value = is_scalar($regexp) || $regexp === null || is_resource($regexp)
+            ? strval($regexp)
+            : ExceptionValueFormatter::format($regexp);
+
+        Exception::__construct("Value '" . $value . "' is not a valid regular expression.", $previous);
     }
 
 }

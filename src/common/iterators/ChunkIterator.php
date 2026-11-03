@@ -15,7 +15,9 @@ use Traversable;
 /**
  * Returns results from given iterator in chunks.
  *
- * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
+ * @template TKey of array-key
+ * @template TValue
+ * @extends IteratorIterator<int, list<TValue>, Traversable<TKey, TValue>>
  */
 class ChunkIterator extends IteratorIterator
 {
@@ -25,11 +27,11 @@ class ChunkIterator extends IteratorIterator
 
     private int $key = 0;
 
-    /** @var mixed[] */
+    /** @var list<TValue> */
     private array $chunk = [];
 
     /**
-     * @param iterable|mixed[] $iterable
+     * @param iterable<TKey, TValue> $iterable
      */
     public function __construct(iterable $iterable, int $chunkSize)
     {
@@ -53,14 +55,16 @@ class ChunkIterator extends IteratorIterator
     {
         $this->chunk = [];
         for ($i = 0; $i < $this->chunkSize && parent::valid(); $i++) {
-            $this->chunk[] = parent::current();
+            /** @var TValue $value */
+            $value = parent::current();
+            $this->chunk[] = $value;
             parent::next();
         }
         $this->key++;
     }
 
     /**
-     * @return mixed[]
+     * @return list<TValue>
      */
     public function current(): array
     {

@@ -229,7 +229,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -239,7 +239,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -307,18 +307,30 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     // static ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param self $items
+     */
     public static function min(self ...$items): self
     {
-        return Arr::minBy($items, static function (self $time): int {
+        /** @var self $result */
+        $result = Arr::minBy($items, static function (self $time): int {
             return $time->number;
         });
+
+        return $result;
     }
 
+    /**
+     * @param self $items
+     */
     public static function max(self ...$items): self
     {
-        return Arr::maxBy($items, static function (self $time): int {
+        /** @var self $result */
+        $result = Arr::maxBy($items, static function (self $time): int {
             return $time->number;
         });
+
+        return $result;
     }
 
     /**

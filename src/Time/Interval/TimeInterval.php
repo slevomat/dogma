@@ -231,7 +231,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -242,7 +242,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {

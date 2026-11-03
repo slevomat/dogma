@@ -241,7 +241,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -252,7 +252,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -262,7 +262,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     }
 
     /**
-     * @param self $other
+     * @param IntersectComparable $other
      */
     public function compareIntersects(IntersectComparable $other): int
     {

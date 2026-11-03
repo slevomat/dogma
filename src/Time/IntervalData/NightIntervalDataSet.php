@@ -47,11 +47,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     private array $intervals;
 
     /**
-     * @param list<NightIntervalData<TData>> $intervals
+     * @param array<array-key, NightIntervalData<TData>> $intervals
      */
     final public function __construct(array $intervals)
     {
-        /** @var NightIntervalData<TData>[] $intervals */
+        /** @var list<NightIntervalData<TData>> $intervals */
         $intervals = Arr::values(Arr::filter($intervals, static function (NightIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
@@ -60,8 +60,9 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param TData $data
-     * @return NightIntervalDataSet<TData>
+     * @template TNewData
+     * @param TNewData $data
+     * @return NightIntervalDataSet<TNewData>
      */
     public static function createFromNightIntervalSet(NightIntervalSet $set, mixed $data): self
     {
@@ -73,23 +74,36 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param DateIntervalDataSet<TData> $set
-     * @return self<TData>
+     * @template TInputData
+     * @param DateIntervalDataSet<TInputData> $set
+     * @return self<TInputData>
      */
     public static function createFromDateIntervalDataSet(DateIntervalDataSet $set): self
     {
-        return new static(array_map(NightIntervalData::createFromDateIntervalData(...), $set->getIntervals()));
+        return new static(array_map(
+            /**
+             * @param DateIntervalData<TInputData> $interval
+             */
+            static function (DateIntervalData $interval): NightIntervalData {
+                return new NightIntervalData($interval->getStart(), $interval->getEnd()->addDay(), $interval->getData());
+            },
+            $set->getIntervals()
+        ));
     }
 
-	/**
-	 * @return self<TData>
-	 */
+    /**
+     * @return self<mixed>
+     */
     public static function empty(): self
     {
         return new static([]);
     }
 
-    /** @return self<TData> */
+    /**
+     * @template TNewData
+     * @param TNewData $data
+     * @return self<TNewData>
+     */
     public static function all(mixed $data): self
     {
         return new static([NightIntervalData::all($data)]);
@@ -110,9 +124,15 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public function toDateIntervalDataSet(): DateIntervalDataSet
     {
-        return new DateIntervalDataSet(array_map(static function (NightIntervalData $interval): DateIntervalData {
-            return $interval->toDateIntervalData();
-        }, $this->intervals));
+        return new DateIntervalDataSet(array_map(
+            /**
+             * @param NightIntervalData<TData> $interval
+             */
+            static function (NightIntervalData $interval): DateIntervalData {
+                return new DateIntervalData($interval->getStart(), $interval->getEnd()->subtractDay(), $interval->getData());
+            },
+            $this->intervals
+        ));
     }
 
     /**
@@ -172,7 +192,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Traversable<NightIntervalData<TData>>
+     * @return Traversable<int, NightIntervalData<TData>>
      */
     public function getIterator(): Traversable
     {
@@ -184,9 +204,6 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->intervals === [];
     }
 
-    /**
-     * @param self<TData> $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -226,12 +243,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Join overlapping intervals in set, if they have the same data.
-     * @param NightIntervalData<TData>[] $intervals
+     * @param list<NightIntervalData<TData>> $intervals
      * @return list<NightIntervalData<TData>>
      */
     private static function normalizeIntervals(array $intervals): array
     {
-        $intervals = array_values($intervals);
         foreach ($intervals as $i => $interval) {
             if ($interval->isEmpty()) {
                 unset($intervals[$i]);
@@ -239,6 +255,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }
 
         /** @var list<NightIntervalData<TData>> $intervals */
+        $intervals = Arr::values($intervals);
         $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -254,7 +271,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return array_values($intervals);
+        return Arr::values($intervals);
     }
 
     /**
@@ -272,7 +289,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * @phpstan-pure
      * @param NightIntervalData<TData> ...$intervals
-     * @return static
+     * @return self<TData>
      */
     public function addIntervals(NightIntervalData ...$intervals): self
     {
@@ -295,14 +312,13 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @phpstan-pure
-     * @return static
+     * @return self<TData>
      */
     public function subtractIntervals(NightInterval ...$intervals): self
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var NightIntervalData<TData> $result */
-        while ($result = array_shift($sources)) {
+        while (($result = array_shift($sources)) !== null) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
                 if (count($result->intervals) === 0) {
@@ -336,7 +352,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @phpstan-pure
-     * @return static
+     * @return self<TData>
      */
     public function intersectIntervals(NightInterval ...$intervals): self
     {
@@ -344,7 +360,11 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         foreach ($this->intervals as $result) {
             foreach ($intervals as $interval) {
                 if ($result->intersects($interval)) {
-                    $results[] = $result->intersect($interval);
+                    $results[] = new NightIntervalData(
+                        Date::max($result->getStart(), $interval->getStart()),
+                        Date::min($result->getEnd(), $interval->getEnd()),
+                        $result->getData()
+                    );
                 }
             }
         }

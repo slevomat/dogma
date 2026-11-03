@@ -95,9 +95,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      */
     public static function createFromFormat(string $format, string $timeString, ?DateTimeZone $timeZone = null): self
     {
-        // due to invalid type hint in parent class...
-        Check::nullableObject($timeZone, DateTimeZone::class);
-
         // due to invalid optional arguments handling...
         if ($timeZone === null) {
             $dateTime = parent::createFromFormat($format, $timeString);
@@ -439,7 +436,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -449,7 +446,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {

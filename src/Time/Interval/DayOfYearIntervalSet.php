@@ -14,6 +14,7 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
+use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
@@ -100,7 +101,7 @@ class DayOfYearIntervalSet extends IntervalSet
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -233,7 +234,8 @@ class DayOfYearIntervalSet extends IntervalSet
 
     /**
      * @phpstan-pure
-     * @return DayOfYearInterval[]
+     * @param callable(DayOfYearInterval): (DayOfYearInterval|array<array-key, DayOfYearInterval>|ModuloIntervalSet<DayOfYearInterval>) $mapper
+     * @return array<array-key, DayOfYearInterval>
      */
     public function map(callable $mapper): array
     {
@@ -254,7 +256,10 @@ class DayOfYearIntervalSet extends IntervalSet
         return $results;
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param callable(DayOfYearInterval): (DayOfYearInterval|array<array-key, DayOfYearInterval>|ModuloIntervalSet<DayOfYearInterval>|null) $mapper
+     */
     public function collect(callable $mapper): self
     {
         $results = [];
@@ -291,6 +296,7 @@ class DayOfYearIntervalSet extends IntervalSet
             }
         }
 
+        $intervals = array_values($intervals);
         $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {

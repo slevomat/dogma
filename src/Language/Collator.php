@@ -32,6 +32,7 @@ class Collator extends PhpCollator
     public function __construct(mixed $locale)
     {
         Check::types($locale, [Locale::class, Type::STRING]);
+        /** @var Locale|string $locale */
 
         if (is_string($locale)) {
             $locale = Locale::get($locale);
@@ -64,7 +65,7 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @param mixed[] $collationOptions
+     * @param array<string, LocaleCollationOption> $collationOptions
      */
     public function configure(array $collationOptions = []): void
     {
@@ -125,7 +126,7 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @param mixed[] $arr
+     * @param array<array-key, string> $arr
      */
     public function asort(array &$arr, int $sortFlag = self::SORT_REGULAR): bool
     {
@@ -139,7 +140,7 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @param mixed[] $arr
+     * @param array<array-key, string> $arr
      */
     public function sort(array &$arr, int $sortFlag = self::SORT_REGULAR): bool
     {
@@ -153,7 +154,7 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @param mixed[] $arr
+     * @param array<array-key, string> $arr
      */
     public function sortWithSortKeys(array &$arr): bool
     {

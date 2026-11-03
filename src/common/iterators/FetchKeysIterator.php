@@ -17,14 +17,14 @@ use function is_array;
 /**
  * Returns only selected keys from iterated arrays (e.g. rows) as keys and values.
  *
- * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
+ * @extends IteratorIterator<array-key, mixed, Traversable<array-key, mixed>>
  */
 class FetchKeysIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
     /**
-     * @param iterable<mixed> $iterable
+     * @param iterable<array-key, mixed> $iterable
      */
     public function __construct(
         iterable $iterable,
@@ -51,7 +51,7 @@ class FetchKeysIterator extends IteratorIterator
     }
 
     /**
-     * @return string|int
+     * @return array-key|null
      */
     public function key(): mixed
     {
@@ -62,7 +62,12 @@ class FetchKeysIterator extends IteratorIterator
             if (!is_array($value) && !$value instanceof ArrayAccess) {
                 throw new InvalidTypeException('array or ArrayAccess', $value);
             }
-            return $value[$this->keysKey];
+            $key = $value[$this->keysKey];
+            if (!is_int($key) && !is_string($key)) {
+                throw new InvalidTypeException('int|string', $key);
+            }
+
+            return $key;
         }
     }
 

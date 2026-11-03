@@ -105,7 +105,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -115,7 +115,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {

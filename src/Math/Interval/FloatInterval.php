@@ -180,7 +180,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param FloatInterval $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -192,7 +192,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -203,7 +203,7 @@ class FloatInterval implements OpenClosedInterval
     }
 
     /**
-     * @param self $other
+     * @param IntersectComparable $other
      */
     public function compareIntersects(IntersectComparable $other): int
     {

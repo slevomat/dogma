@@ -16,20 +16,24 @@ use function call_user_func;
 /**
  * Calls given callback on each value or key and returns result.
  *
- * @extends IteratorIterator<mixed, mixed, Traversable<mixed, mixed>>
+ * @template TKey of array-key
+ * @template TValue
+ * @extends IteratorIterator<mixed, mixed, Traversable<TKey, TValue>>
  */
 class CallbackIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var callable */
+    /** @var callable(TValue): mixed */
     private mixed $valuesCallback;
 
-    /** @var callable|null */
+    /** @var (callable(TKey|null): mixed)|null */
     private mixed $keysCallback;
 
     /**
-     * @param iterable|mixed[] $iterable
+     * @param iterable<TKey, TValue> $iterable
+     * @param callable(TValue): mixed $valuesCallback
+     * @param (callable(TKey|null): mixed)|null $keysCallback
      */
     public function __construct(iterable $iterable, callable $valuesCallback, ?callable $keysCallback = null)
     {
@@ -49,6 +53,7 @@ class CallbackIterator extends IteratorIterator
             return $key;
         }
 
+        /** @var TKey|null $key */
         return call_user_func($this->keysCallback, $key);
     }
 

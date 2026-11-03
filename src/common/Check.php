@@ -143,6 +143,7 @@ final class Check
         }
         if ($itemTypes !== null) {
             /** @var string[] $itemTypes */
+            /** @var iterable<mixed, mixed> $value */
             self::itemsOfTypes($value, $itemTypes);
         }
     }
@@ -203,6 +204,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert null $value
      * @throws InvalidTypeException
      */
     public static function null(mixed $value): void
@@ -213,6 +215,7 @@ final class Check
     }
 
     /**
+     * @param-out bool $value
      * @throws InvalidTypeException
      */
     public static function bool(mixed &$value): void
@@ -230,6 +233,7 @@ final class Check
     }
 
     /**
+     * @param-out bool|null $value
      * @throws InvalidTypeException
      */
     public static function nullableBool(mixed &$value): void
@@ -243,6 +247,7 @@ final class Check
     // integers --------------------------------------------------------------------------------------------------------
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -274,6 +279,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -286,6 +292,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -299,6 +306,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -315,6 +323,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -329,6 +338,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -346,6 +356,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -360,6 +371,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -377,6 +389,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -391,6 +404,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -408,6 +422,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -422,6 +437,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -439,6 +455,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -453,6 +470,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -470,6 +488,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -484,6 +503,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -501,6 +521,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -515,6 +536,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -532,6 +554,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -546,6 +569,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -563,6 +587,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -577,6 +602,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -594,6 +620,7 @@ final class Check
     }
 
     /**
+     * @param-out int $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -608,6 +635,7 @@ final class Check
     }
 
     /**
+     * @param-out int|null $value
      * @throws InvalidTypeException
 	 * @throws ValueOutOfBoundsException
 	 * @throws ValueOutOfRangeException
@@ -627,6 +655,7 @@ final class Check
     // floats ----------------------------------------------------------------------------------------------------------
 
     /**
+     * @param-out float $value
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfRangeException
@@ -671,6 +700,7 @@ final class Check
     }
 
     /**
+     * @param-out float|null $value
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfRangeException
@@ -686,6 +716,7 @@ final class Check
     // decimal (float) -------------------------------------------------------------------------------------------------
 
     /**
+     * @param-out float $value
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfBoundsException
@@ -707,6 +738,7 @@ final class Check
     }
 
     /**
+     * @param-out float|null $value
      * @throws InvalidTypeException
      * @throws InvalidValueException
      * @throws ValueOutOfBoundsException
@@ -722,6 +754,7 @@ final class Check
     // strings ---------------------------------------------------------------------------------------------------------
 
     /**
+     * @param-out string $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -736,11 +769,13 @@ final class Check
         if (!is_numeric($value)) {
             throw new InvalidTypeException(Type::STRING, $value);
         }
-        self::float($value);
-        $value = (string) $value;
+        $number = $value;
+        self::float($number);
+        $value = (string) $number;
     }
 
     /**
+     * @param-out string|null $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -753,6 +788,7 @@ final class Check
     }
 
     /**
+     * @param-out string $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -766,6 +802,7 @@ final class Check
     }
 
     /**
+     * @param-out string|null $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -782,6 +819,7 @@ final class Check
     }
 
     /**
+     * @param-out string $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -795,6 +833,7 @@ final class Check
     }
 
     /**
+     * @param-out string|null $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -813,6 +852,7 @@ final class Check
     // lists -----------------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-assert iterable<mixed, mixed>|stdClass $value
      * @throws InvalidTypeException
      */
     public static function traversable(mixed $value): void
@@ -823,6 +863,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert array<array-key, mixed> $value
      * @throws InvalidTypeException
      */
     public static function array(mixed $value, ?int $minLength = null, ?int $maxLength = null): void
@@ -834,6 +875,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert list<mixed> $value
      * @throws InvalidTypeException
      */
     public static function plainArray(mixed $value, ?int $minLength = null, ?int $maxLength = null): void
@@ -845,21 +887,24 @@ final class Check
     }
 
     /**
-     * @param string[] $types
+     * @param list<string> $types
+     * @phpstan-assert Tuple $value
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
     public static function tuple(mixed $value, array $types): void
     {
         self::object($value, Tuple::class);
-        self::range(count($value), $length = count($types), $length);
-        foreach ($value as $i => $val) {
+        /** @var Tuple $tuple */
+        $tuple = $value;
+        self::range(count($tuple), $length = count($types), $length);
+        foreach ($tuple->toArray() as $i => $val) {
             self::type($val, $types[$i]);
         }
     }
 
     /**
-     * @param string[] $types
+     * @param list<string> $types
      * @throws InvalidTypeException
      * @throws ValueOutOfRangeException
      */
@@ -874,6 +919,7 @@ final class Check
     // objects ---------------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-assert object $value
      * @throws InvalidTypeException
      */
     public static function object(mixed $value, ?string $className = null): void
@@ -887,6 +933,9 @@ final class Check
     }
 
     /**
+     * @template TObject of object
+     * @param class-string<TObject> $className
+     * @phpstan-assert TObject $value
      * @throws InvalidTypeException
      */
     public static function instance(mixed $value, string $className): void
@@ -897,6 +946,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert object|null $value
      * @throws InvalidTypeException
      */
     public static function nullableObject(mixed $value, ?string $className = null): void
@@ -910,6 +960,7 @@ final class Check
     // other -----------------------------------------------------------------------------------------------------------
 
     /**
+     * @phpstan-assert resource $value
      * @throws InvalidTypeException
      */
     public static function resource(mixed $value, ?string $type = null): void
@@ -923,6 +974,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert callable $value
      * @throws InvalidTypeException
      */
     public static function callable(mixed $value): void
@@ -933,6 +985,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert class-string $value
      * @throws InvalidValueException
      */
     public static function className(mixed $value, ?string $parentClass = null): void
@@ -947,6 +1000,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert string $value
      * @throws InvalidValueException
      */
     public static function typeName(mixed $value): void
@@ -990,6 +1044,7 @@ final class Check
 
     /**
      * Checks type specific bounds
+     * @param int|float|string $value
      * @throws ValueOutOfBoundsException
      */
     public static function bounds(mixed $value, Type $type): void
@@ -1003,7 +1058,7 @@ final class Check
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
         } elseif ($type->isFloat() && $type->getSize() === BitSize::BITS_32) {
-            $length = strlen(rtrim(str_replace('.', '', $value), '0'));
+            $length = strlen(rtrim(str_replace('.', '', (string) $value), '0'));
             // single precision float can handle up to 9 digits of precision
             if ($length > 9) {
                 throw new ValueOutOfBoundsException($value, $type);
@@ -1013,7 +1068,7 @@ final class Check
                 // todo: take into account string encoding?
                 /** @var int $size */
                 $size = $type->getSize();
-                self::range(Str::length($value), 0, $size);
+                self::range(Str::length((string) $value), 0, $size);
             } catch (ValueOutOfRangeException $e) {
                 throw new ValueOutOfBoundsException($value, $type, $e);
             }
@@ -1024,6 +1079,7 @@ final class Check
 
     /**
      * Checks type specific bounds for integers
+     * @param int|float|string $value
      * @throws ValueOutOfBoundsException
      */
     public static function intBounds(mixed $value, int $size, bool $signed = true): void
@@ -1037,6 +1093,7 @@ final class Check
 
     /**
      * Checks user defined range
+     * @param int|float|string $value
      * @throws ValueOutOfRangeException
      */
     public static function range(mixed $value, float|int|null $min = null, float|int|null $max = null): void
@@ -1050,6 +1107,7 @@ final class Check
     }
 
     /**
+     * @param int|float|string $value
      * @throws ValueOutOfRangeException
      */
     public static function min(mixed $value, float|int $min): void
@@ -1060,6 +1118,7 @@ final class Check
     }
 
     /**
+     * @param int|float|string $value
      * @throws ValueOutOfRangeException
      */
     public static function max(mixed $value, float|int $max): void
@@ -1070,6 +1129,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert positive-int|float $value
      * @throws ValueOutOfRangeException
      */
     public static function positive(float|int $value): void
@@ -1080,6 +1140,7 @@ final class Check
     }
 
     /**
+     * @phpstan-assert int<0, max>|float $value
      * @throws ValueOutOfRangeException
      */
     public static function nonNegative(float|int $value): void
@@ -1125,11 +1186,17 @@ final class Check
         }
     }
 
+    /**
+     * @phpstan-assert-if-true iterable<mixed, mixed>|stdClass $value
+     */
     public static function isIterable(mixed $value): bool
     {
         return is_iterable($value) || $value instanceof stdClass;
     }
 
+    /**
+     * @phpstan-assert-if-true list<mixed> $value
+     */
     public static function isPlainArray(mixed $value): bool
     {
         if (!is_array($value)) {

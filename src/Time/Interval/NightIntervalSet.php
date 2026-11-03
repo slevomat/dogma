@@ -178,7 +178,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -359,7 +359,8 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
 
     /**
      * @phpstan-pure
-     * @return NightInterval[]
+     * @param callable(NightInterval): (NightInterval|array<array-key, NightInterval>|IntervalSet<NightInterval>) $mapper
+     * @return array<array-key, NightInterval>
      */
     public function map(callable $mapper): array
     {
@@ -380,7 +381,10 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         return $results;
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param callable(NightInterval): (NightInterval|array<array-key, NightInterval>|IntervalSet<NightInterval>|null) $mapper
+     */
     public function collect(callable $mapper): self
     {
         $results = [];

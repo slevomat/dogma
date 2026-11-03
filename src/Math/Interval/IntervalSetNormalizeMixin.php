@@ -10,6 +10,9 @@
 namespace Dogma\Math\Interval;
 
 use Dogma\Arr;
+use Dogma\Time\Interval\DateInterval;
+use Dogma\Time\Interval\DateTimeInterval;
+use Dogma\Time\Interval\NightInterval;
 use Dogma\Time\Interval\TimeInterval;
 use function array_values;
 use function count;
@@ -31,7 +34,7 @@ trait IntervalSetNormalizeMixin
      * @param T[] $intervals
      * @return list<T>
      *
-     * @template T of Interval|TimeInterval
+     * @template T of FloatInterval|IntInterval|DateInterval|DateTimeInterval|NightInterval|TimeInterval
      */
     private static function normalizeIntervals(array $intervals): array
     {
@@ -42,11 +45,14 @@ trait IntervalSetNormalizeMixin
             }
         }
 
+        $intervals = array_values($intervals);
         $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
             if ($intervals[$n]->intersects($intervals[$n + 1]) || $intervals[$n]->touches($intervals[$n + 1])) {
-                $intervals[$n + 1] = $intervals[$n]->envelope($intervals[$n + 1]);
+                /** @var T $envelope */
+                $envelope = $intervals[$n]->envelope($intervals[$n + 1]);
+                $intervals[$n + 1] = $envelope;
                 unset($intervals[$n]);
             }
         }

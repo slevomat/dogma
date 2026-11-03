@@ -22,7 +22,7 @@ class RoundRobinIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var Iterator[] */
+    /** @var array<int, Iterator<array-key, mixed>> */
     private array $iterators;
 
     private int $current;
@@ -32,7 +32,7 @@ class RoundRobinIterator implements Iterator
     private bool $allowUneven = false;
 
     /**
-     * @param iterable|mixed[] ...$iterables
+     * @param iterable<array-key, mixed> ...$iterables
      */
     final public function __construct(iterable ...$iterables)
     {
@@ -45,7 +45,7 @@ class RoundRobinIterator implements Iterator
     }
 
     /**
-     * @param iterable|mixed[] ...$iterables
+     * @param iterable<array-key, mixed> ...$iterables
      * @return static
      */
     public static function uneven(iterable ...$iterables): self

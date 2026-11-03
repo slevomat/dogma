@@ -114,7 +114,7 @@ class Re
             return false;
         }
 
-        $result = preg_match($pattern, $string, $matches, $offset);
+        $result = preg_match($pattern, $string, $matches, 0, $offset);
         if ($result === false) {
             $error = preg_last_error() ?: 0;
 
@@ -127,8 +127,8 @@ class Re
     }
 
     /**
-     * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
-     * @return string[]|null
+     * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     * @return array<array-key, string|array{string|null, int<-1, max>}|null>|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
     {
@@ -145,15 +145,17 @@ class Re
             return null;
         }
 
+        /** @var array<array-key, string|array{string|null, int<-1, max>}|null> $matches */
         return $matches;
     }
 
     /**
      * Same as match(), but only returns first subpattern or null
      *
-     * @param int $flags PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
+     * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     * @return string|array{string|null, int<-1, max>}|null
      */
-    public static function submatch(string $string, string $pattern, int $flags = 0, int $offset = 0): ?string
+    public static function submatch(string $string, string $pattern, int $flags = 0, int $offset = 0): string|array|null
     {
         if ($offset > strlen($string)) {
             return null;
@@ -168,12 +170,15 @@ class Re
             return null;
         }
 
-        return $matches ? $matches[1] : null;
+        /** @var string|array{string|null, int<-1, max>}|null $submatch */
+        $submatch = $matches[1] ?? null;
+
+        return $submatch;
     }
 
     /**
-     * @param int $flags PREG_SET_ORDER|PREG_PATTERN_ORDER
-     * @return string[][]
+     * @param int-mask<PREG_PATTERN_ORDER, PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     * @return array<array-key, array<array-key, string|array{string|null, int<-1, max>}|null>>
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {
@@ -190,6 +195,7 @@ class Re
             return [];
         }
 
+        /** @var array<array-key, array<array-key, string|array{string|null, int<-1, max>}|null>> $matches */
         return $matches;
     }
 

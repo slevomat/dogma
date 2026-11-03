@@ -14,14 +14,14 @@ use Dogma\Equalable;
 use IteratorAggregate;
 
 /**
- * @template T
+ * @template T of ModuloInterval
  * @extends IteratorAggregate<int, T>
  */
 interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 {
 
     /**
-     * @return ModuloInterval[]
+     * @return list<T>
      */
     public function getIntervals(): array;
 
@@ -29,6 +29,7 @@ interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function containsValue(T $value): bool;
 
+    /** @return T */
     public function envelope(): ModuloInterval;
 
     //public function normalize(): ModuloIntervalSet<T>;
@@ -47,11 +48,15 @@ interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function filterByLength(string $operator, int|float $length): ModuloIntervalSet<T>;
 
-    /** @return T[] */
+    /**
+     * @param callable(T): (T|array<array-key, T>|self<T>) $mapper
+     * @return array<array-key, T>
+     */
     public function map(callable $mapper): array;
 
     /**
      * Map and filter
+     * @param callable(T): (T|array<array-key, T>|self<T>|null) $mapper
      * @return self<T>
      */
     public function collect(callable $mapper): self;

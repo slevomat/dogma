@@ -86,7 +86,7 @@ class FloatIntervalSet extends IntervalSet
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -261,7 +261,8 @@ class FloatIntervalSet extends IntervalSet
 
     /**
      * @phpstan-pure
-     * @return FloatInterval[]
+     * @param callable(FloatInterval): (FloatInterval|array<array-key, FloatInterval>|IntervalSet<FloatInterval>) $mapper
+     * @return array<array-key, FloatInterval>
      */
     public function map(callable $mapper): array
     {
@@ -282,7 +283,10 @@ class FloatIntervalSet extends IntervalSet
         return $results;
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param callable(FloatInterval): (FloatInterval|array<array-key, FloatInterval>|IntervalSet<FloatInterval>|null) $mapper
+     */
     public function collect(callable $mapper): self
     {
         $results = [];

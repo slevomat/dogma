@@ -12,20 +12,31 @@ namespace Dogma;
 use BadMethodCallException;
 use function array_key_exists;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ */
 trait ImmutableArrayAccessMixin
 {
 
+    /** @param TKey $key */
     public function offsetExists(mixed $key): bool
     {
         return array_key_exists($key, $this->toArray());
     }
 
+    /**
+     * @param TKey $key
+     * @return TValue|null
+     */
     public function offsetGet(mixed $key): mixed
     {
         return $this->items[$key];
     }
 
     /**
+     * @param TKey $key
+     * @param TValue $value
      * @throws BadMethodCallException
      */
     public function offsetSet(mixed $key, mixed $value): void
@@ -34,6 +45,7 @@ trait ImmutableArrayAccessMixin
     }
 
     /**
+     * @param TKey $key
      * @throws BadMethodCallException
      */
     public function offsetUnset(mixed $key): void
