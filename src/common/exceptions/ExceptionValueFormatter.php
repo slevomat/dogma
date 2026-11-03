@@ -14,6 +14,8 @@ use function get_class;
 use function get_resource_type;
 use function is_array;
 use function is_bool;
+use function is_float;
+use function is_nan;
 use function is_object;
 use function is_resource;
 use function is_string;
@@ -23,6 +25,7 @@ use function spl_object_id;
 use function sprintf;
 use function strlen;
 use function substr;
+use const INF;
 
 class ExceptionValueFormatter
 {
@@ -46,6 +49,12 @@ class ExceptionValueFormatter
             return $value ? 'TRUE' : 'FALSE';
         } elseif ($value === null) {
             return 'NULL';
+        } elseif (is_float($value) && is_nan($value)) {
+            return 'NAN';
+        } elseif ($value === INF) {
+            return 'INF';
+        } elseif ($value === -INF) {
+            return '-INF';
         } else { // integer, float
             return (string) $value;
         }
