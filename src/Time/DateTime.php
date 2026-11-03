@@ -270,6 +270,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpstan-pure
+     * @phpstan-param DateInterval|DateOrTimeSpan $interval
      */
     public function add(DateInterval|DateOrTimeSpan $interval): static
     {

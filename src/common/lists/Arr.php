@@ -147,8 +147,10 @@ class Arr
     }
 
     /**
-     * @param list<mixed> $array
-     * @return list<mixed>
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return list<TValue>
      */
     public static function values(array $array): array
     {
@@ -974,8 +976,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param (callable(TValue): bool)|null $function
+     * @return array<TKey, TValue>
      */
     public static function filter(array $array, ?callable $function = null): array
     {
@@ -1081,8 +1086,12 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @template TResult
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue): TResult $function
+     * @return ($array is list ? list<TResult> : array<TKey, TResult>)
      */
     public static function map(array $array, callable $function): array
     {

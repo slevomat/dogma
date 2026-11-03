@@ -452,7 +452,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
             }
         }
 
-        return new DateIntervalSet($results);
+        return new DateIntervalSet(array_values($results));
     }
 
     /** @phpstan-pure */

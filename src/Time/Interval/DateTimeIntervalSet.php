@@ -26,6 +26,7 @@ use Traversable;
 use function array_map;
 use function array_merge;
 use function array_shift;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -311,7 +312,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     /** @phpstan-pure */
     public function addIntervals(DateTimeInterval ...$intervals): self
     {
-        return new static(array_merge($this->intervals, $intervals));
+        return new static(array_values(array_merge($this->intervals, $intervals)));
     }
 
     /**
@@ -328,6 +329,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     public function subtractIntervals(DateTimeInterval ...$intervals): self
     {
         $sources = $this->intervals;
+        /** @var list<DateTimeInterval> $results */
         $results = [];
         while ($result = array_shift($sources)) {
             foreach ($intervals as $interval) {
@@ -343,9 +345,6 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
                 $results[] = $result;
             }
         }
-
-        /** @var list<DateTimeInterval> $results */
-        $results = $results;
 
         return new static($results);
     }
@@ -420,6 +419,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 
     /**
      * @phpstan-pure
+     * @param callable(DateTimeInterval): (DateTimeInterval|self|list<DateTimeInterval>) $mapper
      * @return list<DateTimeInterval>
      */
     public function map(callable $mapper): array
@@ -441,7 +441,10 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return $results;
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param callable(DateTimeInterval): (DateTimeInterval|self|list<DateTimeInterval>|null) $mapper
+     */
     public function collect(callable $mapper): self
     {
         $results = [];

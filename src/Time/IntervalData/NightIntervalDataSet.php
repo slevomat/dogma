@@ -36,7 +36,7 @@ use function is_array;
 use function sprintf;
 
 /**
- * @implements IteratorAggregate<NightIntervalData>
+ * @implements IteratorAggregate<int, NightIntervalData<TData>>
  * @template TData
  */
 class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
@@ -355,8 +355,8 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * @phpstan-pure
      * @template TNewData
-     * @param callable(NightIntervalData<TData> $data): (self<TNewData>|NightIntervalData<TNewData>|array<NightIntervalData<TNewData>>) $mapper
-     * @return NightIntervalData<TNewData>[]
+     * @param callable(NightIntervalData<TData>): (self<TNewData>|NightIntervalData<TNewData>|list<NightIntervalData<TNewData>>) $mapper
+     * @return list<NightIntervalData<TNewData>>
      */
     public function map(callable $mapper): array
     {
@@ -380,7 +380,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     /**
      * @phpstan-pure
      * @template TNewData
-     * @param callable(NightIntervalData<TData> $data): (self<TNewData>|NightIntervalData<TNewData>|array<NightIntervalData<TNewData>>|null) $mapper
+     * @param callable(NightIntervalData<TData>): (self<TNewData>|NightIntervalData<TNewData>|list<NightIntervalData<TNewData>>|null) $mapper
      * @return self<TNewData>
      */
     public function collect(callable $mapper): self
@@ -401,7 +401,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return new static(array_values($results));
+        return new static($results);
     }
 
     /**
