@@ -23,10 +23,10 @@ class ChunkIterator extends IteratorIterator
 
     private int $chunkSize;
 
-    private ?int $key = null;
+    private int $key = 0;
 
     /** @var mixed[] */
-    private ?array $chunk = null;
+    private array $chunk = [];
 
     /**
      * @param iterable|mixed[] $iterable

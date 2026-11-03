@@ -57,9 +57,9 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
-    private ?Date $start = null;
+    private Date $start;
 
-    private ?Date $end = null;
+    private Date $end;
 
     final public function __construct(Date $start, Date $end)
     {

@@ -504,7 +504,7 @@ class Str
         $offset = $i + strlen($start) + 1;
 
         $eeDouble = $end === $endEscape;
-        $eeLength = $endEscape ? strlen($startEscape) : 0;
+        $eeLength = $endEscape ? strlen($endEscape) : 0;
         do {
             $j = strpos($string, $end, $offset);
             if ($j === false) {

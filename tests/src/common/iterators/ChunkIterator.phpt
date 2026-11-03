@@ -11,6 +11,10 @@ require_once __DIR__ . '/../../bootstrap.php';
 $array = range(1, 35);
 $empty = [];
 
+$iterator = new ChunkIterator($array, 10);
+Assert::same($iterator->current(), []);
+Assert::same($iterator->key(), 0);
+
 $result = [];
 foreach (new ChunkIterator($array, 10) as $k => $v) {
     $result[$k] = $v;
