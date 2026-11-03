@@ -11,11 +11,13 @@ namespace Dogma\Application;
 
 use Dogma\Application\Colors as C;
 use Dogma\Check;
+use Dogma\ExceptionValueFormatter;
 use Dogma\InvalidArgumentException;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Nette\Neon\Neon;
 use stdClass;
+use Stringable;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -30,11 +32,12 @@ use function is_array;
 use function is_bool;
 use function is_file;
 use function is_numeric;
+use function is_resource;
+use function is_scalar;
 use function is_string;
 use function parse_ini_file;
 use function sprintf;
 use function str_ends_with;
-use function strval;
 use function trigger_error;
 
 final class Configurator extends stdClass
@@ -298,11 +301,11 @@ final class Configurator extends stdClass
         if (is_bool($value)) {
             return $value ? 'yes' : 'no';
         }
-        if (is_scalar($value) || $value === null || is_resource($value) || $value instanceof \Stringable) {
+        if (is_scalar($value) || $value === null || is_resource($value) || $value instanceof Stringable) {
             return (string) $value;
         }
 
-        return \Dogma\ExceptionValueFormatter::format($value);
+        return ExceptionValueFormatter::format($value);
     }
 
     public function __get(string $name): mixed

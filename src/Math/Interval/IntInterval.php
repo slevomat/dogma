@@ -130,9 +130,6 @@ class IntInterval implements Interval
         return $this->start > $this->end;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -140,9 +137,6 @@ class IntInterval implements Interval
         return $this->start === $other->start && $this->end === $other->end;
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -150,9 +144,6 @@ class IntInterval implements Interval
         return $this->start <=> $other->start ?: $this->end <=> $other->end;
     }
 
-    /**
-     * @param IntersectComparable $other
-     */
     public function compareIntersects(IntersectComparable $other): int
     {
         Check::instance($other, self::class);

@@ -13,6 +13,8 @@ use ArrayAccess;
 use IteratorIterator;
 use Traversable;
 use function is_array;
+use function is_int;
+use function is_string;
 
 /**
  * Returns only selected keys from iterated arrays (e.g. rows) as keys and values.

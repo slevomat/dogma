@@ -47,13 +47,13 @@ class CallbackIterator extends IteratorIterator
 
     public function key(): mixed
     {
+        /** @var TKey|null $key */
         $key = parent::key();
 
         if ($this->keysCallback === null) {
             return $key;
         }
 
-        /** @var TKey|null $key */
         return call_user_func($this->keysCallback, $key);
     }
 

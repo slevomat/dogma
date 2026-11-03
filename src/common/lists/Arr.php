@@ -19,15 +19,11 @@ use function array_count_values;
 use function array_diff;
 use function array_diff_assoc;
 use function array_diff_key;
-use function array_diff_uassoc;
-use function array_diff_ukey;
 use function array_filter;
 use function array_flip;
 use function array_intersect;
 use function array_intersect_assoc;
 use function array_intersect_key;
-use function array_intersect_uassoc;
-use function array_intersect_ukey;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -42,17 +38,12 @@ use function array_search;
 use function array_slice;
 use function array_splice;
 use function array_sum;
-use function array_udiff;
-use function array_udiff_assoc;
-use function array_udiff_uassoc;
-use function array_uintersect;
-use function array_uintersect_assoc;
-use function array_uintersect_uassoc;
 use function array_unique;
 use function array_unshift;
 use function array_values;
 use function arsort;
 use function asort;
+use function call_user_func_array;
 use function count;
 use function end;
 use function in_array;
@@ -1540,7 +1531,7 @@ class Arr
     {
         $args[] = $function;
         /** @var array<TKey, TValue> $result */
-        $result = \call_user_func_array('array_udiff', [$array, ...$args]);
+        $result = call_user_func_array('array_udiff', array_merge([$array], $args));
 
         return $result;
     }
@@ -1568,7 +1559,7 @@ class Arr
     {
         $args[] = $function;
         /** @var array<TKey, TValue> $result */
-        $result = \call_user_func_array('array_diff_ukey', [$array, ...$args]);
+        $result = call_user_func_array('array_diff_ukey', array_merge([$array], $args));
 
         return $result;
     }
@@ -1601,21 +1592,21 @@ class Arr
             $args[] = $keysFunction;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_udiff_uassoc', [$array, ...$args]);
+            $result = call_user_func_array('array_udiff_uassoc', array_merge([$array], $args));
 
             return $result;
         } elseif ($function) {
             $args[] = $function;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_udiff_assoc', [$array, ...$args]);
+            $result = call_user_func_array('array_udiff_assoc', array_merge([$array], $args));
 
             return $result;
         } elseif ($keysFunction) {
             $args[] = $keysFunction;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_diff_uassoc', [$array, ...$args]);
+            $result = call_user_func_array('array_diff_uassoc', array_merge([$array], $args));
 
             return $result;
         } else {
@@ -1647,7 +1638,7 @@ class Arr
     {
         $args[] = $function;
         /** @var array<TKey, TValue> $result */
-        $result = \call_user_func_array('array_uintersect', [$array, ...$args]);
+        $result = call_user_func_array('array_uintersect', array_merge([$array], $args));
 
         return $result;
     }
@@ -1676,7 +1667,7 @@ class Arr
     {
         $args[] = $function;
         /** @var array<TKey, TValue> $result */
-        $result = \call_user_func_array('array_intersect_ukey', [$array, ...$args]);
+        $result = call_user_func_array('array_intersect_ukey', array_merge([$array], $args));
 
         return $result;
     }
@@ -1709,21 +1700,21 @@ class Arr
             $args[] = $keysFunction;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_uintersect_uassoc', [$array, ...$args]);
+            $result = call_user_func_array('array_uintersect_uassoc', array_merge([$array], $args));
 
             return $result;
         } elseif ($function) {
             $args[] = $function;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_uintersect_assoc', [$array, ...$args]);
+            $result = call_user_func_array('array_uintersect_assoc', array_merge([$array], $args));
 
             return $result;
         } elseif ($keysFunction) {
             $args[] = $keysFunction;
 
             /** @var array<TKey, TValue> $result */
-            $result = \call_user_func_array('array_intersect_uassoc', [$array, ...$args]);
+            $result = call_user_func_array('array_intersect_uassoc', array_merge([$array], $args));
 
             return $result;
         } else {

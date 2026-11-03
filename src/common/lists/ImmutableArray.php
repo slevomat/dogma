@@ -21,15 +21,11 @@ use function array_count_values;
 use function array_diff;
 use function array_diff_assoc;
 use function array_diff_key;
-use function array_diff_uassoc;
-use function array_diff_ukey;
 use function array_filter;
 use function array_flip;
 use function array_intersect;
 use function array_intersect_assoc;
 use function array_intersect_key;
-use function array_intersect_uassoc;
-use function array_intersect_ukey;
 use function array_keys;
 use function array_map;
 use function array_merge;
@@ -43,17 +39,12 @@ use function array_search;
 use function array_slice;
 use function array_splice;
 use function array_sum;
-use function array_udiff;
-use function array_udiff_assoc;
-use function array_udiff_uassoc;
-use function array_uintersect;
-use function array_uintersect_assoc;
-use function array_uintersect_uassoc;
 use function array_unique;
 use function array_unshift;
 use function array_values;
 use function arsort;
 use function asort;
+use function call_user_func_array;
 use function count;
 use function end;
 use function in_array;
@@ -213,8 +204,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     /** @return TKey */
     public function randomKey(): int|string
     {
-        $key = array_rand($this->toArray());
         /** @var TKey $key */
+        $key = array_rand($this->toArray());
 
         return $key;
     }
@@ -222,10 +213,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     /** @return TValue */
     public function randomValue(): mixed
     {
-        $value = $this->items[$this->randomKey()];
-        /** @var TValue $value */
-
-        return $value;
+        return $this->items[$this->randomKey()];
     }
 
     /**
@@ -1091,12 +1079,11 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @template TNewValue
-     * @param TNewValue $values
+     * @param TNewValue ...$values
      * @return self<TKey|int, TValue|TNewValue>
      */
     public function append(mixed ...$values): self
     {
-        /** @var array<array-key, TNewValue> $values */
         $result = $this->toArray();
         foreach ($values as $value) {
             $result[] = $value;
@@ -1263,7 +1250,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         $args[] = $function;
 
         /** @var array<TKey, TValue> $arr */
-        $arr = \call_user_func_array('array_udiff', $args);
+        $arr = call_user_func_array('array_udiff', $args);
 
         return new static($arr);
     }
@@ -1293,7 +1280,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         $args[] = $function;
 
         /** @var array<TKey, TValue> $arr */
-        $arr = \call_user_func_array('array_diff_ukey', $args);
+        $arr = call_user_func_array('array_diff_ukey', $args);
 
         return new static($arr);
     }
@@ -1325,15 +1312,15 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             $args[] = $function;
             $args[] = $keysFunction;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_udiff_uassoc', $args);
+            $arr = call_user_func_array('array_udiff_uassoc', $args);
         } elseif ($function) {
             $args[] = $function;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_udiff_assoc', $args);
+            $arr = call_user_func_array('array_udiff_assoc', $args);
         } elseif ($keysFunction) {
             $args[] = $keysFunction;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_diff_uassoc', $args);
+            $arr = call_user_func_array('array_diff_uassoc', $args);
         } else {
             $arr = array_diff_assoc(...$args);
         }
@@ -1366,7 +1353,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         $args[] = $function;
 
         /** @var array<TKey, TValue> $arr */
-        $arr = \call_user_func_array('array_uintersect', $args);
+        $arr = call_user_func_array('array_uintersect', $args);
 
         return new static($arr);
     }
@@ -1396,7 +1383,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         $args[] = $function;
 
         /** @var array<TKey, TValue> $arr */
-        $arr = \call_user_func_array('array_intersect_ukey', $args);
+        $arr = call_user_func_array('array_intersect_ukey', $args);
 
         return new static($arr);
     }
@@ -1428,15 +1415,15 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             $args[] = $function;
             $args[] = $keysFunction;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_uintersect_uassoc', $args);
+            $arr = call_user_func_array('array_uintersect_uassoc', $args);
         } elseif ($function) {
             $args[] = $function;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_uintersect_assoc', $args);
+            $arr = call_user_func_array('array_uintersect_assoc', $args);
         } elseif ($keysFunction) {
             $args[] = $keysFunction;
             /** @var array<TKey, TValue> $arr */
-            $arr = \call_user_func_array('array_intersect_uassoc', $args);
+            $arr = call_user_func_array('array_intersect_uassoc', $args);
         } else {
             $arr = array_intersect_assoc(...$args);
         }

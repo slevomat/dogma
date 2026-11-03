@@ -32,23 +32,24 @@ class Collator extends PhpCollator
     public function __construct(mixed $locale)
     {
         Check::types($locale, [Locale::class, Type::STRING]);
-        /** @var Locale|string $locale */
+        /** @var Locale|string $validatedLocale */
+        $validatedLocale = $locale;
 
-        if (is_string($locale)) {
-            $locale = Locale::get($locale);
+        if (is_string($validatedLocale)) {
+            $validatedLocale = Locale::get($validatedLocale);
         }
 
-        $collation = $locale->getCollation();
+        $collation = $validatedLocale->getCollation();
         if ($collation !== null) {
             throw new NotImplementedException('Named collations are not supported.');
         }
-        $options = $locale->getCollationOptions();
+        $options = $validatedLocale->getCollationOptions();
 
         if ($options === []) {
-            parent::__construct($locale->getValue());
+            parent::__construct($validatedLocale->getValue());
         } else {
             // work around bug with parsing locale collation
-            $safeLocale = $locale->removeCollation();
+            $safeLocale = $validatedLocale->removeCollation();
 
             parent::__construct($safeLocale->getValue());
 

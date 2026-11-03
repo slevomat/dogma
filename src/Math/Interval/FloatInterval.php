@@ -179,9 +179,6 @@ class FloatInterval implements OpenClosedInterval
         return $this->start > $this->end || ($this->start === $this->end && $this->openStart && $this->openEnd);
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -191,9 +188,6 @@ class FloatInterval implements OpenClosedInterval
             || ($this->isEmpty() && $other->isEmpty());
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -202,9 +196,6 @@ class FloatInterval implements OpenClosedInterval
             ?: $this->end <=> $other->end ?: $other->openEnd <=> $this->openEnd;
     }
 
-    /**
-     * @param IntersectComparable $other
-     */
     public function compareIntersects(IntersectComparable $other): int
     {
         Check::instance($other, self::class);

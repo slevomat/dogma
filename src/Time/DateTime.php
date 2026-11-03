@@ -435,9 +435,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return DateTimeSpan::createFromDateInterval($interval);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -445,9 +442,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this > $other ? 1 : ($other > $this ? -1 : 0);
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

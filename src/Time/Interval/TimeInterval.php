@@ -230,9 +230,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         return $this->end->getMicroTime() >= Time::MAX_MICROSECONDS;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -241,9 +238,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
             && $this->end->getMicroTime() === $other->end->getMicroTime(); // cannot use Time::equals() because of 00:00 vs 24:00
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);

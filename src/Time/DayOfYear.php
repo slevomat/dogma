@@ -228,9 +228,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return Date::createFromComponents($year, $this->month, $this->dayOfMonth);
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -238,9 +235,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return ($this->number % self::MAX_NUMBER) === ($other->number % self::MAX_NUMBER);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -307,9 +301,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     // static ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param self $items
-     */
     public static function min(self ...$items): self
     {
         /** @var self $result */
@@ -320,9 +311,6 @@ class DayOfYear implements Equalable, Comparable, Dumpable
         return $result;
     }
 
-    /**
-     * @param self $items
-     */
     public static function max(self ...$items): self
     {
         /** @var self $result */

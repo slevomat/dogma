@@ -145,8 +145,10 @@ class Re
             return null;
         }
 
-        /** @var array<array-key, string|array{string|null, int<-1, max>}|null> $matches */
-        return $matches;
+        /** @var array<array-key, string|array{string|null, int<-1, max>}|null> $matched */
+        $matched = $matches;
+
+        return $matched;
     }
 
     /**
@@ -195,8 +197,10 @@ class Re
             return [];
         }
 
-        /** @var array<array-key, array<array-key, string|array{string|null, int<-1, max>}|null>> $matches */
-        return $matches;
+        /** @var array<array-key, array<array-key, string|array{string|null, int<-1, max>}|null>> $matched */
+        $matched = $matches;
+
+        return $matched;
     }
 
     /**

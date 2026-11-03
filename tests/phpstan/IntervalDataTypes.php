@@ -27,7 +27,9 @@ assertType(
     $dateSet->getIterator()
 );
 
-$mappedData = $dateSet->collectData(static fn (string $data, DateInterval $interval): int => strlen($data));
+$mappedData = $dateSet->collectData(static function (string $data, DateInterval $interval): int {
+    return strlen($data);
+});
 assertType('Dogma\Time\IntervalData\DateIntervalDataSet<int<0, max>>', $mappedData);
 
 $mappedIntervals = $dateSet->map(
@@ -48,7 +50,9 @@ $nightSet = $dateSet->toNightIntervalDataSet();
 assertType('list<Dogma\Time\IntervalData\NightIntervalData<string>>', $nightSet->getIntervals());
 assertType(
     'Dogma\Time\IntervalData\NightIntervalDataSet<int<0, max>>',
-    $nightSet->collectData(static fn (string $data): int => strlen($data))
+    $nightSet->collectData(static function (string $data): int {
+        return strlen($data);
+    })
 );
 
 $nightData = NightIntervalData::createFromDateIntervalData($dateData);

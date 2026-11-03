@@ -104,9 +104,6 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return self::createFromComponents($year, $month);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -114,9 +111,6 @@ class YearMonth implements Comparable, Equalable, Dumpable
         return $this->value <=> $other->value;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

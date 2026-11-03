@@ -258,9 +258,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return new DateTime($this->format(), $timeZone)->setTime(23, 59, 59, 999999);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -268,9 +265,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay <=> $other->julianDay;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -427,9 +421,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     // static ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param self $items
-     */
     public static function min(self ...$items): self
     {
         /** @var self $result */
@@ -440,9 +431,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $result;
     }
 
-    /**
-     * @param self $items
-     */
     public static function max(self ...$items): self
     {
         /** @var self $result */
