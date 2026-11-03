@@ -9,6 +9,9 @@ jobs:
   checks:
     name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    env:
+      # root package has no version on CI checkouts; spell-checker requires dogma ^0.2
+      COMPOSER_ROOT_VERSION: 0.2.99
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
