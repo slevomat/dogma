@@ -1,20 +1,13 @@
 
 # code
 args
-binlog
 bsf
 cb
 CP
 dst
 pthreads
-redir
-struct
-tablespace
-tld
 uint
-UDF
 Vector3i
-XA
 µs
 
 # ascii
@@ -32,18 +25,6 @@ NAK
 ESC
 FS
 
-# curl
-certinfo
-curle
-curlinfo
-curlm
-curlopt
-filetime
-namelookup
-pretransfer
-starttransfer
-wildcard
-
 # tech
 armscii
 ascii
@@ -54,36 +35,23 @@ csrf
 cygwin
 darwin
 euc
-fsync
 hiragana
 ietf
 imap
-inode
-ip
 iso
 jis
-libcurl
 linux
-nfs
-PEM
-preg
-rpc
-rtsp
 sjis
 solaris
-tcp
-tftp
 ucs
 uhc
 unicode
 unix
-uri
 ux
 wap
 warshall
 webkit
 winnt
-xenix
 xss
 
 # packages
@@ -97,18 +65,12 @@ lucas
 
 # ~en
 biatch
-bodyrow
-checkbox
-crypto
 dumpable
 enquiry
 enums
 equalable
-filesystem
-footrow
 getters
 hashmap
-headrow
 inits
 inv
 iterables
@@ -116,7 +78,6 @@ mappable
 milisecond
 miliseconds
 mixin
-mixins
 nonspacing
 pragma
 pseudotype
@@ -128,13 +89,10 @@ runned
 subtype
 timestamps
 timezones
-typehint
 wakeup
 webalize
-wtf
 
 # en
-authenticator
 callables
 cloneable
 combinatorics
@@ -144,20 +102,14 @@ denormalized
 endian
 ereyesterday
 ignorable
-login
 multithreaded
 nullable
-ok
 overmorrow
 permutate
 pokeable
 prepend
 quaternary
 reimplement
-responder
-retransmit
-runtime
-seekable
 splitter
 submatch
 subpattern
@@ -165,10 +117,6 @@ substring
 substrings
 tuple
 ungreedy
-unhandled
-unprocessable
-variadic
-versa
 
 # calendar
 julian

@@ -13,7 +13,6 @@
     "require": {
         "php": "^8.5",
         "ext-calendar":"*",
-        "nette/http": "^3.0",
         "nette/utils": "^4.0"
     },
     "require-dev": {
@@ -22,12 +21,10 @@
         "phpstan/phpstan-strict-rules": "^2.0.7"
     },
     "suggest": {
-        "ext-dom": "for Dom (basic functionality)",
         "ext-mbstring": "for Str (basic functionality)",
         "ext-intl": "for Str and Language (advanced unicode manipulation)",
         "ext-iconv": "for Str (converting encoding when ext-mbstring is not available)",
         "ext-recode": "for Str (converting encoding when ext-mbstring and ext-iconv are not available)",
-        "ext-fileinfo": "for Io (content type and encoding detection)",
         "symfony/polyfill-intl-icu": "for Str and Language",
         "symfony/polyfill-intl-normalizer": "for Str",
         "symfony/polyfill-mbstring": "for Str"
@@ -93,7 +90,7 @@
 
         "require:check": "php vendor/maglnet/composer-require-checker/bin/composer-require-checker.php check",
 
-        "modified-php-src": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^src.*\\.php$\" > temp/modified-php-src.txt || echo src/loader.php > temp/modified-php-src.txt",
+        "modified-php-src": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^src.*\\.php$\" > temp/modified-php-src.txt || echo src/common/Check.php > temp/modified-php-src.txt",
         "modified-php-tests": "chmod 777 temp && git diff-index --name-only --diff-filter=ACMR origin/master | grep \"^tests.*\\.php$\" > temp/modified-php-tests.txt || echo tests/src/bootstrap.php > temp/modified-php-tests.txt"
     },
     "scripts-descriptions": {
