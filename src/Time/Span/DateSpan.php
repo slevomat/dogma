@@ -3,6 +3,7 @@
 namespace Dogma\Time\Span;
 
 use DateInterval;
+use DateMalformedIntervalStringException;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -61,10 +62,10 @@ class DateSpan implements DateOrTimeSpan
 
     public static function createFromDateString(string $string): self
     {
-        /** @var DateInterval|false $dateInterval */
-        $dateInterval = DateInterval::createFromDateString($string);
-        if ($dateInterval === false) {
-            throw new InvalidValueException($string, 'date span string');
+        try {
+            $dateInterval = DateInterval::createFromDateString($string);
+        } catch (DateMalformedIntervalStringException $e) {
+            throw new InvalidValueException($string, 'date span string', $e);
         }
 
         return self::createFromDateInterval($dateInterval);

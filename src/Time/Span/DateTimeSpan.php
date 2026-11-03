@@ -10,6 +10,7 @@
 namespace Dogma\Time\Span;
 
 use DateInterval;
+use DateMalformedIntervalStringException;
 use Dogma\Arr;
 use Dogma\Comparable;
 use Dogma\Equalable;
@@ -69,10 +70,10 @@ class DateTimeSpan implements DateOrTimeSpan
     public static function createFromDateString(string $string): self
     {
         // todo: works properly since 7.3.3 etc. before that returned empty interval on invalid input. should check this
-        /** @var DateInterval|false $dateInterval */
-        $dateInterval = DateInterval::createFromDateString($string);
-        if ($dateInterval === false) {
-            throw new InvalidValueException($string, 'date-time span string');
+        try {
+            $dateInterval = DateInterval::createFromDateString($string);
+        } catch (DateMalformedIntervalStringException $e) {
+            throw new InvalidValueException($string, 'date-time span string', $e);
         }
 
         return self::createFromDateInterval($dateInterval);

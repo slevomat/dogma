@@ -21,7 +21,7 @@ class ErrorException extends Exception
     private ?array $error = null;
 
     /**
-     * @param string[]|int[]|null $error
+     * @param array{type: int, message: string, file: string, line: int}|null $error
      */
     public function __construct(string $message, ?array $error, ?Throwable $previous = null)
     {
