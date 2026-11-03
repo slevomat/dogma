@@ -32,13 +32,13 @@ class FloydWarshallPathFinder
 
     private ?int $nodeCount = null;
 
-    /** @var string[]|int[] */
+    /** @var array<int|string, int> */
     private array $nodeNames = [];
 
     /** @var int[][] */
     private array $distances = [[]];
 
-    /** @var mixed[][] */
+    /** @var int[][] */
     private array $predecessors = [[]];
 
     /**
@@ -115,7 +115,7 @@ class FloydWarshallPathFinder
 
     /**
      * Get nodes between a and b
-     * @return int[]|string[]
+     * @return list<int|string>
      */
     public function getPath(int|string $i, int|string $j): array
     {

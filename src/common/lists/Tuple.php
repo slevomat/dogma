@@ -23,6 +23,7 @@ use function count;
  */
 class Tuple implements Countable, IteratorAggregate, ArrayAccess
 {
+    /** @use ImmutableArrayAccessMixin<int, mixed> */
     use ImmutableArrayAccessMixin;
     use StrictBehaviorMixin;
 
@@ -40,7 +41,7 @@ class Tuple implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return Traversable<mixed>
+     * @return Traversable<int, mixed>
      */
     public function getIterator(): Traversable
     {

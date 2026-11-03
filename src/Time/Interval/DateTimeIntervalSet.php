@@ -243,7 +243,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {

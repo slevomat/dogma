@@ -261,7 +261,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -271,7 +271,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -281,7 +281,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
     }
 
     /**
-     * @param self $other
+     * @param IntersectComparable $other
      */
     public function compareIntersects(IntersectComparable $other): int
     {

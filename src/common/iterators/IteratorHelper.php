@@ -18,8 +18,10 @@ class IteratorHelper
     use StaticClassMixin;
 
     /**
-     * @param iterable|mixed[] $iterable
-     * @return Iterator<mixed, mixed>
+     * @template TKey of array-key
+     * @template TValue
+     * @param iterable<TKey, TValue> $iterable
+     * @return Iterator<TKey, TValue>
      */
     public static function iterableToIterator(iterable $iterable): Iterator
     {
@@ -33,7 +35,7 @@ class IteratorHelper
             $iterable = $iterable->getIterator();
         }
 
-        /** @var Iterator<mixed, mixed> $iterable */
+        /** @var Iterator<TKey, TValue> $iterable */
         $iterable = $iterable;
 
         return $iterable;

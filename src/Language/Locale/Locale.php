@@ -76,7 +76,7 @@ class Locale
     /**
      * @param string[] $variants
      * @param string[] $private
-     * @param string[] $keywords
+     * @param array<string, string> $keywords
      */
     public static function create(
         Language $language,
@@ -134,6 +134,7 @@ class Locale
     public function matches(self|string $locale): bool
     {
         Check::types($locale, [Type::STRING, self::class]);
+        /** @var self|string $locale */
 
         if (is_string($locale)) {
             $locale = self::get($locale);
@@ -143,15 +144,19 @@ class Locale
     }
 
     /**
-     * @param Locale[]|string[] $locales
-     * @param Locale|string $default
+     * @param array<array-key, self|string> $locales
+     * @param self|string|null $default
      */
     public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {
         Check::types($default, [Type::STRING, self::class, Type::NULL]);
+        /** @var self|string|null $default */
 
         // work around bug when lookup does not work at all without default value
         $default ??= reset($locales);
+        if ($default === false) {
+            return null;
+        }
         if (is_string($default)) {
             $default = self::get($default);
         }
@@ -159,10 +164,11 @@ class Locale
         /** @var Locale|string $locale */
         foreach ($locales as $i => $locale) {
             Check::types($locale, [Type::STRING, self::class]);
+            /** @var self|string $locale */
             if (is_string($locale)) {
                 $locales[$i] = PhpLocale::canonicalize($locale);
             } else {
-                $locale[$i] = $locale->getValue();
+                $locales[$i] = $locale->getValue();
             }
         }
 
@@ -207,11 +213,14 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getVariants(): array
     {
-        return PhpLocale::getAllVariants($this->value) ?? [];
+        $variants = \array_values(PhpLocale::getAllVariants($this->value) ?? []);
+        /** @var list<string> $variants */
+
+        return $variants;
     }
 
     public function getVariant(int $n): ?string
@@ -232,7 +241,7 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getPrivates(): array
     {
@@ -262,11 +271,11 @@ class Locale
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     public function getKeywords(): array
     {
-        /** @var string[] $keywords */
+        /** @var array<string, string> $keywords */
         $keywords = $this->components['keywords'] ?? [];
 
         return $keywords;
@@ -274,7 +283,7 @@ class Locale
 
     public function getKeyword(string $keyword): ?string
     {
-        /** @var string[] $keywords */
+        /** @var array<string, string> $keywords */
         $keywords = $this->components['keywords'];
 
         return $keywords[$keyword] ?? null;
@@ -309,7 +318,7 @@ class Locale
     }
 
     /**
-     * @return LocaleCollationOption[]
+     * @return array<string, LocaleCollationOption>
      */
     public function getCollationOptions(): array
     {
@@ -321,7 +330,7 @@ class Locale
                 $options[$keyword] = $class::parse($value);
             }
         }
-        /** @var LocaleCollationOption[] $options */
+        /** @var array<string, LocaleCollationOption> $options */
         $options = $options;
 
         return $options;

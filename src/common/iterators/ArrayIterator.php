@@ -18,14 +18,16 @@ use function reset;
 /**
  * Minimal interface replacement of bloated native ArrayIterator
  *
- * @implements Iterator<mixed, mixed>
+ * @template TKey of array-key = array-key
+ * @template TValue = mixed
+ * @implements Iterator<TKey, TValue>
  */
 class ArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
     /**
-     * @param mixed[] $array
+     * @param array<TKey, TValue> $array
      */
     public function __construct(protected array $array)
     {
@@ -47,16 +49,20 @@ class ArrayIterator implements Iterator
     }
 
     /**
-     * @return int|string|null
+     * @return TKey|null
      */
     public function key(): mixed
     {
         return key($this->array);
     }
 
+    /** @return TValue */
     public function current(): mixed
     {
-        return current($this->array);
+        /** @var TValue $current */
+        $current = current($this->array);
+
+        return $current;
     }
 
 }

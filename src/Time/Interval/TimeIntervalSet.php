@@ -96,7 +96,7 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -271,7 +271,8 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * @phpstan-pure
-     * @return TimeInterval[]
+     * @param callable(TimeInterval): (TimeInterval|array<array-key, TimeInterval>|ModuloIntervalSet<TimeInterval>) $mapper
+     * @return array<array-key, TimeInterval>
      */
     public function map(callable $mapper): array
     {
@@ -292,7 +293,10 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return $results;
     }
 
-    /** @phpstan-pure */
+    /**
+     * @phpstan-pure
+     * @param callable(TimeInterval): (TimeInterval|array<array-key, TimeInterval>|ModuloIntervalSet<TimeInterval>|null) $mapper
+     */
     public function collect(callable $mapper): self
     {
         $results = [];

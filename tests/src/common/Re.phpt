@@ -17,3 +17,8 @@ submatch:
 Assert::same(Re::submatch('abc@def', '~(abc)~'), 'abc');
 Assert::same(Re::submatch('abc@def', '~(def)~'), 'def');
 Assert::same(Re::submatch('abc@def', '~(foo)~'), null);
+Assert::same(Re::submatch('abc@def', '~(def)~', Re::CAPTURE_OFFSET), ['def', 4]);
+
+hasMatch:
+Assert::same(true, Re::hasMatch('abc@def', '~@~', 3));
+Assert::same(false, Re::hasMatch('abc@def', '~a~', 3));

@@ -17,7 +17,7 @@ use Dogma\Equalable;
 use IteratorAggregate;
 
 /**
- * @template T
+ * @template T of Interval|ModuloInterval
  * @implements IteratorAggregate<int, T>
  * @implements ArrayAccess<int, T>
  */
@@ -25,7 +25,7 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
 {
 
     /**
-     * @return Interval[]
+     * @return list<T>
      */
     abstract public function getIntervals(): array;
 
@@ -33,6 +33,7 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
 
     //abstract public function containsValue(T $value): bool;
 
+    /** @return T */
     abstract public function envelope(): Interval|ModuloInterval;
 
     //abstract public function normalize(): IntervalSet<T>;
@@ -51,11 +52,15 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
 
     //abstract public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
 
-    /** @return T[] */
+    /**
+     * @param callable(T): (T|array<array-key, T>|IntervalSet<T>) $mapper
+     * @return array<array-key, T>
+     */
     abstract public function map(callable $mapper): array;
 
     /**
      * Map and filter
+     * @param callable(T): (T|array<array-key, T>|IntervalSet<T>|null) $mapper
      * @return self<T>
      */
     abstract public function collect(callable $mapper): self;

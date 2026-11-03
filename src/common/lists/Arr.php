@@ -80,9 +80,11 @@ class Arr
     private const bool PRESERVE_KEYS = true;
 
     /**
-     * @param mixed[] $keys
-     * @param mixed[] $values
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<array-key, TKey> $keys
+     * @param array<array-key, TValue> $values
+     * @return array<TKey, TValue>
      */
     public static function combine(array $keys, array $values): array
     {
@@ -186,8 +188,10 @@ class Arr
 
     /**
      * Copy array to remove any existing references
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function copy(array $array): array
     {
@@ -201,8 +205,9 @@ class Arr
 
     /**
      * Copy array to remove any existing references. Drop keys
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TValue
+     * @param array<array-key, TValue> $array
+     * @return list<TValue>
      */
     public static function copyValues(array $array): array
     {
@@ -260,7 +265,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return TKey|null
      */
     public static function indexOf(array $array, mixed $value, int $from = 0): int|null|string
     {
@@ -273,8 +281,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return int[]|string[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return list<TKey>
      */
     public static function indexesOf(array $array, mixed $value): array
     {
@@ -282,7 +292,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return TKey|null
      */
     public static function lastIndexOf(array $array, mixed $value, ?int $end = null): int|null|string
     {
@@ -294,7 +307,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue): bool $function
+     * @return TKey|null
      */
     public static function indexWhere(array $array, callable $function, int $from = 0): int|string|null
     {
@@ -308,7 +325,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue): bool $function
+     * @return TKey|null
      */
     public static function lastIndexWhere(array $array, callable $function, ?int $end = null): int|null|string
     {
@@ -316,7 +337,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array-key $key
      */
     public static function containsKey(array $array, mixed $key): bool
     {
@@ -368,7 +392,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue): bool $function
+     * @return TValue|null
      */
     public static function find(array $array, callable $function): mixed
     {
@@ -445,7 +473,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TValue
+     * @param array<array-key, TValue> $array
+     * @return ($array is non-empty-array ? TValue : null)
      */
     public static function max(array $array): mixed
     {
@@ -457,7 +487,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TValue
+     * @param array<array-key, TValue> $array
+     * @return ($array is non-empty-array ? TValue : null)
      */
     public static function min(array $array): mixed
     {
@@ -469,7 +501,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TValue
+     * @template TComparable
+     * @param array<array-key, TValue> $array
+     * @param callable(TValue): TComparable $function
+     * @return TValue|null
      */
     public static function maxBy(array $array, callable $function): mixed
     {
@@ -484,7 +520,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TValue
+     * @template TComparable
+     * @param array<array-key, TValue> $array
+     * @param callable(TValue): TComparable $function
+     * @return TValue|null
      */
     public static function minBy(array $array, callable $function): mixed
     {
@@ -699,7 +739,10 @@ class Arr
     // slicing ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return TValue|null
      */
     public static function head(array $array): mixed
     {
@@ -712,7 +755,10 @@ class Arr
 
     /**
      * Alias of head()
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return TValue|null
      */
     public static function first(array $array): mixed
     {
@@ -724,7 +770,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return TValue|null
      */
     public static function last(array $array): mixed
     {
@@ -802,8 +851,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function slice(array $array, int $from, ?int $length = null): array
     {
@@ -834,8 +885,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function drop(array $array, int $count): array
     {
@@ -902,8 +955,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function take(array $array, ?int $count = null): array
     {
@@ -992,8 +1047,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TKey): bool $function
+     * @return array<TKey, TValue>
      */
     public static function filterKeys(array $array, callable $function): array
     {
@@ -1049,7 +1107,7 @@ class Arr
     }
 
     /**
-     * @param array<T>|array<array<T>> $array
+     * @param array<array-key, T|array<array-key, T>> $array
      * @return list<T>
      *
      * @template T
@@ -1099,19 +1157,31 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @template TResult
+     * @param array<TKey, TValue> $array
+     * @param callable(TKey, TValue): TResult $function
+     * @return array<TKey, TResult>
      */
     public static function mapPairs(array $array, callable $function): array
     {
-        return self::remap($array, static function (int|string $key, mixed $value) use ($function): array {
-            return [$key => $function($key, $value)];
-        });
+        $result = [];
+        foreach ($array as $key => $value) {
+            $result[$key] = $function($key, $value);
+        }
+
+        return $result;
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TKey, TValue): array<TNewKey, TNewValue> $function
+     * @return array<TNewKey, TNewValue>
      */
     public static function remap(array $array, callable $function): array
     {
@@ -1126,8 +1196,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue of array-key
+     * @param array<TKey, TValue> $array
+     * @return array<TValue, TKey>
      */
     public static function flip(array $array): array
     {
@@ -1135,8 +1207,9 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TValue
+     * @param list<array<array-key, TValue>> $array
+     * @return list<list<TValue>>
      */
     public static function transpose(array $array): array
     {
@@ -1144,8 +1217,8 @@ class Arr
             return [];
         }
 
-        array_unshift($array, null);
-        $array = array_map(...$array);
+        /** @var list<list<TValue>> $array */
+        $array = array_map(null, ...$array);
         foreach ($array as $key => $value) {
             $array[$key] = (array) $value;
         }
@@ -1154,8 +1227,11 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TOuterKey of array-key
+     * @template TInnerKey of array-key
+     * @template TValue
+     * @param array<TOuterKey, array<TInnerKey, TValue>> $array
+     * @return array<TInnerKey, array<TOuterKey, TValue>>
      */
     public static function transposeSafe(array $array): array
     {
@@ -1172,8 +1248,10 @@ class Arr
     }
 
     /**
-     * @param mixed[][] $array
-     * @return mixed[]
+     * @param list<array<array-key, mixed>> $array
+     * @param int|string $valueKey
+     * @param int|string|null $indexKey
+     * @return array<array-key, mixed>
      */
     public static function column(array $array, mixed $valueKey, mixed $indexKey = null): array
     {
@@ -1183,8 +1261,10 @@ class Arr
     // sorting ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function reverse(array $array): array
     {
@@ -1204,8 +1284,10 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @return array<TKey, TValue>
      */
     public static function sort(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1288,8 +1370,9 @@ class Arr
     }
 
     /**
-     * @param Comparable[] $array
-     * @return mixed[]
+     * @template T of Comparable
+     * @param list<T> $array
+     * @return list<T>
      */
     public static function sortComparableValues(array $array, int $flags = Sorting::REGULAR): array
     {
@@ -1367,6 +1450,7 @@ class Arr
 
     /**
      * @param mixed[] $array
+     * @param array-key $find
      * @return mixed[]
      */
     public static function replace(array $array, mixed $find, mixed $replace): array
@@ -1433,9 +1517,11 @@ class Arr
     // diffing ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diff(array $array, array ...$args): array
     {
@@ -1443,21 +1529,28 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue, TValue): int $function
+     * @param array<array-key, TValue> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diffWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+        /** @var array<TKey, TValue> $result */
+        $result = \call_user_func_array('array_udiff', [$array, ...$args]);
 
-        return array_udiff($array, ...$args);
+        return $result;
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diffKeys(array $array, array ...$args): array
     {
@@ -1465,22 +1558,27 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diffKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+        /** @var array<TKey, TValue> $result */
+        $result = \call_user_func_array('array_diff_ukey', [$array, ...$args]);
 
-        return array_diff_ukey($array, ...$args);
+        return $result;
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @lastParam callable|null $function
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diffPairs(array $array, array ...$args): array
     {
@@ -1488,9 +1586,13 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param (callable(TValue, TValue): int)|null $function
+     * @param (callable(array-key, array-key): int)|null $keysFunction
+     * @param array<array-key, TValue> ...$args
+     * @return array<TKey, TValue>
      */
     public static function diffPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
@@ -1498,24 +1600,35 @@ class Arr
             $args[] = $function;
             $args[] = $keysFunction;
 
-            return array_udiff_uassoc($array, ...$args);
-        } elseif ($function && !$keysFunction) {
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_udiff_uassoc', [$array, ...$args]);
+
+            return $result;
+        } elseif ($function) {
             $args[] = $function;
 
-            return array_udiff_assoc($array, ...$args);
-        } elseif (!$function && $keysFunction) {
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_udiff_assoc', [$array, ...$args]);
+
+            return $result;
+        } elseif ($keysFunction) {
             $args[] = $keysFunction;
 
-            return array_diff_uassoc($array, ...$args);
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_diff_uassoc', [$array, ...$args]);
+
+            return $result;
         } else {
             return array_diff_assoc($array, ...$args);
         }
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersect(array $array, array ...$args): array
     {
@@ -1523,21 +1636,28 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(TValue, TValue): int $function
+     * @param array<array-key, TValue> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersectWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+        /** @var array<TKey, TValue> $result */
+        $result = \call_user_func_array('array_uintersect', [$array, ...$args]);
 
-        return array_uintersect($array, ...$args);
+        return $result;
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersectKeys(array $array, array ...$args): array
     {
@@ -1545,21 +1665,28 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param callable(array-key, array-key): int $function
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersectKeysWith(array $array, callable $function, array ...$args): array
     {
         $args[] = $function;
+        /** @var array<TKey, TValue> $result */
+        $result = \call_user_func_array('array_intersect_ukey', [$array, ...$args]);
 
-        return array_intersect_ukey($array, ...$args);
+        return $result;
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param array<array-key, mixed> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersectPairs(array $array, array ...$args): array
     {
@@ -1567,9 +1694,13 @@ class Arr
     }
 
     /**
-     * @param mixed[] $array
-     * @param mixed[] ...$args
-     * @return mixed[]
+     * @template TKey of array-key
+     * @template TValue
+     * @param array<TKey, TValue> $array
+     * @param (callable(TValue, TValue): int)|null $function
+     * @param (callable(array-key, array-key): int)|null $keysFunction
+     * @param array<array-key, TValue> ...$args
+     * @return array<TKey, TValue>
      */
     public static function intersectPairsWith(array $array, ?callable $function, ?callable $keysFunction, array ...$args): array
     {
@@ -1577,15 +1708,24 @@ class Arr
             $args[] = $function;
             $args[] = $keysFunction;
 
-            return array_uintersect_uassoc($array, ...$args);
-        } elseif ($function && !$keysFunction) {
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_uintersect_uassoc', [$array, ...$args]);
+
+            return $result;
+        } elseif ($function) {
             $args[] = $function;
 
-            return array_uintersect_assoc($array, ...$args);
-        } elseif (!$function && $keysFunction) {
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_uintersect_assoc', [$array, ...$args]);
+
+            return $result;
+        } elseif ($keysFunction) {
             $args[] = $keysFunction;
 
-            return array_intersect_uassoc($array, ...$args);
+            /** @var array<TKey, TValue> $result */
+            $result = \call_user_func_array('array_intersect_uassoc', [$array, ...$args]);
+
+            return $result;
         } else {
             return array_intersect_assoc($array, ...$args);
         }

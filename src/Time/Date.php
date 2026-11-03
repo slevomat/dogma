@@ -259,7 +259,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {
@@ -269,7 +269,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -427,18 +427,30 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     // static ----------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param self $items
+     */
     public static function min(self ...$items): self
     {
-        return Arr::minBy($items, static function (self $date): int {
+        /** @var self $result */
+        $result = Arr::minBy($items, static function (self $date): int {
             return $date->julianDay;
         });
+
+        return $result;
     }
 
+    /**
+     * @param self $items
+     */
     public static function max(self ...$items): self
     {
-        return Arr::maxBy($items, static function (self $date): int {
+        /** @var self $result */
+        $result = Arr::maxBy($items, static function (self $date): int {
             return $date->julianDay;
         });
+
+        return $result;
     }
 
     /**

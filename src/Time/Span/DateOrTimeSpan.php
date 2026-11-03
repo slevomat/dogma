@@ -27,9 +27,9 @@ interface DateOrTimeSpan extends Equalable, Comparable
     //public function subtract(self ...$other): self;
 
 
-    public function invert(): mixed;
+    public function invert(): self;
 
-    public function abs(): mixed;
+    public function abs(): self;
 
     /** Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days' */
     public function normalize(): self;

@@ -18,14 +18,16 @@ use function prev;
 /**
  * For iterating and array in reverse order without making a reversed copy of the array.
  *
- * @implements Iterator<mixed, mixed>
+ * @template TKey of array-key = array-key
+ * @template TValue = mixed
+ * @implements Iterator<TKey, TValue>
  */
 class ReverseArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
     /**
-     * @param mixed[] $array
+     * @param array<TKey, TValue> $array
      */
     public function __construct(private array $array)
     {
@@ -47,16 +49,20 @@ class ReverseArrayIterator implements Iterator
     }
 
     /**
-     * @return int|string|null
+     * @return TKey|null
      */
     public function key(): mixed
     {
         return key($this->array);
     }
 
+    /** @return TValue */
     public function current(): mixed
     {
-        return current($this->array);
+        /** @var TValue $current */
+        $current = current($this->array);
+
+        return $current;
     }
 
 }

@@ -10,11 +10,14 @@
 namespace Dogma\Application;
 
 use Dogma\Application\Colors as C;
+use Dogma\Check;
+use Dogma\InvalidArgumentException;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Nette\Neon\Neon;
 use stdClass;
 use function array_key_exists;
+use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_pad;
@@ -31,6 +34,7 @@ use function is_string;
 use function parse_ini_file;
 use function sprintf;
 use function str_ends_with;
+use function strval;
 use function trigger_error;
 
 final class Configurator extends stdClass
@@ -47,10 +51,10 @@ final class Configurator extends stdClass
     public const string SET = 'set';
     public const string MAP = 'map';
 
-    /** @var mixed[] */
+    /** @var array<string, mixed> */
     private array $values = [];
 
-    /** @var mixed[] */
+    /** @var array<string, array<array-key, mixed>> */
     private array $profiles = [];
 
     /**
@@ -95,9 +99,11 @@ final class Configurator extends stdClass
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
+                    $default = $this->defaults[$name];
+                    Check::array($default);
                     $row .= '; default: ' . implode(',', array_map(function (mixed $value): string {
                         return C::lyellow($this->format($value));
-                    }, $this->defaults[$name]));
+                    }, $default));
                 } else {
                     $row .= '; default: ' . C::lyellow($this->format($this->defaults[$name]));
                 }
@@ -190,26 +196,41 @@ final class Configurator extends stdClass
             $config = [];
         }
 
-        foreach ($config as $key => $value) {
-            if (is_array($value)) {
-                $this->expandValues($config, $config[$key]);
+        Check::array($config);
+
+        foreach (array_keys($config) as $key) {
+            if (is_array($config[$key])) {
+                $section = $config[$key];
+                $this->expandValues($config, $section);
+                $config[$key] = $section;
             }
         }
 
         $this->loadValues($config, false);
 
         foreach ($config as $key => $value) {
-            if ($key[0] === '@') {
+            if (is_string($key) && $key !== '' && $key[0] === '@') {
+                Check::array($value);
                 $this->profiles[$key] = $value;
             }
         }
 
-        if ($this->values['use']) {
-            foreach ($this->values['use'] as $use) {
+        $uses = $this->values['use'] ?? null;
+        if ($uses) {
+            if (is_string($uses)) {
+                $uses = [$uses];
+            }
+            Check::array($uses);
+            foreach ($uses as $use) {
+                if (!is_string($use)) {
+                    throw new InvalidArgumentException('Configuration profile names must be strings.');
+                }
                 if (!isset($config[$use])) {
                     die("Configuration profile $use not found.");
                 }
-                $this->loadValues($config[$use], true);
+                $profile = $config[$use];
+                Check::array($profile);
+                $this->loadValues($profile, true);
             }
         }
     }
@@ -225,12 +246,20 @@ final class Configurator extends stdClass
             unset($section['include']);
             $includes = is_array($includes) ? $includes : [$includes];
             foreach ($includes as $include) {
+                if (!is_string($include)) {
+                    throw new InvalidArgumentException('Configuration include names must be strings.');
+                }
+                if (!isset($config[$include]) || !is_array($config[$include])) {
+                    throw new InvalidArgumentException("Configuration include '$include' not found.");
+                }
                 $section = array_merge($section, $config[$include]);
             }
         }
-        foreach ($section as $key => $value) {
-            if (is_array($value)) {
-                $this->expandValues($config, $section[$key]);
+        foreach (array_keys($section) as $key) {
+            if (is_array($section[$key])) {
+                $nested = $section[$key];
+                $this->expandValues($config, $nested);
+                $section[$key] = $nested;
             }
         }
     }
@@ -269,7 +298,11 @@ final class Configurator extends stdClass
         if (is_bool($value)) {
             return $value ? 'yes' : 'no';
         }
-        return (string) $value;
+        if (is_scalar($value) || $value === null || is_resource($value) || $value instanceof \Stringable) {
+            return (string) $value;
+        }
+
+        return \Dogma\ExceptionValueFormatter::format($value);
     }
 
     public function __get(string $name): mixed

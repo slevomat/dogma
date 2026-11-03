@@ -70,22 +70,25 @@ use function uasort;
 use function uksort;
 
 /**
- * @implements ArrayAccess<mixed, mixed>
- * @implements IteratorAggregate<mixed, mixed>
+ * @template TKey of array-key = array-key
+ * @template TValue = mixed
+ * @implements ArrayAccess<TKey, TValue|null>
+ * @implements IteratorAggregate<TKey, TValue>
  */
 class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 {
+    /** @use ImmutableArrayAccessMixin<TKey, TValue> */
     use ImmutableArrayAccessMixin;
     use StrictBehaviorMixin;
 
     /** @internal */
     private const bool PRESERVE_KEYS = true;
 
-    /** @var mixed[] */
+    /** @var array<TKey, TValue> */
     private array $items;
 
     /**
-     * @param mixed[] $items
+     * @param array<TKey, TValue> $items
      */
     final public function __construct(array $items)
     {
@@ -93,7 +96,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TNewValue
+     * @param TNewValue $values
+     * @return static<array-key, TNewValue>
      */
     public static function create(mixed ...$values): self
     {
@@ -101,7 +106,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param iterable|mixed[] $that
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<TNewKey, TNewValue> $that
+     * @return static<TNewKey, TNewValue>
      */
     public static function from(iterable $that): self
     {
@@ -109,8 +117,11 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param iterable|mixed[] $keys
-     * @param iterable|mixed[] $values
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<array-key, TNewKey> $keys
+     * @param iterable<array-key, TNewValue> $values
+     * @return static<TNewKey, TNewValue>
      */
     public static function combine(iterable $keys, iterable $values): self
     {
@@ -125,8 +136,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param iterable|mixed[] $that
-     * @return mixed[]
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<TNewKey, TNewValue> $that
+     * @return array<TNewKey, TNewValue>
      */
     private static function convertToArray(iterable $that): array
     {
@@ -142,8 +155,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int $step >= 1
-     * @return static
+     * @param int<1, max> $step
+     * @return static<int, int|string>
      */
     public static function range(int|string $start, int|string $end, int $step = 1): self
     {
@@ -152,31 +165,32 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return new static(range($start, $end, $step));
     }
 
-    /**
-     * @return Iterator<mixed>
-     */
+    /** @return Iterator<TKey, TValue> */
     public function getIterator(): Iterator
     {
         return new ArrayIterator($this->items);
     }
 
-    public function getReverseIterator(): ReverseArrayIterator
+    /** @return Iterator<TKey, TValue> */
+    public function getReverseIterator(): Iterator
     {
         return new ReverseArrayIterator($this->items);
     }
 
+    /** @return self<int, TKey> */
     public function keys(): self
     {
         return new static(array_keys($this->toArray()));
     }
 
+    /** @return self<int, TValue> */
     public function values(): self
     {
         return new static(array_values($this->toArray()));
     }
 
     /**
-     * @return mixed[]
+     * @return array<TKey, TValue>
      */
     public function toArray(): array
     {
@@ -184,7 +198,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return mixed[]
+     * @return array<TKey, mixed>
      */
     public function toArrayRecursive(): array
     {
@@ -196,14 +210,22 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return $res;
     }
 
+    /** @return TKey */
     public function randomKey(): int|string
     {
-        return array_rand($this->toArray());
+        $key = array_rand($this->toArray());
+        /** @var TKey $key */
+
+        return $key;
     }
 
+    /** @return TValue */
     public function randomValue(): mixed
     {
-        return $this[$this->randomKey()];
+        $value = $this->items[$this->randomKey()];
+        /** @var TValue $value */
+
+        return $value;
     }
 
     /**
@@ -249,6 +271,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return count(array_unique(array_intersect($this->items, $values))) === count($values);
     }
 
+    /** @return TKey|null */
     public function indexOf(mixed $value, int $from = 0): int|string|null
     {
         if ($from > 0) {
@@ -264,13 +287,14 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @return self<int, TKey>
      */
     public function indexesOf(mixed $value): self
     {
         return new static(array_keys($this->items, $value, true));
     }
 
+    /** @return TKey|null */
     public function lastIndexOf(mixed $value, ?int $end = null): int|string|null
     {
         if ($end !== null) {
@@ -280,6 +304,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return $this->indexesOf($value)->last();
     }
 
+    /** @return TKey|null */
     public function indexWhere(callable $function, int $from = 0): int|string|null
     {
         foreach ($this->drop($from) as $key => $value) {
@@ -291,18 +316,20 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return null;
     }
 
+    /** @return TKey|null */
     public function lastIndexWhere(callable $function, ?int $end = null): mixed
     {
         return $this->take($end)->reverse()->indexWhere($function);
     }
 
+    /** @param TKey $key */
     public function containsKey(int|string $key): bool
     {
         return $this->offsetExists($key);
     }
 
     /**
-     * @param mixed[] $keys
+     * @param array<array-key, TKey> $keys
      */
     public function containsAnyKey(array $keys): bool
     {
@@ -310,7 +337,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed[] $keys
+     * @param array<array-key, TKey> $keys
      */
     public function containsAllKeys(array $keys): bool
     {
@@ -339,6 +366,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return true;
     }
 
+    /** @return TValue|null */
     public function find(callable $function): mixed
     {
         foreach ($this as $value) {
@@ -582,7 +610,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TAcc
+     * @param callable(TAcc, TValue): TAcc $function
+     * @param TAcc $init
+     * @return self<int, TAcc>
      */
     public function scanLeft(callable $function, mixed $init): self
     {
@@ -596,7 +627,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TAcc
+     * @param callable(TValue, TAcc): TAcc $function
+     * @param TAcc $init
+     * @return self<int, TAcc>
      */
     public function scanRight(callable $function, mixed $init): self
     {
@@ -612,6 +646,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     // slicing ---------------------------------------------------------------------------------------------------------
 
+    /** @return TValue|null */
     public function head(): mixed
     {
         if (count($this->items) === 0) {
@@ -621,7 +656,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return reset($this->items);
     }
 
-    /** Alias of head() */
+    /** @return TValue|null Alias of head(). */
     public function first(): mixed
     {
         if (count($this->items) === 0) {
@@ -631,6 +666,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return reset($this->items);
     }
 
+    /** @return TValue|null */
     public function last(): mixed
     {
         if (count($this->items) === 0) {
@@ -742,7 +778,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TPadValue
+     * @param TPadValue $value
+     * @return self<TKey|int, TValue|TPadValue>
      */
     public function padTo(int $length, mixed $value): self
     {
@@ -750,7 +788,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static[] (static $l, static $r)
+     * @return array{self<TKey, TValue>, self<TKey, TValue>}
      */
     public function span(callable $function): array
     {
@@ -848,7 +886,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static[] (static $fist, static $second)
+     * @return array{self<TKey, TValue>, self<TKey, TValue>}
      */
     public function partition(callable $function): array
     {
@@ -942,8 +980,12 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
             return new static($arr);
         }
 
-        array_unshift($arr, null);
-        $arr = array_map(...$arr);
+        $rows = [];
+        foreach ($arr as $row) {
+            Check::array($row);
+            $rows[] = $row;
+        }
+        $arr = array_map(null, ...$rows);
         foreach ($arr as $key => $value) {
             $arr[$key] = (array) $value;
         }
@@ -958,6 +1000,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         }
         $arr = [];
         foreach ($this->items as $i => $items) {
+            Check::array($items);
             foreach ($items as $j => $item) {
                 $arr[$j][$i] = $item;
             }
@@ -966,7 +1009,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @param int|string|null $valueKey
+     * @param int|string|null $indexKey
+     * @return self<array-key, mixed>
      */
     public function column(mixed $valueKey, mixed $indexKey = null): self
     {
@@ -1045,16 +1090,25 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // merging ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @return static
+     * @template TNewValue
+     * @param TNewValue $values
+     * @return self<TKey|int, TValue|TNewValue>
      */
     public function append(mixed ...$values): self
     {
-        return $this->appendAll($values);
+        /** @var array<array-key, TNewValue> $values */
+        $result = $this->toArray();
+        foreach ($values as $value) {
+            $result[] = $value;
+        }
+
+        return new static($result);
     }
 
     /**
-     * @param iterable|mixed[] $values
-     * @return static
+     * @template TNewValue
+     * @param iterable<array-key, TNewValue> $values
+     * @return self<TKey|int, TValue|TNewValue>
      */
     public function appendAll(iterable $values): self
     {
@@ -1067,16 +1121,24 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TNewValue
+     * @param TNewValue $values
+     * @return self<TKey|int, TValue|TNewValue>
      */
     public function prepend(mixed ...$values): self
     {
-        return $this->prependAll($values);
+        foreach ($this as $value) {
+            $values[] = $value;
+        }
+
+        return new static($values);
     }
 
     /**
-     * @param iterable|mixed[] $values
-     * @return static
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<TNewKey, TNewValue> $values
+     * @return self<TKey|TNewKey|int, TValue|TNewValue>
      */
     public function prependAll(iterable $values): self
     {
@@ -1091,7 +1153,11 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return static
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param TNewKey $find
+     * @param TNewValue $replace
+     * @return self<TKey|TNewKey, TValue|TNewValue>
      */
     public function replace(mixed $find, mixed $replace): self
     {
@@ -1102,7 +1168,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param iterable|mixed[] $replacements
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<TNewKey, TNewValue> $replacements
+     * @return self<TKey|TNewKey, TValue|TNewValue>
      */
     public function replaceAll(iterable $replacements): self
     {
@@ -1115,9 +1184,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return new static($arr);
     }
 
-    /**
-     * @return static
-     */
+    /** @return self<TKey, TValue> */
     public function remove(int $from, int $length = 0): self
     {
         $arr = $this->toArray();
@@ -1127,8 +1194,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed[] $patch
-     * @return static
+     * @template TNewValue
+     * @param array<array-key, TNewValue> $patch
+     * @return self<array-key, TValue|TNewValue>
      */
     public function patch(int $from, array $patch, ?int $length = null): self
     {
@@ -1140,7 +1208,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed[] $patch
+     * @template TNewValue
+     * @param array<array-key, TNewValue> $patch
+     * @return self<array-key, TValue|TNewValue>
      */
     public function insert(int $from, array $patch): self
     {
@@ -1151,7 +1221,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param iterable|mixed[] $that
+     * @template TNewKey of array-key
+     * @template TNewValue
+     * @param iterable<TNewKey, TNewValue> $that
+     * @return self<TKey|TNewKey, TValue|TNewValue>
      */
     public function merge(iterable $that): self
     {
@@ -1189,7 +1262,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         array_unshift($args, $self);
         $args[] = $function;
 
-        $arr = array_udiff(...$args);
+        /** @var array<TKey, TValue> $arr */
+        $arr = \call_user_func_array('array_udiff', $args);
 
         return new static($arr);
     }
@@ -1218,7 +1292,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         array_unshift($args, $self);
         $args[] = $function;
 
-        $arr = array_diff_ukey(...$args);
+        /** @var array<TKey, TValue> $arr */
+        $arr = \call_user_func_array('array_diff_ukey', $args);
 
         return new static($arr);
     }
@@ -1249,13 +1324,16 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         if ($function && $keysFunction) {
             $args[] = $function;
             $args[] = $keysFunction;
-            $arr = array_udiff_uassoc(...$args);
-        } elseif ($function && !$keysFunction) {
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_udiff_uassoc', $args);
+        } elseif ($function) {
             $args[] = $function;
-            $arr = array_udiff_assoc(...$args);
-        } elseif (!$function && $keysFunction) {
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_udiff_assoc', $args);
+        } elseif ($keysFunction) {
             $args[] = $keysFunction;
-            $arr = array_diff_uassoc(...$args);
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_diff_uassoc', $args);
         } else {
             $arr = array_diff_assoc(...$args);
         }
@@ -1287,7 +1365,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         array_unshift($args, $self);
         $args[] = $function;
 
-        $arr = array_uintersect(...$args);
+        /** @var array<TKey, TValue> $arr */
+        $arr = \call_user_func_array('array_uintersect', $args);
 
         return new static($arr);
     }
@@ -1316,7 +1395,8 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         array_unshift($args, $self);
         $args[] = $function;
 
-        $arr = array_intersect_ukey(...$args);
+        /** @var array<TKey, TValue> $arr */
+        $arr = \call_user_func_array('array_intersect_ukey', $args);
 
         return new static($arr);
     }
@@ -1347,13 +1427,16 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         if ($function && $keysFunction) {
             $args[] = $function;
             $args[] = $keysFunction;
-            $arr = array_uintersect_uassoc(...$args);
-        } elseif ($function && !$keysFunction) {
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_uintersect_uassoc', $args);
+        } elseif ($function) {
             $args[] = $function;
-            $arr = array_uintersect_assoc(...$args);
-        } elseif (!$function && $keysFunction) {
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_uintersect_assoc', $args);
+        } elseif ($keysFunction) {
             $args[] = $keysFunction;
-            $arr = array_intersect_uassoc(...$args);
+            /** @var array<TKey, TValue> $arr */
+            $arr = \call_user_func_array('array_intersect_uassoc', $args);
         } else {
             $arr = array_intersect_assoc(...$args);
         }

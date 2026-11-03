@@ -14,21 +14,23 @@ use Iterator;
 /**
  * Combines values from two given iterators as keys and values. Iterators should return same number of items.
  *
- * @implements Iterator<mixed, mixed>
+ * @template TKey of array-key
+ * @template TValue
+ * @implements Iterator<TKey, TValue>
  */
 class CombineIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var Iterator<mixed, mixed> */
+    /** @var Iterator<array-key, TKey> */
     private Iterator $keys;
 
-    /** @var Iterator<mixed, mixed> */
+    /** @var Iterator<array-key, TValue> */
     private Iterator $values;
 
     /**
-     * @param iterable|mixed[] $keys
-     * @param iterable|mixed[] $values
+     * @param iterable<array-key, TKey> $keys
+     * @param iterable<array-key, TValue> $values
      */
     public function __construct(iterable $keys, iterable $values)
     {
@@ -61,13 +63,14 @@ class CombineIterator implements Iterator
         return $keysValid && $valuesValid;
     }
 
+    /** @return TValue|null */
     public function current(): mixed
     {
         return $this->values->valid() ? $this->values->current() : null;
     }
 
     /**
-     * @return int|string|null
+     * @return TKey|null
      */
     public function key(): mixed
     {

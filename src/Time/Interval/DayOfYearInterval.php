@@ -192,7 +192,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {
@@ -203,7 +203,7 @@ class DayOfYearInterval implements ModuloInterval
     }
 
     /**
-     * @param self $other
+     * @param Comparable $other
      */
     public function compare(Comparable $other): int
     {

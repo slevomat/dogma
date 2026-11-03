@@ -871,7 +871,8 @@ class Str
 
     /**
      * @deprecated use Re::match() instead
-     * @return string[]|null
+     * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     * @return array<array-key, string|array{string|null, int<-1, max>}|null>|null
      */
     public static function match(string $string, string $pattern, int $flags = 0, int $offset = 0): ?array
     {
@@ -880,7 +881,8 @@ class Str
 
     /**
      * @deprecated use Re::matchAll() instead
-     * @return string[][]
+     * @param int-mask<PREG_PATTERN_ORDER, PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     * @return array<array-key, array<array-key, string|array{string|null, int<-1, max>}|null>>
      */
     public static function matchAll(string $string, string $pattern, int $flags = 0, int $offset = 0): array
     {

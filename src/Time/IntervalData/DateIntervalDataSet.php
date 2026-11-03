@@ -47,11 +47,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     private array $intervals;
 
     /**
-     * @param list<DateIntervalData<TData>> $intervals
+     * @param array<array-key, DateIntervalData<TData>> $intervals
      */
     final public function __construct(array $intervals)
     {
-        /** @var DateIntervalData<TData>[] $intervals */
+        /** @var list<DateIntervalData<TData>> $intervals */
         $intervals = Arr::values(Arr::filter($intervals, static function (DateIntervalData $interval): bool {
             return !$interval->isEmpty();
         }));
@@ -60,8 +60,9 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param TData $data
-     * @return DateIntervalDataSet<TData>
+     * @template TNewData
+     * @param TNewData $data
+     * @return DateIntervalDataSet<TNewData>
      */
     public static function createFromDateIntervalSet(DateIntervalSet $set, mixed $data): self
     {
@@ -73,23 +74,28 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @param NightIntervalDataSet<TData> $interval
-     * @return self<TData>
+     * @template TInputData
+     * @param NightIntervalDataSet<TInputData> $interval
+     * @return self<TInputData>
      */
     public static function createFromNightIntervalDataSet(NightIntervalDataSet $interval): self
     {
         return $interval->toDateIntervalDataSet();
     }
 
-	/**
-	 * @return self<TData>
-	 */
+    /**
+     * @return self<mixed>
+     */
     public static function empty(): self
     {
         return new static([]);
     }
 
-    /** @return self<TData> */
+    /**
+     * @template TNewData
+     * @param TNewData $data
+     * @return self<TNewData>
+     */
     public static function all(mixed $data): self
     {
         return new static([DateIntervalData::all($data)]);
@@ -170,7 +176,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     }
 
     /**
-     * @return Traversable<DateIntervalData<TData>>
+     * @return Traversable<int, DateIntervalData<TData>>
      */
     public function getIterator(): Traversable
     {
@@ -182,9 +188,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return $this->intervals === [];
     }
 
-    /**
-     * @param self<TData> $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -224,12 +227,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * Join overlapping intervals in set, if they have the same data.
-     * @param DateIntervalData<TData>[] $intervals
+     * @param list<DateIntervalData<TData>> $intervals
      * @return list<DateIntervalData<TData>>
      */
     private static function normalizeIntervals(array $intervals): array
     {
-        $intervals = array_values($intervals);
         foreach ($intervals as $i => $interval) {
             if ($interval->isEmpty()) {
                 unset($intervals[$i]);
@@ -237,6 +239,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         }
 
         /** @var list<DateIntervalData<TData>> $intervals */
+        $intervals = Arr::values($intervals);
         $intervals = Arr::sortComparableValues($intervals);
         $count = count($intervals) - 1;
         for ($n = 0; $n < $count; $n++) {
@@ -252,7 +255,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
             }
         }
 
-        return array_values($intervals);
+        return Arr::values($intervals);
     }
 
     /**
@@ -299,8 +302,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     {
         $sources = $this->intervals;
         $results = [];
-        /** @var DateIntervalData<TData> $result */
-        while ($result = array_shift($sources)) {
+        while (($result = array_shift($sources)) !== null) {
             foreach ($intervals as $interval) {
                 $result = $result->subtract($interval);
                 if (count($result->intervals) === 0) {
@@ -342,7 +344,11 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         foreach ($this->intervals as $result) {
             foreach ($intervals as $interval) {
                 if ($result->intersects($interval)) {
-                    $results[] = $result->intersect($interval);
+                    $results[] = new DateIntervalData(
+                        Date::max($result->getStart(), $interval->getStart()),
+                        Date::min($result->getEnd(), $interval->getEnd()),
+                        $result->getData()
+                    );
                 }
             }
         }

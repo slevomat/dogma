@@ -170,7 +170,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     }
 
     /**
-     * @param self $other
+     * @param Equalable $other
      */
     public function equals(Equalable $other): bool
     {

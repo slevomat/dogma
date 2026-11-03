@@ -15,6 +15,7 @@ use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
 use Throwable;
 use function array_pop;
+use function array_pad;
 use function count;
 use function end;
 use function explode;
@@ -102,6 +103,10 @@ class Type
                     $nullable = $arg;
                     break;
                 case $size === null && (is_int($arg) || is_array($arg)):
+                    if (is_array($arg)) {
+                        Check::itemsOfType($arg, 'int');
+                        /** @var int[] $arg */
+                    }
                     $size = $arg;
                     if (is_int($size)) {
                         self::checkSize($type, $size);
@@ -137,9 +142,25 @@ class Type
 
         $id = $type;
         if ($size !== null || $specific !== null || $encoding !== null || $locale !== null) {
-            $id .= '(' . implode(',', Arr::flatten(Arr::filter(
-                [$size, $specific, $encoding !== null ? $encoding->value : null, $locale ? $locale->getValue() : null]
-            ))) . ')';
+            $params = [];
+            if (is_array($size)) {
+                foreach (Arr::flatten($size) as $sizeValue) {
+                    $params[] = $sizeValue;
+                }
+            } elseif ($size) {
+                $params[] = $size;
+            }
+            if ($specific) {
+                $params[] = $specific;
+            }
+            if ($encoding !== null) {
+                $params[] = $encoding->value;
+            }
+            if ($locale && $locale->getValue()) {
+                $params[] = $locale->getValue();
+            }
+
+            $id .= '(' . implode(',', $params) . ')';
         }
         if ($nullable) {
             $id .= '?';
@@ -222,8 +243,6 @@ class Type
 
     public static function collectionOf(string $type, self|string $itemType, bool $nullable = false): self
     {
-        Check::types($itemType, [self::STRING, self::class]);
-
         if (!$itemType instanceof self) {
             $itemType = self::get($itemType);
         }
@@ -246,6 +265,8 @@ class Type
         }
 
         Check::itemsOfTypes($itemTypes, [self::STRING, self::class]);
+        /** @var array<array-key, self|string> $itemTypes */
+        $itemTypes = $itemTypes;
 
         $itemIds = [];
         foreach ($itemTypes as &$type) {
@@ -281,7 +302,9 @@ class Type
         if (!preg_match('/^([^(<?]+)(?:\\(([^)]+)\\))?(?:<(.*)>)?(\\?)?$/', $id, $match)) {
             throw new InvalidTypeDefinitionException($id);
         }
-        $match = Arr::padTo($match, 5, false);
+        $match = array_pad($match, 5, '');
+        /** @var list<string> $match */
+        $match = $match;
         [, $baseId, $params, $itemIds, $nullable] = $match;
         $nullable = (bool) $nullable;
 
@@ -518,7 +541,7 @@ class Type
 
                 return self::collectionOf($this->type, $itemType);
             case $this->isTuple():
-                /** @var mixed[] $itemType */
+                /** @var self[] $itemType */
                 $itemType = $this->itemType;
 
                 return self::tupleOf(...$itemType);
