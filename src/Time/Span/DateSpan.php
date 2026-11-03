@@ -18,7 +18,7 @@ class DateSpan implements DateOrTimeSpan
 {
     use StrictBehaviorMixin;
 
-    public const DEFAULT_FORMAT = 'y-m-d';
+    public const string DEFAULT_FORMAT = 'y-m-d';
 
     private int $years;
 
@@ -29,7 +29,7 @@ class DateSpan implements DateOrTimeSpan
     final public function __construct(
         int $years,
         int $months = 0,
-        int $days = 0
+        int $days = 0,
     ) {
         [$years, $months, $days] = self::normalizeUnits($years, $months, $days);
 

@@ -25,15 +25,15 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    public const MIN = '01-01';
-    public const MAX = '12-31';
+    public const string MIN = '01-01';
+    public const string MAX = '12-31';
 
-    public const MIN_NUMBER = 1;
-    public const MAX_NUMBER = 366;
-    public const MAX_DENORMALIZED = self::MAX_NUMBER * 2;
+    public const int MIN_NUMBER = 1;
+    public const int MAX_NUMBER = 366;
+    public const int MAX_DENORMALIZED = self::MAX_NUMBER * 2;
 
-    public const DEFAULT_FORMAT = 'm-d';
-    public const DEFAULT_FORMAT_YEAR = 2000; // because it is a leap-year. We do not want February 29th to fallback to March 1st
+    public const string DEFAULT_FORMAT = 'm-d';
+    public const int DEFAULT_FORMAT_YEAR = 2000; // because it is a leap-year. We do not want February 29th to fallback to March 1st
 
     private readonly int $number;
 

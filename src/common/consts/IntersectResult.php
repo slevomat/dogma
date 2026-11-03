@@ -14,34 +14,34 @@ class IntersectResult
     use StaticClassMixin;
 
     // a---a   b---b
-    public const BEFORE_START = -6;
+    public const int BEFORE_START = -6;
     // a---ab---b
-    public const TOUCHES_START = -5;
+    public const int TOUCHES_START = -5;
     // a---b---a---b
-    public const INTERSECTS_START = -4;
+    public const int INTERSECTS_START = -4;
 
     // a---b---ab
-    public const EXTENDS_START = -3;
+    public const int EXTENDS_START = -3;
     // a---b---b---a
-    public const CONTAINS = -2;
+    public const int CONTAINS = -2;
     // ab---a---b
-    public const FITS_TO_START = -1;
+    public const int FITS_TO_START = -1;
 
     // ab---ab
-    public const SAME = 0;
+    public const int SAME = 0;
 
     // b---a---ab
-    public const FITS_TO_END = 1;
+    public const int FITS_TO_END = 1;
     // b---a---a---b
-    public const IS_CONTAINED = 2;
+    public const int IS_CONTAINED = 2;
     // ab---b---a
-    public const EXTENDS_END = 3;
+    public const int EXTENDS_END = 3;
 
     // b---a---b---a
-    public const INTERSECTS_END = 4;
+    public const int INTERSECTS_END = 4;
     // b---ab---a
-    public const TOUCHES_END = 5;
+    public const int TOUCHES_END = 5;
     // b---b   a---a
-    public const AFTER_END = 6;
+    public const int AFTER_END = 6;
 
 }

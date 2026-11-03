@@ -129,7 +129,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
     public function format(
         string $format = NightInterval::DEFAULT_FORMAT,
         ?DateTimeIntervalFormatter $formatter = null,
-        string $separator = ', '
+        string $separator = ', ',
     ): string
     {
         return implode($separator, Arr::map($this->intervals, static function (NightInterval $interval) use ($format, $formatter): string {

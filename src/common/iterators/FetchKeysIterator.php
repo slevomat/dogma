@@ -31,7 +31,7 @@ class FetchKeysIterator extends IteratorIterator
     public function __construct(
         iterable $iterable,
         private int|null|string $keysKey = null,
-        private int|null|string $valuesKey = null
+        private int|null|string $valuesKey = null,
     )
     {
         $iterable = IteratorHelper::iterableToIterator($iterable);

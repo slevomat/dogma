@@ -38,10 +38,10 @@ class DayOfYearInterval implements ModuloInterval
     use IntervalDumpMixin;
     use StrictBehaviorMixin;
 
-    public const MIN = DayOfYear::MIN_NUMBER;
-    public const MAX = DayOfYear::MAX_DENORMALIZED;
+    public const int MIN = DayOfYear::MIN_NUMBER;
+    public const int MAX = DayOfYear::MAX_DENORMALIZED;
 
-    public const DEFAULT_FORMAT = 'm-d| - m-d';
+    public const string DEFAULT_FORMAT = 'm-d| - m-d';
 
     private DayOfYear $start;
 

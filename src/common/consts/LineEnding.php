@@ -13,12 +13,12 @@ class LineEnding
 {
     use StaticClassMixin;
 
-    public const LF = "\n";
-    public const CRLF = "\r\n";
-    public const CR = "\r";
+    public const string LF = "\n";
+    public const string CRLF = "\r\n";
+    public const string CR = "\r";
 
-    public const LINUX = self::LF;
-    public const WINDOWS = self::CRLF;
-    public const MAC = self::CR;
+    public const string LINUX = self::LF;
+    public const string WINDOWS = self::CRLF;
+    public const string MAC = self::CR;
 
 }

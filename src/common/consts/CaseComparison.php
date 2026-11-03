@@ -15,7 +15,7 @@ class CaseComparison
 {
     use StaticClassMixin;
 
-    public const CASE_SENSITIVE = 0;
-    public const CASE_INSENSITIVE = SORT_FLAG_CASE; // 8
+    public const int CASE_SENSITIVE = 0;
+    public const int CASE_INSENSITIVE = SORT_FLAG_CASE; // 8
 
 }

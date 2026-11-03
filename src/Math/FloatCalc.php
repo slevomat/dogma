@@ -18,7 +18,7 @@ class FloatCalc
 {
     use StaticClassMixin;
 
-    public const EPSILON = 0.0000000000001;
+    public const float EPSILON = 0.0000000000001;
 
     public static function equals(float $first, float $second, float $epsilon = self::EPSILON): bool
     {

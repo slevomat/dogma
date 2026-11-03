@@ -33,8 +33,8 @@ class IntInterval implements Interval
 {
     use StrictBehaviorMixin;
 
-    public const MIN = PHP_INT_MIN;
-    public const MAX = PHP_INT_MAX;
+    public const int MIN = PHP_INT_MIN;
+    public const int MAX = PHP_INT_MAX;
 
     private int $start;
 

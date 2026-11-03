@@ -25,71 +25,71 @@ class DateTimeSpanFormatter
 {
     use StrictBehaviorMixin;
 
-    public const YEARS = 'y';
-    public const YEARS_FRACTION = 'Y';
-    public const YEARS_WORD = 'Z';
-    public const YEARS_UNIT = 'z';
+    public const string YEARS = 'y';
+    public const string YEARS_FRACTION = 'Y';
+    public const string YEARS_WORD = 'Z';
+    public const string YEARS_UNIT = 'z';
 
-    public const MONTHS = 'm';
-    public const MONTHS_FRACTION = 'M';
-    public const MONTHS_TOTAL = 'n';
-    public const MONTHS_TOTAL_FRACTION = 'N';
-    public const MONTHS_WORD = 'O';
-    public const MONTHS_UNIT = 'o';
+    public const string MONTHS = 'm';
+    public const string MONTHS_FRACTION = 'M';
+    public const string MONTHS_TOTAL = 'n';
+    public const string MONTHS_TOTAL_FRACTION = 'N';
+    public const string MONTHS_WORD = 'O';
+    public const string MONTHS_UNIT = 'o';
 
-    public const WEEKS = 'w';
-    public const WEEKS_FRACTION = 'W';
-    public const WEEKS_TOTAL = 'x';
-    public const WEEKS_TOTAL_FRACTION = 'X';
-    public const WEEKS_WORD = 'A';
-    public const WEEKS_UNIT = 'a';
+    public const string WEEKS = 'w';
+    public const string WEEKS_FRACTION = 'W';
+    public const string WEEKS_TOTAL = 'x';
+    public const string WEEKS_TOTAL_FRACTION = 'X';
+    public const string WEEKS_WORD = 'A';
+    public const string WEEKS_UNIT = 'a';
 
-    public const DAYS = 'd';
-    public const DAYS_FRACTION = 'D';
-    public const DAYS_TOTAL = 'e';
-    public const DAYS_TOTAL_FRACTION = 'E';
-    public const DAYS_WORD = 'F';
-    public const DAYS_UNIT = 'f';
+    public const string DAYS = 'd';
+    public const string DAYS_FRACTION = 'D';
+    public const string DAYS_TOTAL = 'e';
+    public const string DAYS_TOTAL_FRACTION = 'E';
+    public const string DAYS_WORD = 'F';
+    public const string DAYS_UNIT = 'f';
 
-    public const HOURS = 'h';
-    public const HOURS_FRACTION = 'H';
-    public const HOURS_TOTAL = 'g';
-    public const HOURS_TOTAL_FRACTION = 'G';
-    public const HOURS_WORD = 'L';
-    public const HOURS_UNIT = 'l';
+    public const string HOURS = 'h';
+    public const string HOURS_FRACTION = 'H';
+    public const string HOURS_TOTAL = 'g';
+    public const string HOURS_TOTAL_FRACTION = 'G';
+    public const string HOURS_WORD = 'L';
+    public const string HOURS_UNIT = 'l';
 
-    public const MINUTES = 'i';
-    public const MINUTES_FRACTION = 'I';
-    public const MINUTES_TOTAL = 'j';
-    public const MINUTES_TOTAL_FRACTION = 'J';
-    public const MINUTES_WORD = 'K';
-    public const MINUTES_UNIT = 'k';
+    public const string MINUTES = 'i';
+    public const string MINUTES_FRACTION = 'I';
+    public const string MINUTES_TOTAL = 'j';
+    public const string MINUTES_TOTAL_FRACTION = 'J';
+    public const string MINUTES_WORD = 'K';
+    public const string MINUTES_UNIT = 'k';
 
-    public const SECONDS = 's';
-    public const SECONDS_FRACTION = 'S';
-    public const SECONDS_TOTAL = 't';
-    public const SECONDS_TOTAL_FRACTION = 'T';
-    public const SECONDS_WORD = 'R';
-    public const SECONDS_UNIT = 'r';
+    public const string SECONDS = 's';
+    public const string SECONDS_FRACTION = 'S';
+    public const string SECONDS_TOTAL = 't';
+    public const string SECONDS_TOTAL_FRACTION = 'T';
+    public const string SECONDS_WORD = 'R';
+    public const string SECONDS_UNIT = 'r';
 
-    public const MILISECONDS = 'v';
-    public const MILISECONDS_TOTAL = 'V';
-    public const MILISECONDS_WORD = 'B';
-    public const MILISECONDS_UNIT = 'b';
+    public const string MILISECONDS = 'v';
+    public const string MILISECONDS_TOTAL = 'V';
+    public const string MILISECONDS_WORD = 'B';
+    public const string MILISECONDS_UNIT = 'b';
 
-    public const MICROSECONDS = 'u';
-    public const MICROSECONDS_TOTAL = 'U';
-    public const MICROSECONDS_WORD = 'C';
-    public const MICROSECONDS_UNIT = 'c';
+    public const string MICROSECONDS = 'u';
+    public const string MICROSECONDS_TOTAL = 'U';
+    public const string MICROSECONDS_WORD = 'C';
+    public const string MICROSECONDS_UNIT = 'c';
 
-    public const PRETTY_DOUBLE_WORDS = 'P';
-    public const PRETTY_DOUBLE_UNITS = 'P';
-    public const PRETTY_SINGLE_WORDS = 'Q';
-    public const PRETTY_SINGLE_UNITS = 'q';
+    public const string PRETTY_DOUBLE_WORDS = 'P';
+    public const string PRETTY_DOUBLE_UNITS = 'P';
+    public const string PRETTY_SINGLE_WORDS = 'Q';
+    public const string PRETTY_SINGLE_UNITS = 'q';
 
-    public const FORMAT_DEFAULT = 'y-m-d h:i:S';
-    public const FORMAT_FULL_WORDS = '[yZ, ][mO, ]dF[, hL][, iK][, SR]';
-    public const FORMAT_FULL_UNITS = '[yz, ][mo, ]df[, hl][, ik][, Sr]';
+    public const string FORMAT_DEFAULT = 'y-m-d h:i:S';
+    public const string FORMAT_FULL_WORDS = '[yZ, ][mO, ]dF[, hL][, iK][, SR]';
+    public const string FORMAT_FULL_UNITS = '[yz, ][mo, ]df[, hl][, ik][, Sr]';
 
     /** @var string[] */
     private static array $specialCharacters = [
@@ -240,7 +240,7 @@ class DateTimeSpanFormatter
         DateTimeSpan $span,
         ?string $format = null,
         ?int $maxDecimals = null,
-        ?string $decimalPoint = null
+        ?string $decimalPoint = null,
     ): string
     {
         $format ??= $this->format;

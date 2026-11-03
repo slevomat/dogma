@@ -21,16 +21,16 @@ class AngleFormatter
 {
     use StrictBehaviorMixin;
 
-    public const DEGREES = 'D';
-    public const DEGREES_FLOORED = 'd';
-    public const MINUTES = 'M';
-    public const MINUTES_FLOORED = 'm';
-    public const SECONDS = 'S';
-    public const SECONDS_FLOORED = 's';
+    public const string DEGREES = 'D';
+    public const string DEGREES_FLOORED = 'd';
+    public const string MINUTES = 'M';
+    public const string MINUTES_FLOORED = 'm';
+    public const string SECONDS = 'S';
+    public const string SECONDS_FLOORED = 's';
 
-    public const FORMAT_DEFAULT = 'd:m:S';
-    public const FORMAT_PRETTY = 'd˚m′S″';
-    public const FORMAT_NUMBER = 'D';
+    public const string FORMAT_DEFAULT = 'd:m:S';
+    public const string FORMAT_PRETTY = 'd˚m′S″';
+    public const string FORMAT_NUMBER = 'D';
 
     /** @var string[] */
     private static array $specialCharacters = [

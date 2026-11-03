@@ -13,8 +13,8 @@ class ComparisonResult
 {
     use StaticClassMixin;
 
-    public const GREATER = 1;
-    public const SAME = 0;
-    public const LESSER = -1;
+    public const int GREATER = 1;
+    public const int SAME = 0;
+    public const int LESSER = -1;
 
 }

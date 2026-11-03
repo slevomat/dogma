@@ -37,8 +37,8 @@ class NightIntervalData implements Equalable, Comparable, IntersectComparable, P
 {
     use StrictBehaviorMixin;
 
-    public const MIN = Date::MIN;
-    public const MAX = Date::MAX;
+    public const string MIN = Date::MIN;
+    public const string MAX = Date::MAX;
 
     private Date $start;
 

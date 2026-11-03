@@ -47,13 +47,13 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    public const MIN = '0001-01-01';
-    public const MAX = '9999-12-31';
+    public const string MIN = '0001-01-01';
+    public const string MAX = '9999-12-31';
 
-    public const MIN_DAY_NUMBER = 1721426;
-    public const MAX_DAY_NUMBER = 5373484;
+    public const int MIN_DAY_NUMBER = 1721426;
+    public const int MAX_DAY_NUMBER = 5373484;
 
-    public const DEFAULT_FORMAT = 'Y-m-d';
+    public const string DEFAULT_FORMAT = 'Y-m-d';
 
     private readonly int $julianDay;
 
@@ -322,14 +322,14 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
+        $today = $timeProvider?->getDate() ?? new self();
 
         return $this->julianDay > $today->julianDay;
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new self();
+        $today = $timeProvider?->getDate() ?? new self();
 
         return $this->julianDay < $today->julianDay;
     }

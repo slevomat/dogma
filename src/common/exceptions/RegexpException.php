@@ -20,7 +20,7 @@ use const PREG_RECURSION_LIMIT_ERROR;
 class RegexpException extends Exception
 {
 
-    public const MESSAGES = [
+    public const array MESSAGES = [
         0 => 'Unknown error',
         PREG_INTERNAL_ERROR => 'Internal error',
         PREG_BACKTRACK_LIMIT_ERROR => 'Backtrack limit exhausted',

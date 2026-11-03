@@ -18,12 +18,12 @@ class Microseconds
 {
     use StaticClassMixin;
 
-    public const SECOND = 1000000;
-    public const MINUTE = Seconds::MINUTE * self::SECOND;
-    public const HOUR = Seconds::HOUR * self::SECOND;
-    public const DAY = Seconds::DAY * self::SECOND;
-    public const WEEK = Seconds::WEEK * self::SECOND;
-    public const COMMON_YEAR = Seconds::COMMON_YEAR * self::SECOND;
-    public const LEAP_YEAR = Seconds::LEAP_YEAR * self::SECOND;
+    public const int SECOND = 1000000;
+    public const int MINUTE = Seconds::MINUTE * self::SECOND;
+    public const int HOUR = Seconds::HOUR * self::SECOND;
+    public const int DAY = Seconds::DAY * self::SECOND;
+    public const int WEEK = Seconds::WEEK * self::SECOND;
+    public const int COMMON_YEAR = Seconds::COMMON_YEAR * self::SECOND;
+    public const int LEAP_YEAR = Seconds::LEAP_YEAR * self::SECOND;
 
 }

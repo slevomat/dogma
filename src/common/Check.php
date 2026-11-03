@@ -173,7 +173,7 @@ final class Check
             try {
                 self::type($value, $type, $min, $max);
                 return;
-            } catch (InvalidTypeException $e) {
+            } catch (InvalidTypeException) {
                 // pass
             }
         }

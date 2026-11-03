@@ -21,15 +21,15 @@ class PositionFormatter
 {
     use StaticClassMixin;
 
-    public const LATITUDE = 'l';
-    public const LATITUDE_SIGNED = 'L';
-    public const LATITUDE_NORTH_SOUTH = 'N';
-    public const LATITUDE_NS = 'n';
+    public const string LATITUDE = 'l';
+    public const string LATITUDE_SIGNED = 'L';
+    public const string LATITUDE_NORTH_SOUTH = 'N';
+    public const string LATITUDE_NS = 'n';
 
-    public const LONGITUDE = 'o';
-    public const LONGITUDE_SIGNED = 'O';
-    public const LONGITUDE_EAST_WEST = 'E';
-    public const LONGITUDE_EW = 'e';
+    public const string LONGITUDE = 'o';
+    public const string LONGITUDE_SIGNED = 'O';
+    public const string LONGITUDE_EAST_WEST = 'E';
+    public const string LONGITUDE_EW = 'e';
 
     // reserved
     private const string ALTITUDE = 'a';
@@ -37,8 +37,8 @@ class PositionFormatter
     private const string ALTITUDE_ABOVE_BELOW = 'B';
     private const string ALTITUDE_AB = 'b';
 
-    public const FORMAT_PRETTY = 'nl,eo';
-    public const FORMAT_DEFAULT = 'L,O';
+    public const string FORMAT_PRETTY = 'nl,eo';
+    public const string FORMAT_DEFAULT = 'L,O';
 
     /** @var string[] */
     private static array $specialCharacters = [
@@ -66,7 +66,7 @@ class PositionFormatter
     public function format(
         Position $position,
         ?string $format = null,
-        ?AngleFormatter $angleFormatter = null
+        ?AngleFormatter $angleFormatter = null,
     ): string
     {
         $format ??= $this->format;

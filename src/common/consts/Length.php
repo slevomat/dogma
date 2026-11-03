@@ -13,6 +13,6 @@ class Length
 {
     use StaticClassMixin;
 
-    public const FIXED = 'fixed';
+    public const string FIXED = 'fixed';
 
 }

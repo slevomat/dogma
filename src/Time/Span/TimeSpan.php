@@ -17,7 +17,7 @@ class TimeSpan implements DateOrTimeSpan
 {
     use StrictBehaviorMixin;
 
-    public const DEFAULT_FORMAT = 'h:i:S';
+    public const string DEFAULT_FORMAT = 'h:i:S';
 
     private int $hours;
 
@@ -31,7 +31,7 @@ class TimeSpan implements DateOrTimeSpan
         int $hours,
         int $minutes = 0,
         int $seconds = 0,
-        int $microseconds = 0
+        int $microseconds = 0,
     ) {
         [$hours, $minutes, $seconds, $microseconds] = self::normalizeUnits($hours, $minutes, $seconds, $microseconds);
 

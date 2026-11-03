@@ -13,11 +13,11 @@ class Sign
 {
     use StaticClassMixin;
 
-    public const SIGNED = 'signed';
-    public const UNSIGNED = 'unsigned';
+    public const string SIGNED = 'signed';
+    public const string UNSIGNED = 'unsigned';
 
-    public const POSITIVE = 1;
-    public const NEUTRAL = 0;
-    public const NEGATIVE = -1;
+    public const int POSITIVE = 1;
+    public const int NEUTRAL = 0;
+    public const int NEGATIVE = -1;
 
 }

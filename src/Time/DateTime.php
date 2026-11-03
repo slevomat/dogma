@@ -53,17 +53,17 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 {
     use StrictBehaviorMixin;
 
-    public const MIN = '0001-01-01 00:00:00.000000';
-    public const MAX = '9999-12-31 23:59:59.999999';
+    public const string MIN = '0001-01-01 00:00:00.000000';
+    public const string MAX = '9999-12-31 23:59:59.999999';
 
-    public const MIN_MICRO_TIMESTAMP = -62135596800000000;
-    public const MAX_MICRO_TIMESTAMP = 253402300799999999;
+    public const int MIN_MICRO_TIMESTAMP = -62135596800000000;
+    public const int MAX_MICRO_TIMESTAMP = 253402300799999999;
 
-    public const DEFAULT_FORMAT = 'Y-m-d H:i:s.u';
-    public const FORMAT_EMAIL_HTTP = DATE_RFC2822;
+    public const string DEFAULT_FORMAT = 'Y-m-d H:i:s.u';
+    public const string FORMAT_EMAIL_HTTP = DATE_RFC2822;
 
     // ISO-like formats with timezone offset and with or without microseconds
-    public const SAFE_FORMATS = [
+    public const array SAFE_FORMATS = [
         'Y-m-d H:i:sP',
         'Y-m-d H:i:sO',
         'Y-m-d H:i:s.uP',
@@ -172,7 +172,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         int $minutes = 0,
         int $seconds = 0,
         int $microseconds = 0,
-        ?DateTimeZone $timeZone = null
+        ?DateTimeZone $timeZone = null,
     ): self
     {
         Check::range($year, 1, 9999);
@@ -212,7 +212,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         int $hours = 0,
         int $minutes = 0,
         int $seconds = 0,
-        int $microseconds = 0
+        int $microseconds = 0,
     ): bool
     {
         if ($year < 0 || $year > 9999 || $month < 1 || $month > 12 || $day < 1 || $day > 31 || $hours < 0 || $hours > 23
@@ -502,12 +502,12 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function isFuture(?TimeProvider $timeProvider = null): bool
     {
-        return $this > ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
+        return $this > ($timeProvider?->getDateTime() ?? new self());
     }
 
     public function isPast(?TimeProvider $timeProvider = null): bool
     {
-        return $this < ($timeProvider !== null ? $timeProvider->getDateTime() : new self());
+        return $this < ($timeProvider?->getDateTime() ?? new self());
     }
 
     public function isMidnight(): bool
@@ -559,21 +559,21 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function isToday(?TimeProvider $timeProvider = null): bool
     {
-        $today = $timeProvider !== null ? $timeProvider->getDate() : new Date('today');
+        $today = $timeProvider?->getDate() ?? new Date('today');
 
         return $this->isBetween($today->getStart(), $today->getEnd());
     }
 
     public function isYesterday(?TimeProvider $timeProvider = null): bool
     {
-        $yesterday = $timeProvider !== null ? $timeProvider->getDateTime()->modify('-1 day')->getDate() : new Date('yesterday');
+        $yesterday = $timeProvider?->getDateTime()->modify('-1 day')->getDate() ?? new Date('yesterday');
 
         return $this->isBetween($yesterday->getStart(), $yesterday->getEnd());
     }
 
     public function isTomorrow(?TimeProvider $timeProvider = null): bool
     {
-        $tomorrow = $timeProvider !== null ? $timeProvider->getDateTime()->modify('+1 day')->getDate() : new Date('tomorrow');
+        $tomorrow = $timeProvider?->getDateTime()->modify('+1 day')->getDate() ?? new Date('tomorrow');
 
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }

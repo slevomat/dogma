@@ -15,11 +15,11 @@ class Seconds
 {
     use StaticClassMixin;
 
-    public const MINUTE = 60;
-    public const HOUR = 3600;
-    public const DAY = 86400;
-    public const WEEK = 604800;
-    public const COMMON_YEAR = 31536000;
-    public const LEAP_YEAR = 31622400;
+    public const int MINUTE = 60;
+    public const int HOUR = 3600;
+    public const int DAY = 86400;
+    public const int WEEK = 604800;
+    public const int COMMON_YEAR = 31536000;
+    public const int LEAP_YEAR = 31622400;
 
 }
