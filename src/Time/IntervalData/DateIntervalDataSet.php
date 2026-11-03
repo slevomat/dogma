@@ -63,7 +63,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      * @param TData $data
      * @return DateIntervalDataSet<TData>
      */
-    public static function createFromDateIntervalSet(DateIntervalSet $set, $data): self
+    public static function createFromDateIntervalSet(DateIntervalSet $set, mixed $data): self
     {
         $intervals = array_map(static function (DateInterval $interval) use ($data): DateIntervalData {
             return DateIntervalData::createFromDateInterval($interval, $data);
@@ -89,11 +89,8 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
         return new static([]);
     }
 
-    /**
-     * @param mixed|null $data
-     * @return self<TData>
-     */
-    public static function all($data): self
+    /** @return self<TData> */
+    public static function all(mixed $data): self
     {
         return new static([DateIntervalData::all($data)]);
     }

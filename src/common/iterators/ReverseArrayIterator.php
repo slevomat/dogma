@@ -24,15 +24,11 @@ class ReverseArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
-    private array $array;
-
     /**
      * @param mixed[] $array
      */
-    public function __construct(array $array)
+    public function __construct(private array $array)
     {
-        $this->array = $array;
     }
 
     public function rewind(): void

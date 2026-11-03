@@ -41,36 +41,8 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d h:i:S';
 
-    private int $years;
-
-    private int $months;
-
-    private int $days;
-
-    private int $hours;
-
-    private int $minutes;
-
-    private int $seconds;
-
-    private int $microseconds;
-
-    final public function __construct(
-        int $years,
-        int $months = 0,
-        int $days = 0,
-        int $hours = 0,
-        int $minutes = 0,
-        int $seconds = 0,
-        int $microseconds = 0
-    ) {
-        $this->years = $years;
-        $this->months = $months;
-        $this->days = $days;
-        $this->hours = $hours;
-        $this->minutes = $minutes;
-        $this->seconds = $seconds;
-        $this->microseconds = $microseconds;
+    final public function __construct(private int $years, private int $months = 0, private int $days = 0, private int $hours = 0, private int $minutes = 0, private int $seconds = 0, private int $microseconds = 0)
+    {
     }
 
     public static function createFromDateInterval(DateInterval $dateInterval): self

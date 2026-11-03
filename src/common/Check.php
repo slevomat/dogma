@@ -1134,7 +1134,7 @@ final class Check
     public static function enum(mixed $value, mixed ...$allowedValues): void
     {
         if (!in_array($value, $allowedValues, true)) {
-            $allowed = implode('|', Arr::map($allowedValues, static function ($value): string {
+            $allowed = implode('|', Arr::map($allowedValues, static function (mixed $value): string {
                 return (is_scalar($value) || (is_object($value) && method_exists($value, '__toString')))
                     ? (string) $value
                     : gettype($value);

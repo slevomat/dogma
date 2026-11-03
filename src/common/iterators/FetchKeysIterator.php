@@ -23,22 +23,18 @@ class FetchKeysIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    private int|null|string $keysKey = null;
-
-    private int|null|string $valuesKey = null;
-
     /**
      * @param iterable<mixed> $iterable
-     * @param int|string|null $keysKey
      */
-    public function __construct(iterable $iterable, mixed $keysKey = null, int|null|string $valuesKey = null)
+    public function __construct(
+        iterable $iterable,
+        private int|null|string $keysKey = null,
+        private int|null|string $valuesKey = null
+    )
     {
         $iterable = IteratorHelper::iterableToIterator($iterable);
 
         parent::__construct($iterable);
-
-        $this->keysKey = $keysKey;
-        $this->valuesKey = $valuesKey;
     }
 
     public function current(): mixed

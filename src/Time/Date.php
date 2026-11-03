@@ -55,7 +55,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public const DEFAULT_FORMAT = 'Y-m-d';
 
-    private ?int $julianDay = null;
+    private readonly int $julianDay;
 
     private ?DateTime $dateTime = null;
 

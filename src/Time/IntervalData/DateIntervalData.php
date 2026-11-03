@@ -44,13 +44,10 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
     private Date $end;
 
-    /** @var mixed|null */
-    private $data;
-
     /**
      * @param TData $data
      */
-    final public function __construct(Date $start, Date $end, $data)
+    final public function __construct(Date $start, Date $end, private readonly mixed $data)
     {
         if ($start->getJulianDay() > $end->getJulianDay()) {
             throw new InvalidIntervalStartEndOrderException($start, $end);
@@ -58,14 +55,13 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
 
         $this->start = $start;
         $this->end = $end;
-        $this->data = $data;
     }
 
     /**
      * @param TData $data
      * @return self<TData>
      */
-    public static function createFromDateInterval(DateInterval $interval, $data): self
+    public static function createFromDateInterval(DateInterval $interval, mixed $data): self
     {
         return new static($interval->getStart(), $interval->getEnd(), $data);
     }
@@ -95,7 +91,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
      * @param TData $data
      * @return self<TData>
      */
-    public static function all($data): self
+    public static function all(mixed $data): self
     {
         return new static(new Date(self::MIN), new Date(self::MAX), $data);
     }
@@ -243,7 +239,7 @@ class DateIntervalData implements Equalable, Comparable, IntersectComparable, Po
     /**
      * @param TData $otherData
      */
-    public function dataEquals($otherData): bool
+    public function dataEquals(mixed $otherData): bool
     {
         if ($this->data instanceof Equalable && $otherData instanceof Equalable && $this->data::class === $otherData::class) {
             return $this->data->equals($otherData);

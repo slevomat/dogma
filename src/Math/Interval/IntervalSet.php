@@ -33,10 +33,7 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
 
     //abstract public function containsValue(T $value): bool;
 
-    /**
-     * @return mixed|Interval
-     */
-    abstract public function envelope();//: Interval<T>;
+    abstract public function envelope(): Interval|ModuloInterval;
 
     //abstract public function normalize(): IntervalSet<T>;
 
@@ -54,16 +51,14 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
 
     //abstract public function filterByLength(string $operator, int|float $length): IntervalSet<T>;
 
-    /**
-     * @return T[]|mixed
-     */
-    abstract public function map(callable $mapper);
+    /** @return T[] */
+    abstract public function map(callable $mapper): array;
 
     /**
      * Map and filter
-     * @return self|mixed
+     * @return self<T>
      */
-    abstract public function collect(callable $mapper);
+    abstract public function collect(callable $mapper): self;
 
     /**
      * @throws BadMethodCallException

@@ -29,10 +29,7 @@ interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function containsValue(T $value): bool;
 
-    /**
-     * @return mixed|ModuloInterval
-     */
-    public function envelope();//: ModuloInterval<T>;
+    public function envelope(): ModuloInterval;
 
     //public function normalize(): ModuloIntervalSet<T>;
 
@@ -50,15 +47,13 @@ interface ModuloIntervalSet extends Equalable, Dumpable, IteratorAggregate
 
     //public function filterByLength(string $operator, int|float $length): ModuloIntervalSet<T>;
 
-    /**
-     * @return self|mixed
-     */
-    public function map(callable $mapper);
+    /** @return T[] */
+    public function map(callable $mapper): array;
 
     /**
      * Map and filter
-     * @return self|mixed
+     * @return self<T>
      */
-    public function collect(callable $mapper);
+    public function collect(callable $mapper): self;
 
 }

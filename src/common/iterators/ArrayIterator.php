@@ -24,15 +24,11 @@ class ArrayIterator implements Iterator
 {
     use StrictBehaviorMixin;
 
-    /** @var mixed[] */
-    protected array $array;
-
     /**
      * @param mixed[] $array
      */
-    public function __construct(array $array)
+    public function __construct(protected array $array)
     {
-        $this->array = $array;
     }
 
     public function rewind(): void

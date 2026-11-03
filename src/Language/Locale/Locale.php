@@ -36,18 +36,11 @@ class Locale
     /** @var self[] */
     private static array $instances = [];
 
-    private string $value;
-
-    /** @var string[]|string[][]|null[] */
-    private array $components;
-
     /**
      * @param string[]|string[][]|null[] $components
      */
-    final private function __construct(string $value, array $components)
+    final private function __construct(private readonly string $value, private readonly array $components)
     {
-        $this->value = $value;
-        $this->components = $components;
     }
 
     public static function get(string $value): self

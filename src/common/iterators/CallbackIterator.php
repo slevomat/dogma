@@ -23,10 +23,10 @@ class CallbackIterator extends IteratorIterator
     use StrictBehaviorMixin;
 
     /** @var callable */
-    private $valuesCallback;
+    private mixed $valuesCallback;
 
     /** @var callable|null */
-    private $keysCallback;
+    private mixed $keysCallback;
 
     /**
      * @param iterable|mixed[] $iterable

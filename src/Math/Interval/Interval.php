@@ -44,16 +44,14 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return mixed|static[]
-     */
-    public function split(int $parts);//: self<T>[];
+    /** @return static[] */
+    public function split(int $parts): array;
 
     /**
-     * @param mixed[] $intervalStarts |T[]
-     * @return mixed|static[]
+     * @param mixed[] $intervalStarts
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts);//: self<T>[];
+    public function splitBy(array $intervalStarts): array;
 
     // A1****A2****B1****B2 -> [A1, B2]
     //public function envelope(self ...$items): self;
@@ -78,10 +76,8 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
     // A1****A2    B1----B2 -> {[A1, A2]}
     //public function subtract(self ...$items): IntervalSet<T>;
 
-    /**
-     * @return mixed|IntervalSet
-     */
-    public function invert();//: IntervalSet<T>;
+    /** @return IntervalSet<*> */
+    public function invert(): IntervalSet;
 
     // static ----------------------------------------------------------------------------------------------------------
 
