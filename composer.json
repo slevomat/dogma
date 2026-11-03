@@ -11,10 +11,10 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.5",
         "ext-calendar":"*",
-        "nette/http": "~2.4|~3.0",
-        "nette/utils": "~2.4|~3.0|~4.0"
+        "nette/http": "^3.0",
+        "nette/utils": "^4.0"
     },
     "require-dev": {
         "dogma/dogma-dev": "dev-master",
@@ -46,7 +46,6 @@
     "scripts": {
         "da": "composer dump-autoload",
         "c": "@check:fast",
-        "ca": "@check:all",
         "t": "@tests:run",
         "tc": "@tests:coverage",
         "cs": "@phpcs:all",
@@ -66,39 +65,12 @@
             "@phpcs:src-fast",
             "@phpcs:tests-fast"
         ],
-        "check:all": [
-            "@tests:all",
-            "@phpstan:all",
-            "@lint:php-all",
-            "@spell:check",
-            "@phpcs:src-fast",
-            "@phpcs:tests-fast"
-        ],
+        "tests:run": "php vendor/nette/tester/src/tester tests -C -c tests/php.ini --colors 1 -p php",
+        "tests:coverage": "php vendor/nette/tester/src/tester tests -C -c tests/php.ini --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
 
-        "tests:run": "php vendor/nette/tester/src/tester tests -c tests --colors 1",
-        "tests:all": [
-            "php82 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php81 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php80 vendor/nette/tester/src/tester tests -c tests --colors 1",
-            "php74 vendor/nette/tester/src/tester tests -c tests --colors 1"
-        ],
-        "tests:coverage": "php vendor/nette/tester/src/tester tests -c tests --colors 1 -p phpdbg --coverage tests/coverage.html --coverage-src src",
-
-        "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-        "phpstan:all": [
-            "php82 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php81 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php80 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon",
-            "php74 vendor/phpstan/phpstan/phpstan analyse --memory-limit 256M -c build/PHPStan/phpstan.neon"
-        ],
+        "phpstan:run": "php vendor/phpstan/phpstan/phpstan analyse --memory-limit 1G -c build/PHPStan/phpstan.neon",
 
         "lint:php": "php vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-        "lint:php-all": [
-            "php82 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php81 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php80 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests",
-            "php74 vendor/php-parallel-lint/php-parallel-lint/parallel-lint src tests"
-        ],
 
         "phpcs:all": [
             "Composer\\Config::disableProcessTimeout",
@@ -127,7 +99,6 @@
     "scripts-descriptions": {
         "da": "\u001B[0;33mShortcut for dump-autoloader\u001B[0m",
         "c": "\u001B[0;33mShortcut for check:fast\u001B[0m",
-        "ca": "\u001B[0;33mShortcut for check:all\u001B[0m",
         "cs": "\u001B[0;33mShortcut for phpcs:all\u001B[0m",
         "csf": "\u001B[0;33mShortcut for phpcs:fix\u001B[0m",
         "t": "\u001B[0;33mShortcut for tests:run\u001B[0m",
@@ -135,12 +106,9 @@
 
         "build:run": "Run build script",
         "check:fast": "Run all checks (tests, phpstan, phpcs, phplint, spell-check)",
-        "check:all": "Run all checks on all supported PHP versions (7.2 - 8.2)",
         "tests:run": "Run tests",
-        "tests:all": "Run tests on all supported PHP versions (7.2 - 8.2)",
         "tests:coverage": "Run tests with code coverage",
         "phpstan:run": "Run PHPStan check",
-        "phpstan:all": "Run PHPStan check on all supported PHP versions (7.2 - 8.2)",
         "phpcs:all": "Run CS check on all code",
         "phpcs:src": "Run CS check on /src",
         "phpcs:src-fast": "Run fast CS check on /src",
@@ -148,8 +116,7 @@
         "phpcs:tests-fast": "Run fast CS check on /tests",
         "phpcs:fix": "Run CS check with auto-fixing on /src and /tests",
         "spell:check": "Run spell-checker",
-        "lint:php": "Run PHPLint",
-        "lint:php-all": "Run PHPLint on all supported PHP versions (7.2 - 8.2)"
+        "lint:php": "Run PHPLint"
     },
     "config": {
         "allow-plugins": {
@@ -160,7 +127,7 @@
     "repositories": {
         "dogma/dogma-dev": {
             "type": "vcs",
-            "url": "github.com:slevomat/dogma-dev.git"
+            "url": "https://github.com/slevomat/dogma-dev.git"
         }
     }
 }

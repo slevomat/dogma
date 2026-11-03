@@ -50,7 +50,7 @@ class DayOfYearIntervalSet extends IntervalSet
             return !$interval->isEmpty();
         }));
 
-        $this->intervals = $intervals;
+        $this->intervals = self::normalizeIntervals($intervals);
     }
 
     public function format(string $format = DayOfYearInterval::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string

@@ -274,6 +274,9 @@ final class Check
             }
             return;
         }
+        if (is_float($value) && (is_nan($value) || $value === INF || $value === -INF)) {
+            throw new InvalidTypeException(Type::INT, $value);
+        }
         if (!is_numeric($value)) {
             throw new InvalidTypeException(Type::INT, $value);
         }

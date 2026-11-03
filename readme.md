@@ -16,7 +16,7 @@ Collection of:
 
 Requirements
 --------
- - **PHP 7.2+**
+ - **PHP 8.5+**
 
 
 Author:
