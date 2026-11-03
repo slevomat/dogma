@@ -14,8 +14,8 @@ use Dogma\ArrayIterator;
 use Dogma\Check;
 use Dogma\Equalable;
 use Dogma\Math\Interval\IntervalSet;
-use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\Math\Interval\IntervalSetDumpMixin;
+use Dogma\Math\Interval\ModuloIntervalSet;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
@@ -100,9 +100,6 @@ class DayOfYearIntervalSet extends IntervalSet
         return $this->intervals === [];
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

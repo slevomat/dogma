@@ -10,4 +10,4 @@ require_once __DIR__ . '/../../bootstrap.php';
 $locale = Locale::get('en');
 $match = $locale->findBestMatch([Locale::get('en'), Locale::get('cs')]);
 
-Assert::same($match?->getValue(), 'en');
+Assert::same($match ? $match->getValue() : null, 'en');

@@ -133,9 +133,6 @@ class Locale
 
     public function matches(self|string $locale): bool
     {
-        Check::types($locale, [Type::STRING, self::class]);
-        /** @var self|string $locale */
-
         if (is_string($locale)) {
             $locale = self::get($locale);
         }
@@ -149,9 +146,6 @@ class Locale
      */
     public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {
-        Check::types($default, [Type::STRING, self::class, Type::NULL]);
-        /** @var self|string|null $default */
-
         // work around bug when lookup does not work at all without default value
         $default ??= reset($locales);
         if ($default === false) {
@@ -161,14 +155,14 @@ class Locale
             $default = self::get($default);
         }
 
-        /** @var Locale|string $locale */
         foreach ($locales as $i => $locale) {
             Check::types($locale, [Type::STRING, self::class]);
-            /** @var self|string $locale */
-            if (is_string($locale)) {
-                $locales[$i] = PhpLocale::canonicalize($locale);
+            /** @var self|string $checkedLocale */
+            $checkedLocale = $locale;
+            if (is_string($checkedLocale)) {
+                $locales[$i] = PhpLocale::canonicalize($checkedLocale);
             } else {
-                $locales[$i] = $locale->getValue();
+                $locales[$i] = $checkedLocale->getValue();
             }
         }
 
@@ -217,10 +211,7 @@ class Locale
      */
     public function getVariants(): array
     {
-        $variants = \array_values(PhpLocale::getAllVariants($this->value) ?? []);
-        /** @var list<string> $variants */
-
-        return $variants;
+        return array_values(PhpLocale::getAllVariants($this->value) ?? []);
     }
 
     public function getVariant(int $n): ?string

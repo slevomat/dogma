@@ -44,9 +44,6 @@ class Vector3i implements Equalable
         return [$this->x, $this->y, $this->z];
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

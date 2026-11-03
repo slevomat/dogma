@@ -40,7 +40,6 @@ jobs:
 
       - name: PHPStan
         run: php vendor/phpstan/phpstan/phpstan analyse --memory-limit 1G -c build/PHPStan/phpstan.neon
-        continue-on-error: true # TODO: make blocking after phpstan/phpcs cleanup phase
 
       - name: PHPCS source
         run: php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=build/CodeSniffer/ruleset.xml src

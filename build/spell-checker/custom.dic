@@ -93,7 +93,6 @@ wakeup
 webalize
 
 # en
-callables
 cloneable
 combinatorics
 denormalization
@@ -106,6 +105,7 @@ multithreaded
 nullable
 overmorrow
 permutate
+stringable
 pokeable
 prepend
 quaternary

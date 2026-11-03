@@ -169,9 +169,6 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         return $this->intervals === [];
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

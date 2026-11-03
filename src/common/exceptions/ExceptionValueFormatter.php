@@ -23,8 +23,8 @@ use function serialize;
 use function spl_object_id;
 use function sprintf;
 use function strlen;
-use function substr;
 use function strval;
+use function substr;
 use const INF;
 
 class ExceptionValueFormatter
@@ -52,8 +52,10 @@ class ExceptionValueFormatter
         } elseif ($value === -INF) {
             return '-INF';
         } else { // integer, float
-            /** @var int|float $value */
-            return strval($value);
+            /** @var int|float $number */
+            $number = $value;
+
+            return strval($number);
         }
     }
 

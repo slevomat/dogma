@@ -260,9 +260,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return $this->start->getJulianDay() > $this->end->getJulianDay();
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -270,9 +267,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return $this->start->equals($other->start) && $this->end->equals($other->end);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -280,9 +274,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
     }
 
-    /**
-     * @param IntersectComparable $other
-     */
     public function compareIntersects(IntersectComparable $other): int
     {
         Check::instance($other, self::class);

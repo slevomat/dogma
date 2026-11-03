@@ -191,9 +191,6 @@ class DayOfYearInterval implements ModuloInterval
         return $this->end->getNumber() >= DayOfYear::MAX_NUMBER;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -202,9 +199,6 @@ class DayOfYearInterval implements ModuloInterval
             && $this->end->getNumber() === $other->end->getNumber(); // cannot use DayOfYear::equals() because of normalized vs denormalized values
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);

@@ -283,9 +283,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return TimeSpan::createFromDateInterval($interval);
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -293,9 +290,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return ($this->microseconds % Microseconds::DAY) === ($other->microseconds % Microseconds::DAY);
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -433,9 +427,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
 
     // static ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param self $items
-     */
     public static function min(self ...$items): self
     {
         /** @var self $result */
@@ -446,9 +437,6 @@ class Time implements DateTimeOrTime, Pokeable, Dumpable
         return $result;
     }
 
-    /**
-     * @param self $items
-     */
     public static function max(self ...$items): self
     {
         /** @var self $result */

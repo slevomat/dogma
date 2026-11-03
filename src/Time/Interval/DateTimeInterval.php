@@ -240,9 +240,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return $this->start > $this->end;
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);
@@ -251,9 +248,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             || ($this->isEmpty() && $other->isEmpty());
     }
 
-    /**
-     * @param Comparable $other
-     */
     public function compare(Comparable $other): int
     {
         Check::instance($other, self::class);
@@ -261,9 +255,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
         return $this->start->compare($other->start) ?: $this->end->compare($other->end);
     }
 
-    /**
-     * @param IntersectComparable $other
-     */
     public function compareIntersects(IntersectComparable $other): int
     {
         Check::instance($other, self::class);

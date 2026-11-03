@@ -95,9 +95,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
         return $this->intervals === [];
     }
 
-    /**
-     * @param Equalable $other
-     */
     public function equals(Equalable $other): bool
     {
         Check::instance($other, self::class);

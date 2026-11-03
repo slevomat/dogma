@@ -14,8 +14,8 @@ namespace Dogma;
 use Dogma\Language\Encoding;
 use Dogma\Language\Locale\Locale;
 use Throwable;
-use function array_pop;
 use function array_pad;
+use function array_pop;
 use function count;
 use function end;
 use function explode;
@@ -105,9 +105,11 @@ class Type
                 case $size === null && (is_int($arg) || is_array($arg)):
                     if (is_array($arg)) {
                         Check::itemsOfType($arg, 'int');
-                        /** @var int[] $arg */
+                        /** @var array<array-key, int> $size */
+                        $size = $arg;
+                    } else {
+                        $size = $arg;
                     }
-                    $size = $arg;
                     if (is_int($size)) {
                         self::checkSize($type, $size);
                     }
