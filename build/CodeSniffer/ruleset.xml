@@ -10,6 +10,7 @@
         <exclude name="Generic.CodeAnalysis.EmptyStatement"/>
         <exclude name="SlevomatCodingStandard.ControlStructures.UselessIfConditionWithReturn.UselessIfCondition"/>
         <exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall.MissingTrailingComma"/>
+        <exclude name="SlevomatCodingStandard.Classes.DisallowConstructorPropertyPromotion.DisallowedConstructorPropertyPromotion"/>
     </rule>
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">

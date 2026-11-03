@@ -21,15 +21,11 @@ class BreadthFirstSearchPathFinder
 {
     use StrictBehaviorMixin;
 
-    /** @var int[][]|string[][] */
-    private array $edges;
-
     /**
      * @param int[][]|string[][] $edges
      */
-    public function __construct(array $edges)
+    public function __construct(private array $edges)
     {
-        $this->edges = $edges;
     }
 
     public function getDistance(int|string $i, int|string $j): ?int

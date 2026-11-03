@@ -23,17 +23,8 @@ class Vector3
 {
     use StrictBehaviorMixin;
 
-    private float $x;
-
-    private float $y;
-
-    private float $z;
-
-    final public function __construct(float $x, float $y, float $z)
+    final public function __construct(private readonly float $x, private readonly float $y, private readonly float $z)
     {
-        $this->x = $x;
-        $this->y = $y;
-        $this->z = $z;
     }
 
     /**

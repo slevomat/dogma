@@ -32,7 +32,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     public const DEFAULT_FORMAT = 'Y-m';
 
-    private ?string $value = null;
+    private readonly string $value;
 
     final public function __construct(Date|DateTimeInterface|null|string $value = null)
     {

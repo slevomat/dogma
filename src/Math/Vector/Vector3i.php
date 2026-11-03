@@ -17,17 +17,8 @@ class Vector3i implements Equalable
 {
     use StrictBehaviorMixin;
 
-    private int $x;
-
-    private int $y;
-
-    private int $z;
-
-    final public function __construct(int $x, int $y, int $z)
+    final public function __construct(private readonly int $x, private readonly int $y, private readonly int $z)
     {
-        $this->x = $x;
-        $this->y = $y;
-        $this->z = $z;
     }
 
     public function getX(): int

@@ -21,14 +21,8 @@ class WeekDayHours implements Pokeable, Dumpable
 {
     use StrictBehaviorMixin;
 
-    private DayOfWeek $day;
-
-    private TimeIntervalSet $hours;
-
-    final public function __construct(DayOfWeek $day, TimeIntervalSet $hours)
+    final public function __construct(private readonly DayOfWeek $day, private readonly TimeIntervalSet $hours)
     {
-        $this->day = $day;
-        $this->hours = $hours;
     }
 
     public static function createFromOpeningTime(DayOfWeek $day, TimeInterval $opening, ?TimeInterval $break = null): self

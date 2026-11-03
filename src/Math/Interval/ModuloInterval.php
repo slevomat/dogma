@@ -38,16 +38,14 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
 
     // actions ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return mixed|ModuloIntervalSet
-     */
-    public function split(int $parts);//: ModuloIntervalSet<T>;
+    /** @return static[] */
+    public function split(int $parts): array;
 
     /**
      * @param mixed[]|array<T> $intervalStarts
-     * @return mixed|ModuloIntervalSet
+     * @return static[]
      */
-    public function splitBy(array $intervalStarts);//: ModuloIntervalSet<T>;
+    public function splitBy(array $intervalStarts): array;
 
     // A1****A2****B1****B2 -> [A1, B2]
     //public function envelope(self ...$items): self;
@@ -72,10 +70,8 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
     // A1****A2    B1----B2 -> {[A1, A2]}
     //public function subtract(self ...$items): ModuloIntervalSet<T>;
 
-    /**
-     * @return mixed|ModuloIntervalSet
-     */
-    public function invert();//: ModuloIntervalSet<T>;
+    /** @return IntervalSet<*>|ModuloIntervalSet<*> */
+    public function invert(): IntervalSet|ModuloIntervalSet;
 
     // static ----------------------------------------------------------------------------------------------------------
 

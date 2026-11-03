@@ -66,46 +66,21 @@ class Type
     /** @var Type[] (string $id => $type) */
     private static array $instances = [];
 
-    private string $id;
-
-    private string $type;
-
-    /** @var Type|Type[]|null */
-    private self|array|null $itemType = null;
-
-    private bool $nullable;
-
-    /** @var int|int[]|null */
-    private array|int|null $size = null;
-
-    private ?string $specific;
-
-    private ?Encoding $encoding;
-
-    private ?Locale $locale;
-
     /**
      * @param Type|Type[]|null $itemType
      * @param int|int[]|null $size
      */
     final private function __construct(
-        string $id,
-        string $type,
-        bool $nullable = false,
-        self|array|null $itemType = null,
-        array|int|null $size = null,
-        ?string $specific = null,
-        ?Encoding $encoding = null,
-        ?Locale $locale = null
-    ) {
-        $this->id = $id;
-        $this->type = $type;
-        $this->nullable = $nullable;
-        $this->itemType = $itemType;
-        $this->size = $size;
-        $this->specific = $specific;
-        $this->encoding = $encoding;
-        $this->locale = $locale;
+        private readonly string $id,
+        private readonly string $type,
+        private readonly bool $nullable = false,
+        private readonly self|array|null $itemType = null,
+        private readonly array|int|null $size = null,
+        private readonly ?string $specific = null,
+        private readonly ?Encoding $encoding = null,
+        private readonly ?Locale $locale = null
+    )
+    {
     }
 
     public static function get(

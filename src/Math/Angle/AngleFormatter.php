@@ -42,17 +42,8 @@ class AngleFormatter
         self::SECONDS_FLOORED,
     ];
 
-    private string $format;
-
-    private int $maxDecimals;
-
-    private string $decimalPoint;
-
-    public function __construct(string $format = self::FORMAT_DEFAULT, int $maxDecimals = 6, string $decimalPoint = '.')
+    public function __construct(private string $format = self::FORMAT_DEFAULT, private int $maxDecimals = 6, private string $decimalPoint = '.')
     {
-        $this->format = $format;
-        $this->maxDecimals = $maxDecimals;
-        $this->decimalPoint = $decimalPoint;
     }
 
     /**

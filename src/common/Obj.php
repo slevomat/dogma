@@ -28,7 +28,7 @@ class Obj
     /**
      * @param object|resource $object
      */
-    public static function objectId($object): int
+    public static function objectId(mixed $object): int
     {
         if (is_object($object)) {
             return spl_object_id($object);

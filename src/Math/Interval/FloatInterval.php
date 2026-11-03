@@ -41,11 +41,7 @@ class FloatInterval implements OpenClosedInterval
 
     private float $end;
 
-    private bool $openStart;
-
-    private bool $openEnd;
-
-    final public function __construct(float $start, float $end, bool $openStart = false, bool $openEnd = false)
+    final public function __construct(float $start, float $end, private bool $openStart = false, private bool $openEnd = false)
     {
         if (is_nan($start)) {
             throw new InvalidValueException($start, Type::FLOAT);
@@ -57,11 +53,9 @@ class FloatInterval implements OpenClosedInterval
 
         $this->start = $start;
         $this->end = $end;
-        $this->openStart = $openStart;
-        $this->openEnd = $openEnd;
 
         if ($start === $end) {
-            if ($openStart || $openEnd) {
+            if ($this->openStart || $this->openEnd) {
                 // default createEmpty()
                 $this->start = self::MAX;
                 $this->end = self::MIN;

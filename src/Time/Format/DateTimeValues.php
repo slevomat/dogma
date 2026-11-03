@@ -51,11 +51,8 @@ class DateTimeValues
 
     public DateTimeZone $timezone;
 
-    public DateOrTime $dateTime;
-
-    private function __construct(DateOrTime $dateTime)
+    private function __construct(public DateOrTime $dateTime)
     {
-        $this->dateTime = $dateTime;
     }
 
     public function create(DateOrTime $dateTime): self

@@ -367,9 +367,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function find(array $array, callable $function)
+    public static function find(array $array, callable $function): mixed
     {
         foreach ($array as $value) {
             if ($function($value)) {
@@ -445,9 +444,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function max(array $array)
+    public static function max(array $array): mixed
     {
         if (empty($array)) {
             return null;
@@ -458,9 +456,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function min(array $array)
+    public static function min(array $array): mixed
     {
         if (empty($array)) {
             return null;
@@ -471,32 +468,30 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function maxBy(array $array, callable $function)
+    public static function maxBy(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
         }
         $max = self::max(self::map($array, $function));
 
-        return self::find($array, static function ($value) use ($max, $function): bool {
+        return self::find($array, static function (mixed $value) use ($max, $function): bool {
             return $function($value) === $max;
         });
     }
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function minBy(array $array, callable $function)
+    public static function minBy(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
         }
         $min = self::min(self::map($array, $function));
 
-        return self::find($array, static function ($value) use ($min, $function): bool {
+        return self::find($array, static function (mixed $value) use ($min, $function): bool {
             return $function($value) === $min;
         });
     }
@@ -573,7 +568,7 @@ class Arr
      */
     public static function hasSameElements(array $array, array $other): bool
     {
-        return self::corresponds($array, $other, static function ($a, $b): bool {
+        return self::corresponds($array, $other, static function (mixed $a, mixed $b): bool {
             return $a === $b;
         });
     }
@@ -610,30 +605,24 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
-     * @return mixed|null
      */
-    public static function fold(array $array, callable $function, $init = null)
+    public static function fold(array $array, callable $function, mixed $init = null): mixed
     {
         return self::foldLeft($array, $function, $init);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
-     * @return mixed|null
      */
-    public static function foldLeft(array $array, callable $function, $init = null)
+    public static function foldLeft(array $array, callable $function, mixed $init = null): mixed
     {
         return array_reduce($array, $function, $init);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed|null $init
-     * @return mixed|null
      */
-    public static function foldRight(array $array, callable $function, $init = null)
+    public static function foldRight(array $array, callable $function, mixed $init = null): mixed
     {
         foreach (new ReverseArrayIterator($array) as $value) {
             $init = $function($value, $init);
@@ -644,18 +633,16 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function reduce(array $array, callable $function)
+    public static function reduce(array $array, callable $function): mixed
     {
         return self::reduceLeft($array, $function);
     }
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function reduceLeft(array $array, callable $function)
+    public static function reduceLeft(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
@@ -666,9 +653,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function reduceRight(array $array, callable $function)
+    public static function reduceRight(array $array, callable $function): mixed
     {
         if (empty($array)) {
             return null;
@@ -712,9 +698,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function head(array $array)
+    public static function head(array $array): mixed
     {
         if (count($array) === 0) {
             return null;
@@ -726,9 +711,8 @@ class Arr
     /**
      * Alias of head()
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function first(array $array)
+    public static function first(array $array): mixed
     {
         if (count($array) === 0) {
             return null;
@@ -739,9 +723,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed|null
      */
-    public static function last(array $array)
+    public static function last(array $array): mixed
     {
         if (count($array) === 0) {
             return null;
@@ -1025,7 +1008,7 @@ class Arr
      */
     public static function filterNot(array $array, callable $function): array
     {
-        return self::filter($array, static function ($value) use ($function): bool {
+        return self::filter($array, static function (mixed $value) use ($function): bool {
             return !$function($value);
         });
     }
@@ -1112,7 +1095,7 @@ class Arr
      */
     public static function mapPairs(array $array, callable $function): array
     {
-        return self::remap($array, static function ($key, $value) use ($function): array {
+        return self::remap($array, static function (int|string $key, mixed $value) use ($function): array {
             return [$key => $function($key, $value)];
         });
     }
@@ -1181,10 +1164,9 @@ class Arr
 
     /**
      * @param mixed[][] $array
-     * @param mixed|null $indexKey
      * @return mixed[]
      */
-    public static function column(array $array, mixed $valueKey, $indexKey = null): array
+    public static function column(array $array, mixed $valueKey, mixed $indexKey = null): array
     {
         return array_column($array, $valueKey, $indexKey);
     }

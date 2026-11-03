@@ -58,12 +58,9 @@ class PositionFormatter
 
     private AngleFormatter $angleFormatter;
 
-    private string $format;
-
-    public function __construct(string $format = self::FORMAT_DEFAULT, ?AngleFormatter $angleFormatter = null)
+    public function __construct(private string $format = self::FORMAT_DEFAULT, ?AngleFormatter $angleFormatter = null)
     {
         $this->angleFormatter = $angleFormatter ?? new AngleFormatter(AngleFormatter::FORMAT_NUMBER);
-        $this->format = $format;
     }
 
     public function format(

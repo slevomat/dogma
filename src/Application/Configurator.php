@@ -47,12 +47,6 @@ final class Configurator extends stdClass
     public const string SET = 'set';
     public const string MAP = 'map';
 
-    /** @var string[]|string[][] */
-    private array $arguments;
-
-    /** @var mixed[] */
-    private array $defaults;
-
     /** @var mixed[] */
     private array $values = [];
 
@@ -63,10 +57,8 @@ final class Configurator extends stdClass
      * @param string[]|string[][] $arguments
      * @param mixed[] $defaults
      */
-    public function __construct(array $arguments, array $defaults = [])
+    public function __construct(private array $arguments, private array $defaults = [])
     {
-        $this->arguments = $arguments;
-        $this->defaults = $defaults;
     }
 
     public function hasValues(): bool
@@ -103,7 +95,7 @@ final class Configurator extends stdClass
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
-                    $row .= '; default: ' . implode(',', array_map(function ($value): string {
+                    $row .= '; default: ' . implode(',', array_map(function (mixed $value): string {
                         return C::lyellow($this->format($value));
                     }, $this->defaults[$name]));
                 } else {
@@ -280,9 +272,6 @@ final class Configurator extends stdClass
         return (string) $value;
     }
 
-    /**
-     * @return ConfigurationProfile|mixed|null
-     */
     public function __get(string $name): mixed
     {
         if (isset($this->profiles['@' . $name])) {

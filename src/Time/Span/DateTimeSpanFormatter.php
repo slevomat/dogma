@@ -147,24 +147,8 @@ class DateTimeSpanFormatter
         self::PRETTY_SINGLE_UNITS,
     ];
 
-    private string $format;
-
-    private int $maxDecimals;
-
-    private string $decimalPoint;
-
-    private ?Translator $translator;
-
-    public function __construct(
-        string $format = self::FORMAT_DEFAULT,
-        int $maxDecimals = 1,
-        string $decimalPoint = '.',
-        ?Translator $translator = null
-    ) {
-        $this->format = $format;
-        $this->maxDecimals = $maxDecimals;
-        $this->decimalPoint = $decimalPoint;
-        $this->translator = $translator;
+    public function __construct(private string $format = self::FORMAT_DEFAULT, private int $maxDecimals = 1, private string $decimalPoint = '.', private ?Translator $translator = null)
+    {
     }
 
     /**
