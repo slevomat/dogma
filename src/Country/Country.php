@@ -1042,6 +1042,7 @@ enum Country: string
     {
         $code = $this->value;
 
+        // @phpstan-ignore argument.type, argument.type (country code letters are A-Z, so the byte stays within 0xA6-0xBF)
         return "\xF0\x9F\x87" . chr(ord($code[0]) + 0x65) . "\xF0\x9F\x87" . chr(ord($code[1]) + 0x65);
     }
 

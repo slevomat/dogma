@@ -18,6 +18,25 @@ parameters:
             - invalidClass
 
     ignoreErrors:
+        # Generic collection helpers accept arbitrary values; callers are responsible for passing scalars to these array_* functions.
+        -
+            message: '~expects (an array of values castable to string|array<int\|string>)~'
+            identifier: argument.type
+            paths:
+                - ../../src/common/lists/Arr.php
+                - ../../src/common/lists/ImmutableArray.php
+        # PHPStan loses TKey through drop()/take()/reverse() and array_flip().
+        -
+            message: '~should return \(TKey of~'
+            identifier: return.type
+            path: ../../src/common/lists/ImmutableArray.php
+        -
+            message: '~^Parameter #1 \$items of class Dogma\\ImmutableArray constructor~'
+            path: ../../src/common/lists/ImmutableArray.php
+        # ChunkIterator re-keys the inner iterator, which IteratorIterator's template does not allow.
+        -
+            identifier: generics.notSubtype
+            path: ../../src/common/iterators/ChunkIterator.php
         # PHPStan's intl stub omits false from UConverter::convert(), which returns string|false.
         -
             message: '~Strict comparison using === between string and false will always evaluate to false~'

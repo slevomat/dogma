@@ -10,6 +10,7 @@
 namespace Dogma\Time;
 
 use DateInterval;
+use DateMalformedStringException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
@@ -19,7 +20,6 @@ use Dogma\Comparable;
 use Dogma\Dumpable;
 use Dogma\Equalable;
 use Dogma\InvalidValueException;
-use Dogma\LogicException;
 use Dogma\Obj;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
@@ -116,7 +116,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     {
         Check::count($formats, 1);
 
-        $e = null;
         foreach ($formats as $format) {
             try {
                 return self::createFromFormat($format, $timeString, $timeZone);
@@ -125,11 +124,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
             }
         }
 
-        if ($e !== null) {
-            throw $e;
-        } else {
-            throw new LogicException('No formats supplied.');
-        }
+        throw $e;
     }
 
     public static function createFromTimestamp(float|int $timestamp, ?DateTimeZone $timeZone = null): static
@@ -256,13 +251,11 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
      */
     public function modify(string $modify): static
     {
-        /** @var static|false $result */
-        $result = parent::modify($modify);
-        if ($result === false) {
-            throw new InvalidValueException($modify, 'date-time modification string');
+        try {
+            return parent::modify($modify);
+        } catch (DateMalformedStringException $e) {
+            throw new InvalidValueException($modify, 'date-time modification string', $e);
         }
-
-        return $result;
     }
 
     /**
@@ -340,7 +333,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         if ($minutes === null && $seconds === null && is_string($time) && str_contains($time, ':')) {
             $parts = explode(':', $time);
             $time = $parts[0];
-            $minutes = $parts[1] ?? null;
+            $minutes = $parts[1];
             $seconds = strval($parts[2] ?? '');
             if (str_contains($seconds, '.')) {
                 [$seconds, $microseconds] = explode('.', $seconds);

@@ -315,7 +315,7 @@ class Type
             foreach (explode(',', $params) as $param) {
                 switch (true) {
                     case $size === null && preg_match('/([0-9]+)?([suf])?/', $param, $match):
-                        $size = (int) $match[1];
+                        $size = (int) ($match[1] ?? 0);
                         if ($size) {
                             self::checkSize($baseId, $size);
                         } else {

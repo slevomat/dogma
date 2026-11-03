@@ -546,7 +546,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             }
         }
 
-        return new DateTimeIntervalSet(array_values($results));
+        return new DateTimeIntervalSet($results);
     }
 
     /** @phpstan-pure */

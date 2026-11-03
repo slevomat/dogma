@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "dogma/dogma-dev": "dev-master",
-        "phpstan/phpstan": "^2.1.33",
+        "phpstan/phpstan": "^2.3.5",
         "phpstan/phpstan-strict-rules": "^2.0.7"
     },
     "suggest": {
