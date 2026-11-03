@@ -8,22 +8,16 @@ directories:
 dictionariesByFileName:
     *spell-checker.neon: skip
     *Country.php: skip
-    *CountryEu.php: skip
-    *CountryEurope.php: skip
     *ContentType.php: skip
     *Currency.php: skip
     *Language.php: skip
     *LocaleNumbers.php: skip
     *Inflector.php: skip
-    *Port.php: skip
     *ResourceType.php: skip
     *Script.php: skip
     *Sapi.php: skip
     *TimeZone.php: skip
-    *Tld.php: skip
     *Transliterator.php: skip
-    *UriScheme.php: skip
-    *WindowsError.php: skip
 
 dictionariesByFileExtension:
     neon: en php custom

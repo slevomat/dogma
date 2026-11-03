@@ -7,7 +7,7 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: euccn eucjp eucjpwin euckr euctw hakre jisms koi8r koi8t koi8u sjismac sjiswin ucs2be ucs2le ucs4be ucs4le utf7imap
+// spell-check-ignore: euccn eucjp eucjpwin euckr euctw jisms koi8r koi8t koi8u sjismac sjiswin ucs2be ucs2le ucs4be ucs4le utf7imap
 
 namespace Dogma\Language;
 
