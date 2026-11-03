@@ -11,7 +11,6 @@ namespace Dogma;
 
 use ArrayAccess;
 use IteratorIterator;
-use ReturnTypeWillChange;
 use Traversable;
 use function is_array;
 
@@ -24,18 +23,15 @@ class FetchKeysIterator extends IteratorIterator
 {
     use StrictBehaviorMixin;
 
-    /** @var int|string|null */
-    private $keysKey;
+    private int|null|string $keysKey = null;
 
-    /** @var int|string|null */
-    private $valuesKey;
+    private int|null|string $valuesKey = null;
 
     /**
      * @param iterable<mixed> $iterable
      * @param int|string|null $keysKey
-     * @param int|string|null $valuesKey
      */
-    public function __construct(iterable $iterable, $keysKey = null, $valuesKey = null)
+    public function __construct(iterable $iterable, mixed $keysKey = null, int|null|string $valuesKey = null)
     {
         $iterable = IteratorHelper::iterableToIterator($iterable);
 
@@ -45,11 +41,7 @@ class FetchKeysIterator extends IteratorIterator
         $this->valuesKey = $valuesKey;
     }
 
-    /**
-     * @return mixed
-     */
-    #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         if ($this->valuesKey === null) {
             return parent::current();
@@ -65,8 +57,7 @@ class FetchKeysIterator extends IteratorIterator
     /**
      * @return string|int
      */
-    #[ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         if ($this->keysKey === null) {
             return parent::key();

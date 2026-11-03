@@ -19,7 +19,7 @@ class ValueOutOfRangeException extends InvalidValueException
      * @param int|float|null $min
      * @param int|float|null $max
      */
-    public function __construct($value, $min, $max, ?Throwable $previous = null)
+    public function __construct(mixed $value, mixed $min, mixed $max, ?Throwable $previous = null)
     {
         $value = ExceptionValueFormatter::format($value);
 

@@ -75,14 +75,14 @@ use function uksort;
  */
 class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 {
-    use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;
+    use StrictBehaviorMixin;
 
     /** @internal */
-    private const PRESERVE_KEYS = true;
+    private const bool PRESERVE_KEYS = true;
 
     /** @var mixed[] */
-    private $items;
+    private array $items;
 
     /**
      * @param mixed[] $items
@@ -93,17 +93,15 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public static function create(...$values): self
+    public static function create(mixed ...$values): self
     {
         return new static($values);
     }
 
     /**
      * @param iterable|mixed[] $that
-     * @return self
      */
     public static function from(iterable $that): self
     {
@@ -113,7 +111,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param iterable|mixed[] $keys
      * @param iterable|mixed[] $values
-     * @return self
      */
     public static function combine(iterable $keys, iterable $values): self
     {
@@ -145,12 +142,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param int|string $start
-     * @param int|string $end
      * @param int $step >= 1
      * @return static
      */
-    public static function range($start, $end, int $step = 1): self
+    public static function range(int|string $start, int|string $end, int $step = 1): self
     {
         Check::min($step, 1);
 
@@ -201,18 +196,12 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return $res;
     }
 
-    /**
-     * @return mixed
-     */
-    public function randomKey()
+    public function randomKey(): int|string
     {
         return array_rand($this->toArray());
     }
 
-    /**
-     * @return mixed
-     */
-    public function randomValue()
+    public function randomValue(): mixed
     {
         return $this[$this->randomKey()];
     }
@@ -239,18 +228,13 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return count($this->items) !== 0;
     }
 
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    public function contains($value): bool
+    public function contains(mixed $value): bool
     {
         return in_array($value, $this->toArray(), true);
     }
 
     /**
      * @param mixed[] $values
-     * @return bool
      */
     public function containsAny(array $values): bool
     {
@@ -259,7 +243,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $values
-     * @return bool
      */
     public function containsAll(array $values): bool
     {
@@ -267,10 +250,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return mixed|null
      */
-    public function indexOf($value, int $from = 0)
+    public function indexOf(mixed $value, int $from = 0)
     {
         if ($from > 0) {
             return $this->drop($from)->indexOf($value);
@@ -285,19 +267,17 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return static
      */
-    public function indexesOf($value): self
+    public function indexesOf(mixed $value): self
     {
         return new static(array_keys($this->items, $value, true));
     }
 
     /**
-     * @param mixed $value
      * @return mixed|null
      */
-    public function lastIndexOf($value, ?int $end = null)
+    public function lastIndexOf(mixed $value, ?int $end = null)
     {
         if ($end !== null) {
             return $this->take($end)->indexesOf($value)->last();
@@ -320,26 +300,18 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         return null;
     }
 
-    /**
-     * @return mixed
-     */
-    public function lastIndexWhere(callable $function, ?int $end = null)
+    public function lastIndexWhere(callable $function, ?int $end = null): mixed
     {
         return $this->take($end)->reverse()->indexWhere($function);
     }
 
-    /**
-     * @param int|string $key
-     * @return bool
-     */
-    public function containsKey($key): bool
+    public function containsKey(int|string $key): bool
     {
         return $this->offsetExists($key);
     }
 
     /**
      * @param mixed[] $keys
-     * @return bool
      */
     public function containsAnyKey(array $keys): bool
     {
@@ -348,7 +320,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $keys
-     * @return bool
      */
     public function containsAllKeys(array $keys): bool
     {
@@ -477,7 +448,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         }
         $max = $this->map($function)->max();
 
-        return $this->find(static function ($value) use ($max, $function) {
+        return $this->find(static function ($value) use ($max, $function): bool {
             return $function($value) === $max;
         });
     }
@@ -492,23 +463,17 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         }
         $min = $this->map($function)->min();
 
-        return $this->find(static function ($value) use ($min, $function) {
+        return $this->find(static function ($value) use ($min, $function): bool {
             return $function($value) === $min;
         });
     }
 
-    /**
-     * @return int|float
-     */
-    public function product()
+    public function product(): int|float
     {
         return array_product($this->toArray());
     }
 
-    /**
-     * @return int|float
-     */
-    public function sum()
+    public function sum(): float|int
     {
         return array_sum($this->toArray());
     }
@@ -517,7 +482,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function containsSlice(iterable $array): bool
     {
@@ -526,7 +490,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return int|null
      */
     public function indexOfSlice(iterable $array, int $from = 0): ?int
     {
@@ -544,7 +507,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function corresponds(iterable $array, callable $function): bool
     {
@@ -562,18 +524,16 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $array
-     * @return bool
      */
     public function hasSameElements(iterable $array): bool
     {
-        return $this->corresponds($array, static function ($a, $b) {
+        return $this->corresponds($array, static function ($a, $b): bool {
             return $a === $b;
         });
     }
 
     /**
      * @param iterable|mixed[] $slice
-     * @return bool
      */
     public function startsWith(iterable $slice, int $from = 0): bool
     {
@@ -593,7 +553,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $slice
-     * @return bool
      */
     public function endsWith(iterable $slice): bool
     {
@@ -605,28 +564,25 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // transforming ----------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function fold(callable $function, $init = null)
+    public function fold(callable $function, mixed $init = null)
     {
         return $this->foldLeft($function, $init);
     }
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function foldLeft(callable $function, $init = null)
+    public function foldLeft(callable $function, mixed $init = null)
     {
         return array_reduce($this->toArray(), $function, $init);
     }
 
     /**
-     * @param mixed $init
      * @return mixed|null
      */
-    public function foldRight(callable $function, $init = null)
+    public function foldRight(callable $function, mixed $init = null)
     {
         foreach ($this->getReverseIterator() as $value) {
             $init = $function($value, $init);
@@ -668,10 +624,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $init
      * @return static
      */
-    public function scanLeft(callable $function, $init): self
+    public function scanLeft(callable $function, mixed $init): self
     {
         $res = [];
         $res[] = $init;
@@ -683,10 +638,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $init
      * @return static
      */
-    public function scanRight(callable $function, $init): self
+    public function scanRight(callable $function, mixed $init): self
     {
         $res = [];
         $res[] = $init;
@@ -770,7 +724,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return mixed[] (mixed $head, static $tail)
+     * @return array<int, mixed> (mixed $head, static $tail)
      */
     public function headTail(): array
     {
@@ -778,7 +732,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @return mixed[] (static $init, mixed $last)
+     * @return array<int, mixed> (static $init, mixed $last)
      */
     public function initLast(): array
     {
@@ -797,7 +751,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     {
         $res = new static(array_chunk($this->toArray(), $size, self::PRESERVE_KEYS));
 
-        return $res->map(static function ($array) {
+        return $res->map(static function ($array): static {
             return new static($array);
         });
     }
@@ -839,10 +793,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $value
      * @return static
      */
-    public function padTo(int $length, $value): self
+    public function padTo(int $length, mixed $value): self
     {
         return new static(array_pad($this->toArray(), $length, $value));
     }
@@ -940,7 +893,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     public function filterNot(callable $function): self
     {
-        return $this->filter(static function ($value) use ($function) {
+        return $this->filter(static function ($value) use ($function): bool {
             return !$function($value);
         });
     }
@@ -999,7 +952,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
         }
         $r = new static($res);
 
-        return $r->map(static function ($array) {
+        return $r->map(static function ($array): static {
             return new static($array);
         });
     }
@@ -1011,7 +964,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     public function mapPairs(callable $function): self
     {
-        return $this->remap(static function ($key, $value) use ($function) {
+        return $this->remap(static function ($key, $value) use ($function): array {
             return [$key => $function($key, $value)];
         });
     }
@@ -1064,11 +1017,10 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $valueKey
      * @param mixed|null $indexKey
      * @return static
      */
-    public function column($valueKey, $indexKey = null): self
+    public function column(mixed $valueKey, $indexKey = null): self
     {
         return new static(array_column($this->toArrayRecursive(), $valueKey, $indexKey));
     }
@@ -1145,10 +1097,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     // merging ---------------------------------------------------------------------------------------------------------
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public function append(...$values): self
+    public function append(mixed ...$values): self
     {
         return $this->appendAll($values);
     }
@@ -1168,10 +1119,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed ...$values
      * @return static
      */
-    public function prepend(...$values): self
+    public function prepend(mixed ...$values): self
     {
         return $this->prependAll($values);
     }
@@ -1193,11 +1143,9 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
-     * @param mixed $find
-     * @param mixed $replace
      * @return static
      */
-    public function replace($find, $replace): self
+    public function replace(mixed $find, mixed $replace): self
     {
         $arr = $this->toArray();
         $arr = array_replace($arr, [$find => $replace]);
@@ -1207,7 +1155,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $replacements
-     * @return self
      */
     public function replaceAll(iterable $replacements): self
     {
@@ -1238,9 +1185,7 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
     public function patch(int $from, array $patch, ?int $length = null): self
     {
         $arr = $this->toArray();
-        if ($length === null) {
-            $length = count($patch);
-        }
+        $length ??= count($patch);
         array_splice($arr, $from, $length, $patch);
 
         return new static($arr);
@@ -1248,7 +1193,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param mixed[] $patch
-     * @return self
      */
     public function insert(int $from, array $patch): self
     {
@@ -1260,7 +1204,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] $that
-     * @return self
      */
     public function merge(iterable $that): self
     {
@@ -1276,7 +1219,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diff(iterable ...$args): self
     {
@@ -1291,7 +1233,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffWith(callable $function, iterable ...$args): self
     {
@@ -1307,7 +1248,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffKeys(iterable ...$args): self
     {
@@ -1322,7 +1262,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffKeysWith(callable $function, iterable ...$args): self
     {
@@ -1338,7 +1277,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffPairs(iterable ...$args): self
     {
@@ -1353,7 +1291,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function diffPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {
@@ -1380,7 +1317,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersect(iterable ...$args): self
     {
@@ -1395,7 +1331,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectWith(callable $function, iterable ...$args): self
     {
@@ -1411,7 +1346,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectKeys(iterable ...$args): self
     {
@@ -1426,7 +1360,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectKeysWith(callable $function, iterable ...$args): self
     {
@@ -1442,7 +1375,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectPairs(iterable ...$args): self
     {
@@ -1457,7 +1389,6 @@ class ImmutableArray implements Countable, IteratorAggregate, ArrayAccess
 
     /**
      * @param iterable|mixed[] ...$args
-     * @return self
      */
     public function intersectPairsWith(?callable $function, ?callable $keysFunction, iterable ...$args): self
     {

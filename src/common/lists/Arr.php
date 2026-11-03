@@ -10,6 +10,8 @@
 namespace Dogma;
 
 use Traversable;
+use function array_all;
+use function array_any;
 use function array_chunk;
 use function array_column;
 use function array_combine;
@@ -75,7 +77,7 @@ class Arr
     use StaticClassMixin;
 
     /** @internal */
-    private const PRESERVE_KEYS = true;
+    private const bool PRESERVE_KEYS = true;
 
     /**
      * @param mixed[] $keys
@@ -110,7 +112,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return ArrayIterator
      */
     public static function iterate(array $array): ArrayIterator
     {
@@ -119,7 +120,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return ReverseArrayIterator
      */
     public static function backwards(array $array): ReverseArrayIterator
     {
@@ -127,12 +127,10 @@ class Arr
     }
 
     /**
-     * @param int|string $start
-     * @param int|string $end
      * @param int $step >= 1
      * @return mixed[]
      */
-    public static function range($start, $end, int $step = 1): array
+    public static function range(int|string $start, int|string $end, int $step = 1): array
     {
         Check::min($step, 1);
 
@@ -159,18 +157,16 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed
      */
-    public static function randomKey(array $array)
+    public static function randomKey(array $array): int|string
     {
         return array_rand($array);
     }
 
     /**
      * @param mixed[] $array
-     * @return mixed
      */
-    public static function randomValue(array $array)
+    public static function randomValue(array $array): mixed
     {
         return $array[array_rand($array)];
     }
@@ -220,7 +216,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function isEmpty(array $array): bool
     {
@@ -229,7 +224,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function isNotEmpty(array $array): bool
     {
@@ -238,10 +232,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
-     * @return bool
      */
-    public static function contains(array $array, $value, bool $strict = true): bool
+    public static function contains(array $array, mixed $value, bool $strict = true): bool
     {
         // phpcs:ignore SlevomatCodingStandard.Functions.StrictCall.NonStrictComparison
         return in_array($value, $array, $strict);
@@ -250,7 +242,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $values
-     * @return bool
      */
     public static function containsAny(array $array, array $values): bool
     {
@@ -260,7 +251,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $values
-     * @return bool
      */
     public static function containsAll(array $array, array $values): bool
     {
@@ -269,10 +259,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
-     * @return int|string|null
      */
-    public static function indexOf(array $array, $value, int $from = 0)
+    public static function indexOf(array $array, mixed $value, int $from = 0): int|null|string
     {
         if ($from > 0) {
             return self::indexOf(self::drop($array, $from), $value);
@@ -284,20 +272,17 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
      * @return int[]|string[]
      */
-    public static function indexesOf(array $array, $value): array
+    public static function indexesOf(array $array, mixed $value): array
     {
         return array_keys($array, $value, true);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
-     * @return int|string|null
      */
-    public static function lastIndexOf(array $array, $value, ?int $end = null)
+    public static function lastIndexOf(array $array, mixed $value, ?int $end = null): int|null|string
     {
         if ($end !== null) {
             return self::last(self::indexesOf(self::take($array, $end), $value));
@@ -308,9 +293,8 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return int|string|null
      */
-    public static function indexWhere(array $array, callable $function, int $from = 0)
+    public static function indexWhere(array $array, callable $function, int $from = 0): int|string|null
     {
         foreach (self::drop($array, $from) as $key => $value) {
             if ($function($value)) {
@@ -323,19 +307,16 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return int|string|null
      */
-    public static function lastIndexWhere(array $array, callable $function, ?int $end = null)
+    public static function lastIndexWhere(array $array, callable $function, ?int $end = null): int|null|string
     {
         return self::indexWhere(self::reverse(self::take($array, $end)), $function);
     }
 
     /**
      * @param mixed[] $array
-     * @param mixed $key
-     * @return bool
      */
-    public static function containsKey(array $array, $key): bool
+    public static function containsKey(array $array, mixed $key): bool
     {
         return array_key_exists($key, $array);
     }
@@ -343,7 +324,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $keys
-     * @return bool
      */
     public static function containsAnyKey(array $array, array $keys): bool
     {
@@ -353,7 +333,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $keys
-     * @return bool
      */
     public static function containsAllKeys(array $array, array $keys): bool
     {
@@ -362,32 +341,28 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function exists(array $array, callable $function): bool
     {
-        foreach ($array as $value) {
-            if ($function($value)) {
-                return true;
+        return array_any(
+            $array,
+            static function (mixed $value) use ($function) {
+                return $function($value);
             }
-        }
-
-        return false;
+        );
     }
 
     /**
      * @param mixed[] $array
-     * @return bool
      */
     public static function forAll(array $array, callable $function): bool
     {
-        foreach ($array as $value) {
-            if (!$function($value)) {
-                return false;
+        return array_all(
+            $array,
+            static function (mixed $value) use ($function) {
+                return $function($value);
             }
-        }
-
-        return true;
+        );
     }
 
     /**
@@ -407,7 +382,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return int
      */
     public static function prefixLength(array $array, callable $function): int
     {
@@ -416,7 +390,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return int
      */
     public static function segmentLength(array $array, callable $function, int $from = 0): int
     {
@@ -435,7 +408,6 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return int
      */
     public static function count(array $array, ?callable $function = null): int
     {
@@ -456,7 +428,6 @@ class Arr
     /**
      * Alias of count() without params
      * @param mixed[] $array
-     * @return int
      */
     public static function size(array $array): int
     {
@@ -509,7 +480,7 @@ class Arr
         }
         $max = self::max(self::map($array, $function));
 
-        return self::find($array, static function ($value) use ($max, $function) {
+        return self::find($array, static function ($value) use ($max, $function): bool {
             return $function($value) === $max;
         });
     }
@@ -525,25 +496,23 @@ class Arr
         }
         $min = self::min(self::map($array, $function));
 
-        return self::find($array, static function ($value) use ($min, $function) {
+        return self::find($array, static function ($value) use ($min, $function): bool {
             return $function($value) === $min;
         });
     }
 
     /**
      * @param mixed[] $array
-     * @return int|float
      */
-    public static function product(array $array)
+    public static function product(array $array): int|float
     {
         return array_product($array);
     }
 
     /**
      * @param mixed[] $array
-     * @return int|float
      */
-    public static function sum(array $array)
+    public static function sum(array $array): float|int
     {
         return array_sum($array);
     }
@@ -553,7 +522,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return bool
      */
     public static function containsSlice(array $array, array $slice): bool
     {
@@ -563,7 +531,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return int|null
      */
     public static function indexOfSlice(array $array, array $slice, int $from = 0): ?int
     {
@@ -582,7 +549,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $other
-     * @return bool
      */
     public static function corresponds(array $array, array $other, callable $function): bool
     {
@@ -604,11 +570,10 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $other
-     * @return bool
      */
     public static function hasSameElements(array $array, array $other): bool
     {
-        return self::corresponds($array, $other, static function ($a, $b) {
+        return self::corresponds($array, $other, static function ($a, $b): bool {
             return $a === $b;
         });
     }
@@ -616,7 +581,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return bool
      */
     public static function startsWith(array $array, array $slice, int $from = 0): bool
     {
@@ -636,7 +600,6 @@ class Arr
     /**
      * @param mixed[] $array
      * @param mixed[] $slice
-     * @return bool
      */
     public static function endsWith(array $array, array $slice): bool
     {
@@ -716,10 +679,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $init
      * @return mixed[]
      */
-    public static function scanLeft(array $array, callable $function, $init): array
+    public static function scanLeft(array $array, callable $function, mixed $init): array
     {
         $res = [];
         $res[] = $init;
@@ -732,10 +694,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $init
      * @return mixed[]
      */
-    public static function scanRight(array $array, callable $function, $init): array
+    public static function scanRight(array $array, callable $function, mixed $init): array
     {
         $res = [];
         $res[] = $init;
@@ -839,7 +800,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed[] (mixed $head, static $tail)
+     * @return array<int, mixed> (mixed $head, static $tail)
      */
     public static function headTail(array $array): array
     {
@@ -848,7 +809,7 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @return mixed[] (static $init, mixed $last)
+     * @return array<int, mixed> (static $init, mixed $last)
      */
     public static function initLast(array $array): array
     {
@@ -927,10 +888,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $value
      * @return mixed[]
      */
-    public static function padTo(array $array, int $length, $value): array
+    public static function padTo(array $array, int $length, mixed $value): array
     {
         return array_pad($array, $length, $value);
     }
@@ -1065,7 +1025,7 @@ class Arr
      */
     public static function filterNot(array $array, callable $function): array
     {
-        return self::filter($array, static function ($value) use ($function) {
+        return self::filter($array, static function ($value) use ($function): bool {
             return !$function($value);
         });
     }
@@ -1152,7 +1112,7 @@ class Arr
      */
     public static function mapPairs(array $array, callable $function): array
     {
-        return self::remap($array, static function ($key, $value) use ($function) {
+        return self::remap($array, static function ($key, $value) use ($function): array {
             return [$key => $function($key, $value)];
         });
     }
@@ -1221,11 +1181,10 @@ class Arr
 
     /**
      * @param mixed[][] $array
-     * @param mixed $valueKey
      * @param mixed|null $indexKey
      * @return mixed[]
      */
-    public static function column(array $array, $valueKey, $indexKey = null): array
+    public static function column(array $array, mixed $valueKey, $indexKey = null): array
     {
         return array_column($array, $valueKey, $indexKey);
     }
@@ -1370,10 +1329,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed ...$values
      * @return mixed[]
      */
-    public static function append(array $array, ...$values): array
+    public static function append(array $array, mixed ...$values): array
     {
         return self::appendAll($array, $values);
     }
@@ -1394,10 +1352,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed ...$values
      * @return mixed[]
      */
-    public static function prepend(array $array, ...$values): array
+    public static function prepend(array $array, mixed ...$values): array
     {
         return self::prependAll($array, $values);
     }
@@ -1419,11 +1376,9 @@ class Arr
 
     /**
      * @param mixed[] $array
-     * @param mixed $find
-     * @param mixed $replace
      * @return mixed[]
      */
-    public static function replace(array $array, $find, $replace): array
+    public static function replace(array $array, mixed $find, mixed $replace): array
     {
         return array_replace($array, [$find => $replace]);
     }
@@ -1456,9 +1411,7 @@ class Arr
      */
     public static function patch(array $array, int $from, array $patch, ?int $length = null): array
     {
-        if ($length === null) {
-            $length = count($patch);
-        }
+        $length ??= count($patch);
         array_splice($array, $from, $length, $patch);
 
         return $array;

@@ -19,7 +19,6 @@ use function array_values;
 use function class_parents;
 use function end;
 use function explode;
-use function get_class;
 use function is_object;
 
 class Cls
@@ -36,10 +35,9 @@ class Cls
     }
 
     /**
-     * @param string|object $class
      * @return string[]
      */
-    public static function parents($class): array
+    public static function parents(object|string $class): array
     {
         $parents = class_parents($class);
         if ($parents === false) {
@@ -50,13 +48,12 @@ class Cls
     }
 
     /**
-     * @param string|object $class
      * @return string[]
      */
-    public static function parentsAndSelf($class): array
+    public static function parentsAndSelf(object|string $class): array
     {
         if (is_object($class)) {
-            $class = get_class($class);
+            $class = $class::class;
         }
 
         $parents = class_parents($class);
@@ -72,24 +69,19 @@ class Cls
 
     /**
      * Oldest common ancestor
-     *
-     * @param string|object $first
-     * @param string|object $second
-     * @param string|object|null $after
-     * @return string|null
-     */
-    public static function commonRoot($first, $second, $after = null): ?string
+	 */
+    public static function commonRoot(object|string $first, object|string $second, null|object|string $after = null): ?string
     {
         static $commonRoots = [];
 
         if (is_object($first)) {
-            $first = get_class($first);
+            $first = $first::class;
         }
         if (is_object($second)) {
-            $second = get_class($second);
+            $second = $second::class;
         }
         if (is_object($after)) {
-            $after = get_class($after);
+            $after = $after::class;
         }
 
         $root = $commonRoots[$first][$second][$after] ?? null;
@@ -125,29 +117,22 @@ class Cls
 
     /**
      * Newest common ancestor
-     *
-     * @param string|object $first
-     * @param string|object $second
-     * @param string|object|null $after
-     * @return string|null
-     */
-    public static function commonBranch($first, $second, $after = null): ?string
+	 */
+    public static function commonBranch(object|string $first, object|string $second, null|object|string $after = null): ?string
     {
         static $commonBranches = [];
 
         if (is_object($first)) {
-            $first = get_class($first);
+            $first = $first::class;
         }
         if (is_object($second)) {
-            $second = get_class($second);
+            $second = $second::class;
         }
         if (is_object($after)) {
-            $after = get_class($after);
+            $after = $after::class;
         }
 
-		if ($after === null) {
-			$after = '';
-		}
+		$after ??= '';
 
         $branch = $commonBranches[$first][$second][$after] ?? null;
         if ($branch !== null) {

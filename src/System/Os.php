@@ -25,7 +25,7 @@ class Os extends StringEnum
     public const LINUX = 'Linux';
     public const UNKNOWN = 'Unknown';
 
-    private const FAMILIES = [
+    private const array FAMILIES = [
         'CYGWIN_NT-5.1' => self::WINDOWS,
         'Darwin' => self::DARWIN,
         'FreeBSD' => self::BSD,

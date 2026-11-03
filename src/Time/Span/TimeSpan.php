@@ -19,17 +19,13 @@ class TimeSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'h:i:S';
 
-    /** @var  int */
-    private $hours;
+    private int $hours;
 
-    /** @var int */
-    private $minutes;
+    private int $minutes;
 
-    /** @var int */
-    private $seconds;
+    private int $seconds;
 
-    /** @var int */
-    private $microseconds;
+    private int $microseconds;
 
     final public function __construct(
         int $hours,
@@ -100,16 +96,13 @@ class TimeSpan implements DateOrTimeSpan
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeSpanFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new DateTimeSpanFormatter();
-        }
+        $formatter ??= new DateTimeSpanFormatter();
 
         return $formatter->format($this->toDateTimeSpan(), $format);
     }
 
     /**
      * @param TimeSpan $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -118,7 +111,6 @@ class TimeSpan implements DateOrTimeSpan
 
     /**
      * @param TimeSpan $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {

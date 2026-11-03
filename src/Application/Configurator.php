@@ -30,34 +30,34 @@ use function is_numeric;
 use function is_string;
 use function parse_ini_file;
 use function sprintf;
-use function substr;
+use function str_ends_with;
 use function trigger_error;
 
 final class Configurator extends stdClass
 {
     use StrictBehaviorMixin;
 
-    private const HELP_COLUMN_WIDTH = 32;
+    private const int HELP_COLUMN_WIDTH = 32;
 
-    public const FLAG = 'flag';
-    public const FLAG_VALUE = 'flag-value';
-    public const VALUE = 'value';
-    public const VALUES = 'values';
-    public const ENUM = 'enum';
-    public const SET = 'set';
-    public const MAP = 'map';
+    public const string FLAG = 'flag';
+    public const string FLAG_VALUE = 'flag-value';
+    public const string VALUE = 'value';
+    public const string VALUES = 'values';
+    public const string ENUM = 'enum';
+    public const string SET = 'set';
+    public const string MAP = 'map';
 
     /** @var string[]|string[][] */
-    private $arguments;
+    private array $arguments;
 
     /** @var mixed[] */
-    private $defaults;
+    private array $defaults;
 
     /** @var mixed[] */
-    private $values = [];
+    private array $values = [];
 
     /** @var mixed[] */
-    private $profiles = [];
+    private array $profiles = [];
 
     /**
      * @param string[]|string[][] $arguments
@@ -99,11 +99,11 @@ final class Configurator extends stdClass
             if ($type === self::ENUM || $type === self::SET) {
                 /** @var string[] $valuesList */
                 $valuesList = $values ?? [];
-                $row .= '; values: ' . implode('|', array_map([C::class, 'lyellow'], $valuesList));
+                $row .= '; values: ' . implode('|', array_map(C::lyellow(...), $valuesList));
             }
             if (isset($this->defaults[$name])) {
                 if ($type === self::VALUES || $type === self::SET) {
-                    $row .= '; default: ' . implode(',', array_map(function ($value) {
+                    $row .= '; default: ' . implode(',', array_map(function ($value): string {
                         return C::lyellow($this->format($value));
                     }, $this->defaults[$name]));
                 } else {
@@ -176,7 +176,7 @@ final class Configurator extends stdClass
     public function loadConfig(string $filePath): void
     {
         if (is_file($filePath)) {
-            if (substr($filePath, -5) === '.neon') {
+            if (str_ends_with($filePath, '.neon')) {
                 $file = file_get_contents($filePath);
                 if ($file === false) {
                     /** @var string[] $error */
@@ -185,7 +185,7 @@ final class Configurator extends stdClass
                     exit(1);
                 }
                 $config = Neon::decode($file);
-            } elseif (substr($filePath, -4) === '.ini') {
+            } elseif (str_ends_with($filePath, '.ini')) {
                 $config = parse_ini_file($filePath);
             } else {
                 echo C::white("Error: Only .neon and .ini files are supported!\n\n", C::RED);
@@ -255,11 +255,7 @@ final class Configurator extends stdClass
         }
     }
 
-    /**
-     * @param string|string[]|float|int|bool|null $value
-     * @return string|int|float|bool|list<string|int|float>|null
-     */
-	private function normalize($value, ?string $type = null)
+    private function normalize(mixed $value, ?string $type = null): mixed
 	{
 		if (($type === self::VALUES || $type === self::SET) && is_string($value)) {
 			$value = explode(',', $value);
@@ -276,11 +272,7 @@ final class Configurator extends stdClass
 		return $value;
 	}
 
-    /**
-     * @param mixed $value
-     * @return string
-     */
-    private function format($value): string
+    private function format(mixed $value): string
     {
         if (is_bool($value)) {
             return $value ? 'yes' : 'no';
@@ -291,7 +283,7 @@ final class Configurator extends stdClass
     /**
      * @return ConfigurationProfile|mixed|null
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         if (isset($this->profiles['@' . $name])) {
             return new ConfigurationProfile($this->profiles['@' . $name]);

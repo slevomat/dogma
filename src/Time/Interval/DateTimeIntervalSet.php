@@ -22,7 +22,6 @@ use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_map;
 use function array_merge;
@@ -38,12 +37,12 @@ use function sprintf;
  */
 class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var list<DateTimeInterval> */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param list<DateTimeInterval> $intervals
@@ -212,11 +211,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         return count($this->intervals);
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset): DateTimeInterval
+    public function offsetGet(mixed $offset): DateTimeInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -225,10 +220,7 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }
@@ -251,7 +243,6 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -327,7 +318,6 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -364,7 +354,6 @@ class DateTimeIntervalSet extends IntervalSet implements DateOrTimeIntervalSet
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

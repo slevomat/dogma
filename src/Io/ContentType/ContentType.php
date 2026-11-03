@@ -13,6 +13,7 @@ use Dogma\Enum\PartialStringEnum;
 use Dogma\Str;
 use function array_search;
 use function is_string;
+use function str_contains;
 
 class ContentType extends PartialStringEnum
 {
@@ -1817,7 +1818,7 @@ class ContentType extends PartialStringEnum
     public const X_CONFERENCE_X_COOLTALK = 'x-conference/x-cooltalk';
 
     /** @var string[] */
-    private static $extensions = [
+    private static array $extensions = [
         '123' => self::APPLICATION_VND_LOTUS_1_2_3,
         '3dml' => self::TEXT_VND_IN3D_3DML,
         '3g2' => self::VIDEO_3GPP2,
@@ -2524,7 +2525,7 @@ class ContentType extends PartialStringEnum
     ];
 
     /** @var bool[] */
-    private static $compressed = [
+    private static array $compressed = [
         self::APPLICATION_GZIP => true,
         self::APPLICATION_X_BZIP => true,
         self::APPLICATION_X_BZIP2 => true,
@@ -2537,7 +2538,7 @@ class ContentType extends PartialStringEnum
     ];
 
     /** @var bool[] */
-    private static $archive = [
+    private static array $archive = [
         // uncompressed
         self::APPLICATION_VND_EFI_ISO => false,
         self::APPLICATION_X_CPIO => false,
@@ -2622,7 +2623,7 @@ class ContentType extends PartialStringEnum
 
     public function isHtml(): bool
     {
-        return Str::contains(Str::fromFirst($this->getValue(), '/'), 'html');
+        return str_contains(Str::fromFirst($this->getValue(), '/'), 'html');
     }
 
     public function isImage(): bool
@@ -2632,7 +2633,7 @@ class ContentType extends PartialStringEnum
 
     public function isJson(): bool
     {
-        return Str::contains(Str::fromFirst($this->getValue(), '/'), 'json');
+        return str_contains(Str::fromFirst($this->getValue(), '/'), 'json');
     }
 
     public function isPdf(): bool
@@ -2652,7 +2653,7 @@ class ContentType extends PartialStringEnum
 
     public function isXml(): bool
     {
-        return Str::contains(Str::fromFirst($this->getValue(), '/'), 'xml');
+        return str_contains(Str::fromFirst($this->getValue(), '/'), 'xml');
     }
 
 }

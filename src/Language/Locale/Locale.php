@@ -34,13 +34,12 @@ class Locale
     use StrictBehaviorMixin;
 
     /** @var self[] */
-    private static $instances = [];
+    private static array $instances = [];
 
-    /** @var string */
-    private $value;
+    private string $value;
 
     /** @var string[]|string[][]|null[] */
-    private $components;
+    private array $components;
 
     /**
      * @param string[]|string[][]|null[] $components
@@ -78,7 +77,6 @@ class Locale
      * @param string[] $variants
      * @param string[] $private
      * @param string[] $keywords
-     * @return self
      */
     public static function create(
         Language $language,
@@ -109,7 +107,7 @@ class Locale
             throw new InvalidArgumentException('Invalid locale components.');
         }
         if ($keywords) {
-            $value .= '@' . implode(';', Arr::mapPairs($keywords, static function (string $key, string $value) {
+            $value .= '@' . implode(';', Arr::mapPairs($keywords, static function (string $key, string $value): string {
                 return $key . '=' . $value;
             }));
         }
@@ -130,11 +128,7 @@ class Locale
         return new Collator($this);
     }
 
-    /**
-     * @param string|Locale $locale
-     * @return bool
-     */
-    public function matches($locale): bool
+    public function matches(self|string $locale): bool
     {
         Check::types($locale, [Type::STRING, self::class]);
 
@@ -148,16 +142,13 @@ class Locale
     /**
      * @param Locale[]|string[] $locales
      * @param Locale|string $default
-     * @return self|null
      */
-    public function findBestMatch(array $locales, $default = null): ?self
+    public function findBestMatch(array $locales, self|string|null $default = null): ?self
     {
         Check::types($default, [Type::STRING, self::class, Type::NULL]);
 
-        if ($default === null) {
-            // work around bug when lookup does not work at all without default value
-            $default = reset($locales);
-        }
+        // work around bug when lookup does not work at all without default value
+        $default ??= reset($locales);
         if (is_string($default)) {
             $default = self::get($default);
         }

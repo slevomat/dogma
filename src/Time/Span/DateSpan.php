@@ -20,14 +20,11 @@ class DateSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d';
 
-    /** @var int */
-    private $years;
+    private int $years;
 
-    /** @var int */
-    private $months;
+    private int $months;
 
-    /** @var int */
-    private $days;
+    private int $days;
 
     final public function __construct(
         int $years,
@@ -95,16 +92,13 @@ class DateSpan implements DateOrTimeSpan
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeSpanFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new DateTimeSpanFormatter();
-        }
+        $formatter ??= new DateTimeSpanFormatter();
 
         return $formatter->format($this->toDateTimeSpan(), $format);
     }
 
     /**
      * @param DateSpan $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -113,7 +107,6 @@ class DateSpan implements DateOrTimeSpan
 
     /**
      * @param DateSpan $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {

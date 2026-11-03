@@ -18,20 +18,14 @@ class ConstantTimeProvider implements TimeProvider
 {
     use StrictBehaviorMixin;
 
-    /** @var DateTime */
-    private $dateTime;
+    private DateTime $dateTime;
 
-    /** @var DateTimeZone */
-    private $timeZone;
+    private DateTimeZone $timeZone;
 
     public function __construct(?DateTime $dateTime = null, ?DateTimeZone $timeZone = null)
     {
-        if ($dateTime === null) {
-            $dateTime = new DateTime();
-        }
-        if ($timeZone === null) {
-            $timeZone = $dateTime->getTimezone();
-        }
+        $dateTime ??= new DateTime();
+        $timeZone ??= $dateTime->getTimezone();
 
         $this->dateTime = $dateTime;
         $this->timeZone = $timeZone;

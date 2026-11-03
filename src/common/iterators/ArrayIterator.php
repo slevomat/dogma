@@ -10,7 +10,6 @@
 namespace Dogma;
 
 use Iterator;
-use ReturnTypeWillChange;
 use function current;
 use function key;
 use function next;
@@ -26,7 +25,7 @@ class ArrayIterator implements Iterator
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    protected $array;
+    protected array $array;
 
     /**
      * @param mixed[] $array
@@ -54,17 +53,12 @@ class ArrayIterator implements Iterator
     /**
      * @return int|string|null
      */
-    #[ReturnTypeWillChange]
-    public function key()
+    public function key(): mixed
     {
         return key($this->array);
     }
 
-    /**
-     * @return mixed
-     */
-    #[ReturnTypeWillChange]
-    public function current()
+    public function current(): mixed
     {
         return current($this->array);
     }

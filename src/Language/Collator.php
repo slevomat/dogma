@@ -24,13 +24,12 @@ use function is_string;
 class Collator extends PhpCollator
 {
 
-    /** @var bool */
-    private $backwards = false;
+    private bool $backwards = false;
 
     /**
      * @param Locale|string $locale
      */
-    public function __construct($locale)
+    public function __construct(mixed $locale)
     {
         Check::types($locale, [Locale::class, Type::STRING]);
 
@@ -58,9 +57,8 @@ class Collator extends PhpCollator
 
     /**
      * @param Locale|string $locale
-     * @return self
      */
-    public static function create($locale): self
+    public static function create(mixed $locale): self
     {
         return new self($locale);
     }
@@ -112,13 +110,7 @@ class Collator extends PhpCollator
         return Locale::get($locale);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $str1
-     * @param string $str2
-     * @return int
-     */
-    public function compare($str1, $str2): int
+    public function compare(string $str1, string $str2): int
     {
         if ($this->backwards) {
             $result = parent::compare($str2, $str1);
@@ -133,12 +125,9 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
-     * @param int $sortFlag
-     * @return bool
      */
-    public function asort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
+    public function asort(array &$arr, int $sortFlag = self::SORT_REGULAR): bool
     {
         $result = parent::asort($arr, $sortFlag);
 
@@ -150,12 +139,9 @@ class Collator extends PhpCollator
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param mixed[] $arr
-     * @param int $sortFlag
-     * @return bool
      */
-    public function sort(array &$arr, $sortFlag = self::SORT_REGULAR): bool
+    public function sort(array &$arr, int $sortFlag = self::SORT_REGULAR): bool
     {
         $result = parent::sort($arr, $sortFlag);
 
@@ -168,7 +154,6 @@ class Collator extends PhpCollator
 
     /**
      * @param mixed[] $arr
-     * @return bool
      */
     public function sortWithSortKeys(array &$arr): bool
     {

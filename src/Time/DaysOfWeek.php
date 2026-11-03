@@ -83,9 +83,7 @@ class DaysOfWeek extends IntSet
      */
     public function filterDays(array $days): array
     {
-        return array_filter($days, function (DateOrDateTime $day) {
-            return $this->matchesDay($day);
-        });
+        return array_filter($days, $this->matchesDay(...));
     }
 
 }

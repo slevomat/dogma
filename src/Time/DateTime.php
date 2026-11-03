@@ -21,13 +21,11 @@ use Dogma\Equalable;
 use Dogma\InvalidValueException;
 use Dogma\LogicException;
 use Dogma\Obj;
-use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Format\DateTimeValues;
 use Dogma\Time\Provider\TimeProvider;
 use Dogma\Time\Span\DateOrTimeSpan;
 use Dogma\Time\Span\DateTimeSpan;
-use ReturnTypeWillChange;
 use function array_keys;
 use function array_values;
 use function ceil;
@@ -38,6 +36,7 @@ use function is_int;
 use function is_string;
 use function number_format;
 use function sprintf;
+use function str_contains;
 use function str_replace;
 use function strtolower;
 use function strval;
@@ -75,8 +74,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         'Y-m-d\\TH:i:s.uO',
     ];
 
-    /** @var int|null */
-    private $microTimestamp;
+    private ?int $microTimestamp = null;
 
     final public function __construct(string $time = 'now', ?DateTimeZone $timezone = null)
     {
@@ -92,14 +90,10 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $format
-     * @param string $timeString
-     * @param DateTimeZone|null $timeZone
      * @return static
      * @throws InvalidDateTimeException
      */
-    public static function createFromFormat($format, $timeString, $timeZone = null): self
+    public static function createFromFormat(string $format, string $timeString, ?DateTimeZone $timeZone = null): self
     {
         // due to invalid type hint in parent class...
         Check::nullableObject($timeZone, DateTimeZone::class);
@@ -141,16 +135,10 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         }
     }
 
-	/**
-	 * @param int|float $timestamp
-	 */
-    #[ReturnTypeWillChange]
-    public static function createFromTimestamp($timestamp, ?DateTimeZone $timeZone = null): self
+    public static function createFromTimestamp(float|int $timestamp, ?DateTimeZone $timeZone = null): static
     {
         $dateTime = static::createFromFormat('U', (string) $timestamp, TimeZone::getUtc());
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
-        }
+        $timeZone ??= TimeZone::getDefault();
         $dateTime = $dateTime->setTimezone($timeZone);
 
         return $dateTime;
@@ -161,9 +149,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         $formatted = number_format($timestamp, 6, '.', '');
 
         $dateTime = static::createFromFormat('U.u', $formatted, TimeZone::getUtc());
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
-        }
+        $timeZone ??= TimeZone::getDefault();
         $dateTime = $dateTime->setTimezone($timeZone);
 
         return $dateTime;
@@ -175,9 +161,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         $microseconds = $microTimestamp - $timestamp * 1000000;
 
         $dateTime = static::createFromTimestamp($timestamp, TimeZone::getUtc())->modify('+' . $microseconds . ' microseconds');
-        if ($timeZone === null) {
-            $timeZone = TimeZone::getDefault();
-        }
+        $timeZone ??= TimeZone::getDefault();
         $dateTime = $dateTime->setTimezone($timeZone);
 
         return $dateTime;
@@ -205,11 +189,9 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return new static("$year-$month-$day $hours:$minutes:$seconds.$microseconds", $timeZone);
     }
 
-    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, ?DateTimeZone $timeZone = null): self
+    public static function createFromDateTimeInterface(DateTimeInterface $dateTime, ?DateTimeZone $timeZone = null): static
     {
-        if ($timeZone === null) {
-            $timeZone = $dateTime->getTimezone();
-        }
+        $timeZone ??= $dateTime->getTimezone();
         $timestamp = $dateTime->getTimestamp();
         $microseconds = (int) $dateTime->format('u');
 
@@ -273,15 +255,11 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     // modifications ---------------------------------------------------------------------------------------------------
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpstan-pure
-     * @param string $modify
-     * @return self
      */
-    #[ReturnTypeWillChange]
-    public function modify($modify): self
+    public function modify(string $modify): static
     {
-        /** @var self|false $result */
+        /** @var static|false $result */
         $result = parent::modify($modify);
         if ($result === false) {
             throw new InvalidValueException($modify, 'date-time modification string');
@@ -292,11 +270,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpstan-pure
-     * @param DateInterval|DateOrTimeSpan $interval
-     * @return self
      */
-    #[ReturnTypeWillChange]
-    public function add($interval): self
+    public function add(DateInterval|DateOrTimeSpan $interval): static
     {
         if ($interval instanceof DateInterval) {
             $that = parent::add($interval);
@@ -313,11 +288,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @phpstan-pure
-     * @param DateInterval|DateOrTimeSpan $interval
-     * @return self
      */
-    #[ReturnTypeWillChange]
-    public function sub($interval): self
+    public function sub(DateInterval|DateOrTimeSpan $interval): static
     {
         if ($interval instanceof DateOrTimeSpan) {
             return $this->add($interval->invert());
@@ -356,26 +328,23 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpstan-pure
      * @param Time|int|string $time
      * @param int|null $minutes
      * @param int|null $seconds
      * @param int|null $microseconds
-     * @return self
      */
-    #[ReturnTypeWillChange]
-    public function setTime($time, $minutes = null, $seconds = null, $microseconds = null): self
+    public function setTime(mixed $time, mixed $minutes = null, mixed $seconds = null, mixed $microseconds = null): static
     {
         if ($time instanceof Time) {
             return self::createFromDateTimeInterface(parent::setTime($time->getHours(), $time->getMinutes(), $time->getSeconds(), $time->getMicroseconds()));
         }
-        if ($minutes === null && $seconds === null && is_string($time) && Str::contains($time, ':')) {
+        if ($minutes === null && $seconds === null && is_string($time) && str_contains($time, ':')) {
             $parts = explode(':', $time);
             $time = $parts[0];
             $minutes = $parts[1] ?? null;
             $seconds = strval($parts[2] ?? '');
-            if (Str::contains($seconds, '.')) {
+            if (str_contains($seconds, '.')) {
                 [$seconds, $microseconds] = explode('.', $seconds);
                 $microseconds = floatval('0.' . $microseconds) * 1000000;
             }
@@ -384,13 +353,8 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return self::createFromDateTimeInterface(parent::setTime((int) $time, (int) $minutes, (int) $seconds, (int) $microseconds));
     }
 
-    /**
-     * @phpstan-pure
-     * @param DateTimeZone|string $timeZone
-     * @return DateTime
-     */
-    #[ReturnTypeWillChange]
-    public function setTimezone($timeZone): self
+    /** @phpstan-pure */
+    public function setTimezone(DateTimeZone|string $timeZone): static
     {
         if (!$timeZone instanceof DateTimeZone) {
             $timeZone = new DateTimeZone($timeZone);
@@ -449,23 +413,15 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     // queries ---------------------------------------------------------------------------------------------------------
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $format
-     * @return string
-     */
-    public function format($format = self::DEFAULT_FORMAT): string
+    public function format(string $format = self::DEFAULT_FORMAT): string
     {
         return parent::format($format);
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param DateTimeInterface|string $other
-     * @param bool $absolute
-     * @return DateInterval
      */
-    public function diff($other, $absolute = false): DateInterval
+    public function diff(mixed $other, bool $absolute = false): DateInterval
     {
         if (is_string($other)) {
             $other = new static($other);
@@ -474,11 +430,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return parent::diff($other, $absolute);
     }
 
-    /**
-     * @param DateTimeInterface|string $other
-     * @return DateTimeSpan
-     */
-    public function difference($other, bool $absolute = false): DateTimeSpan
+    public function difference(DateTimeInterface|string $other, bool $absolute = false): DateTimeSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -487,7 +439,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -498,7 +449,6 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -528,11 +478,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->getTimezone()->getOffset($this) === $other->getTimezone()->getOffset($other);
     }
 
-    /**
-     * @param DateTimeInterface|string $dateTime
-     * @return bool
-     */
-    public function isBefore($dateTime): bool
+    public function isBefore(DateTimeInterface|string $dateTime): bool
     {
         if (is_string($dateTime)) {
             $dateTime = new static($dateTime);
@@ -541,11 +487,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this < $dateTime;
     }
 
-    /**
-     * @param DateTimeInterface|string $dateTime
-     * @return bool
-     */
-    public function isAfter($dateTime): bool
+    public function isAfter(DateTimeInterface|string $dateTime): bool
     {
         if (is_string($dateTime)) {
             $dateTime = new static($dateTime);
@@ -554,12 +496,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this > $dateTime;
     }
 
-    /**
-     * @param DateTimeInterface|string $sinceTime
-     * @param DateTimeInterface|string $untilTime
-     * @return bool
-     */
-    public function isBetween($sinceTime, $untilTime): bool
+    public function isBetween(DateTimeInterface|string $sinceTime, DateTimeInterface|string $untilTime): bool
     {
         if (is_string($sinceTime)) {
             $sinceTime = new static($sinceTime);
@@ -586,11 +523,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return ($this->getMicroTimestamp() % Microseconds::DAY) === 0;
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     * @return bool
-     */
-    public function isSameDay($date): bool
+    public function isSameDay(Date|DateTimeInterface|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -599,11 +532,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) === $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     * @return bool
-     */
-    public function isBeforeDay($date): bool
+    public function isBeforeDay(Date|DateTimeInterface|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -612,11 +541,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) < $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $date
-     * @return bool
-     */
-    public function isAfterDay($date): bool
+    public function isAfterDay(Date|DateTimeInterface|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -625,12 +550,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format(Date::DEFAULT_FORMAT) > $date->format(Date::DEFAULT_FORMAT);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $sinceDate
-     * @param DateTimeInterface|Date|string $untilDate
-     * @return bool
-     */
-    public function isBetweenDays($sinceDate, $untilDate): bool
+    public function isBetweenDays(Date|DateTimeInterface|string $sinceDate, Date|DateTimeInterface|string $untilDate): bool
     {
         if (is_string($sinceDate)) {
             $sinceDate = new static($sinceDate);
@@ -666,11 +586,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->isBetween($tomorrow->getStart(), $tomorrow->getEnd());
     }
 
-    /**
-     * @param int|string|DayOfWeek $day
-     * @return bool
-     */
-    public function isDayOfWeek($day): bool
+    public function isDayOfWeek(DayOfWeek|int|string $day): bool
     {
         if (is_int($day)) {
             $day = DayOfWeek::get($day);
@@ -686,11 +602,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
         return $this->format('N') > 5;
     }
 
-    /**
-     * @param int|string|Month $month
-     * @return bool
-     */
-    public function isMonth($month): bool
+    public function isMonth(Month|int|string $month): bool
     {
         if (is_int($month)) {
             $month = Month::get($month);

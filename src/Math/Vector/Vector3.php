@@ -23,14 +23,11 @@ class Vector3
 {
     use StrictBehaviorMixin;
 
-    /** @var float */
-    private $x;
+    private float $x;
 
-    /** @var float */
-    private $y;
+    private float $y;
 
-    /** @var float */
-    private $z;
+    private float $z;
 
     final public function __construct(float $x, float $y, float $z)
     {

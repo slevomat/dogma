@@ -20,6 +20,8 @@ use Dogma\Language\UnicodeCharacterCategory;
 use Error;
 use Nette\Utils\Strings;
 use UConverter;
+use function array_all;
+use function array_any;
 use function array_keys;
 use function array_pop;
 use function array_shift;
@@ -42,11 +44,12 @@ use function mb_substr;
 use function min;
 use function ord;
 use function range;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
 use function strcasecmp;
 use function strcmp;
 use function strlen;
-use function strncmp;
 use function strpos;
 use function strrpos;
 use function strtolower;
@@ -139,19 +142,14 @@ class Str
         throw new InvalidValueException($ch, "UTF-8 character");
     }
 
-    public static function startsWith(string $string, string $find): bool
-    {
-        return strncmp($string, $find, strlen($find)) === 0;
-    }
-
     public static function endsWith(string $string, string $find): bool
     {
-        return $find === '' || substr($string, -strlen($find)) === $find;
+        return $find === '' || str_ends_with($string, $find);
     }
 
     public static function contains(string $string, string $find): bool
     {
-        return strpos($string, $find) !== false;
+        return str_contains($string, $find);
     }
 
     /**
@@ -159,13 +157,12 @@ class Str
      */
     public static function containsAny(string $string, array $find): bool
     {
-        foreach ($find as $value) {
-            if (strpos($string, $value) !== false) {
-                return true;
+        return array_any(
+            $find,
+            static function (string $value) use ($string): bool {
+                return str_contains($string, $value);
             }
-        }
-
-        return false;
+        );
     }
 
     /**
@@ -173,13 +170,12 @@ class Str
      */
     public static function containsAll(string $string, array $find): bool
     {
-        foreach ($find as $value) {
-            if (strpos($string, $value) === false) {
-                return false;
+        return array_all(
+            $find,
+            static function (string $value) use ($string): bool {
+                return (bool) str_contains($string, $value);
             }
-        }
-
-        return true;
+        );
     }
 
     public static function substring(string $string, int $start, ?int $length = null): string
@@ -292,9 +288,7 @@ class Str
 
     /**
      * Similar to before(), but always returns start or the entire string
-     *
-     * @return string
-     */
+	 */
     public static function toFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);
@@ -307,9 +301,7 @@ class Str
 
     /**
      * Similar to after(), but always returns end or entire string
-     *
-     * @return string
-     */
+	 */
     public static function fromFirst(string $string, string $search): string
     {
         $pos = strpos($string, $search);
@@ -408,7 +400,6 @@ class Str
 
     /**
      * @see Re::count()
-     * @return int
      */
     public static function count(string $string, string $substring): int
     {
@@ -417,7 +408,6 @@ class Str
 
     /**
      * @deprecated use Str::count() instead
-     * @return int
      */
     public static function substringCount(string $string, string $substring): int
     {
@@ -450,20 +440,13 @@ class Str
 
     // comparison ------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param int|string|Collator|Locale $collation
-     * @return bool
-     */
-    public static function equals(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): bool
+
+    public static function equals(string $first, string $second, Collator|Locale|int|string $collation = CaseComparison::CASE_SENSITIVE): bool
     {
         return self::compare($first, $second, $collation) === 0;
     }
 
-    /**
-     * @param int|string|Collator|Locale $collation
-     * @return int
-     */
-    public static function compare(string $first, string $second, $collation = CaseComparison::CASE_SENSITIVE): int
+    public static function compare(string $first, string $second, Collator|Locale|int|string $collation = CaseComparison::CASE_SENSITIVE): int
     {
         if ($collation === CaseComparison::CASE_SENSITIVE) {
             return strcmp($first, $second);
@@ -811,13 +794,11 @@ class Str
     public static function removeDiacritics(string $string): string
     {
         static $transliterator;
-        if ($transliterator === null) {
-            $transliterator = Transliterator::createFromIds([
-                Transliterator::DECOMPOSE,
-                [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
-                Transliterator::COMPOSE,
-            ]);
-        }
+        $transliterator ??= Transliterator::createFromIds([
+            Transliterator::DECOMPOSE,
+            [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+            Transliterator::COMPOSE,
+        ]);
 
         return $transliterator->transliterate($string);
     }
@@ -825,14 +806,12 @@ class Str
     private static function removeDiacriticsAndLower(string $string): string
     {
         static $transliterator;
-        if ($transliterator === null) {
-            $transliterator = Transliterator::createFromIds([
-                Transliterator::DECOMPOSE,
-                [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
-                Transliterator::COMPOSE,
-                Transliterator::LOWER_CASE,
-            ]);
-        }
+        $transliterator ??= Transliterator::createFromIds([
+            Transliterator::DECOMPOSE,
+            [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+            Transliterator::COMPOSE,
+            Transliterator::LOWER_CASE,
+        ]);
 
         return $transliterator->transliterate($string);
     }
@@ -874,19 +853,6 @@ class Str
             }
 
             return $result;
-        } elseif (function_exists('recode_string')) {
-            $request = $from . '..' . $to;
-            try {
-                error_clear_last();
-                $result = recode_string($request, $string);
-                if ($result === false) {
-                    throw new ErrorException('Cannot convert encoding', error_get_last());
-                }
-
-                return $result;
-            } catch (Error $e) {
-                throw new ErrorException('Cannot convert encoding', null, $e);
-            }
         } else {
             throw new ShouldNotHappenException('No extension for converting encodings installed.');
         }
@@ -924,10 +890,8 @@ class Str
     /**
      * @deprecated use Re::replace() instead
      * @param string|string[] $pattern
-     * @param string|callable|null $replacement
-     * @return string
      */
-    public static function replace(string $string, $pattern, $replacement = null, int $limit = -1): string
+    public static function replace(string $string, array|string $pattern, callable|null|string $replacement = null, int $limit = -1): string
     {
         return Re::replace($string, $pattern, $replacement, $limit);
     }

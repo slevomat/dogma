@@ -35,10 +35,10 @@ abstract class StringSet implements Set, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
     /** @var string[] */
-    private $values;
+    private array $values;
 
     /**
      * @param string[] $values
@@ -118,9 +118,7 @@ abstract class StringSet implements Set, Dumpable
 
     /**
      * Validates given value. Can also normalize the value, if needed.
-     *
-     * @return bool
-     */
+	 */
     public static function validateValue(string &$value): bool
     {
         $class = static::class;
@@ -179,7 +177,6 @@ abstract class StringSet implements Set, Dumpable
 
     /**
      * @param StringSet $other
-     * @return bool
      */
     final public function equals(Equalable $other): bool
     {
@@ -236,11 +233,9 @@ abstract class StringSet implements Set, Dumpable
     // comparing values ------------------------------------------------------------------------------------------------
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param string $value
-     * @return bool
      */
-    public function equalsValue($value): bool
+    public function equalsValue(mixed $value): bool
     {
         return $value === $this->getValue();
     }

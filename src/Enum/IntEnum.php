@@ -28,10 +28,9 @@ abstract class IntEnum implements Enum, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
-    /** @var int */
-    private $value;
+    private int $value;
 
     final public function __construct(int $value)
     {
@@ -71,9 +70,7 @@ abstract class IntEnum implements Enum, Dumpable
 
     /**
      * Validates given value. Can also normalize the value, if needed.
-     *
-     * @return bool
-     */
+	 */
     public static function validateValue(int &$value): bool
     {
         $class = static::class;
@@ -117,7 +114,6 @@ abstract class IntEnum implements Enum, Dumpable
 
     /**
      * @param IntEnum $other
-     * @return bool
      */
     final public function equals(Equalable $other): bool
     {
@@ -127,11 +123,9 @@ abstract class IntEnum implements Enum, Dumpable
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int $value
-     * @return bool
      */
-    final public function equalsValue($value): bool
+    final public function equalsValue(mixed $value): bool
     {
         return $value === $this->value;
     }

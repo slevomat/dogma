@@ -15,7 +15,6 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
@@ -29,12 +28,12 @@ use function sprintf;
  */
 class IntIntervalSet extends IntervalSet
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var IntInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param IntInterval[] $intervals
@@ -67,7 +66,6 @@ class IntIntervalSet extends IntervalSet
         return count($this->intervals);
     }
 
-    #[ReturnTypeWillChange]
     public function offsetGet(mixed $offset): IntInterval
     {
         if (isset($this->intervals[$offset])) {
@@ -89,7 +87,6 @@ class IntIntervalSet extends IntervalSet
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -156,7 +153,6 @@ class IntIntervalSet extends IntervalSet
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -192,14 +188,13 @@ class IntIntervalSet extends IntervalSet
     /** @phpstan-pure */
     public function invert(): self
     {
-        return (new static([IntInterval::all()]))->subtract($this);
+        return new static([IntInterval::all()])->subtract($this);
     }
 
     /**
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

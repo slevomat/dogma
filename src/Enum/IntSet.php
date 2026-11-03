@@ -36,10 +36,10 @@ abstract class IntSet implements Set, Dumpable
     use EnumSetMixin;
 
     /** @var mixed[][] ($class => ($constName => $value)) */
-    private static $availableValues = [];
+    private static array $availableValues = [];
 
     /** @var int[] */
-    private $values;
+    private array $values;
 
     /**
      * @param int[] $values
@@ -120,9 +120,7 @@ abstract class IntSet implements Set, Dumpable
 
     /**
      * Validates a single value. Can also normalize the value, if needed.
-     *
-     * @return bool
-     */
+	 */
     public static function validateValue(int &$value): bool
     {
         $class = static::class;
@@ -184,7 +182,6 @@ abstract class IntSet implements Set, Dumpable
 
     /**
      * @param IntSet $other
-     * @return bool
      */
     final public function equals(Equalable $other): bool
     {
@@ -241,11 +238,9 @@ abstract class IntSet implements Set, Dumpable
     // comparing values ------------------------------------------------------------------------------------------------
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @param int $value
-     * @return bool
      */
-    public function equalsValue($value): bool
+    public function equalsValue(mixed $value): bool
     {
         return $value === $this->getValue();
     }

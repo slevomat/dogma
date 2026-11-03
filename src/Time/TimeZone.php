@@ -450,7 +450,7 @@ class TimeZone extends PartialStringEnum
      * @see https://secure.php.net/manual/en/timezones.others.php for deprecated timezones info
      * @var string[]
      */
-    private static $deprecated = [
+    private static array $deprecated = [
         'Africa/Asmera',
         'Africa/Timbuktu',
         'America/Argentina/ComodRivadavia',
@@ -654,9 +654,7 @@ class TimeZone extends PartialStringEnum
     {
         static $utcTimeZone;
 
-        if ($utcTimeZone === null) {
-            $utcTimeZone = self::createDateTimeZone(self::UTC);
-        }
+        $utcTimeZone ??= self::createDateTimeZone(self::UTC);
 
         return $utcTimeZone;
     }

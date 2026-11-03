@@ -21,7 +21,7 @@ class InvalidSizeException extends Exception
      * @param int|int[] $actualSize
      * @param int[]|string[] $allowedSizes
      */
-    public function __construct($type, $actualSize, array $allowedSizes, ?Throwable $previous = null)
+    public function __construct(mixed $type, mixed $actualSize, array $allowedSizes, ?Throwable $previous = null)
     {
         $type = ExceptionTypeFormatter::format($type);
 

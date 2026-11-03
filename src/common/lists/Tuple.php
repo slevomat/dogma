@@ -23,16 +23,13 @@ use function count;
  */
 class Tuple implements Countable, IteratorAggregate, ArrayAccess
 {
-    use StrictBehaviorMixin;
     use ImmutableArrayAccessMixin;
+    use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    private $items;
+    private array $items;
 
-    /**
-     * @param mixed ...$items
-     */
-    public function __construct(...$items)
+    public function __construct(mixed ...$items)
     {
         $this->items = $items;
     }

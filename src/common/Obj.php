@@ -20,17 +20,13 @@ class Obj
 {
     use StaticClassMixin;
 
-    /**
-     * @param object $object
-     */
-    public static function dumpHash($object): string
+    public static function dumpHash(object $object): string
     {
         return substr(md5((string) spl_object_id($object)), 0, 4);
     }
 
     /**
      * @param object|resource $object
-     * @return int
      */
     public static function objectId($object): int
     {

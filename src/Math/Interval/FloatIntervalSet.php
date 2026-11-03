@@ -15,7 +15,6 @@ use Dogma\Compare;
 use Dogma\Equalable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
@@ -29,12 +28,12 @@ use function sprintf;
  */
 class FloatIntervalSet extends IntervalSet
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var FloatInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param FloatInterval[] $intervals
@@ -67,11 +66,7 @@ class FloatIntervalSet extends IntervalSet
         return count($this->intervals);
     }
 
-    /**
-     * @param mixed $offset
-     */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset): FloatInterval
+    public function offsetGet(mixed $offset): FloatInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -80,10 +75,7 @@ class FloatIntervalSet extends IntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }
@@ -95,7 +87,6 @@ class FloatIntervalSet extends IntervalSet
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -162,7 +153,6 @@ class FloatIntervalSet extends IntervalSet
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -198,14 +188,13 @@ class FloatIntervalSet extends IntervalSet
     /** @phpstan-pure */
     public function invert(): self
     {
-        return (new static([FloatInterval::all()]))->subtract($this);
+        return new static([FloatInterval::all()])->subtract($this);
     }
 
     /**
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

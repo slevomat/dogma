@@ -35,19 +35,17 @@ use function min;
  */
 class DayOfYearInterval implements ModuloInterval
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = DayOfYear::MIN_NUMBER;
     public const MAX = DayOfYear::MAX_DENORMALIZED;
 
     public const DEFAULT_FORMAT = 'm-d| - m-d';
 
-    /** @var DayOfYear */
-    private $start;
+    private DayOfYear $start;
 
-    /** @var DayOfYear */
-    private $end;
+    private DayOfYear $end;
 
     final public function __construct(DayOfYear $start, DayOfYear $end)
     {
@@ -160,9 +158,7 @@ class DayOfYearInterval implements ModuloInterval
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new SimpleDateTimeIntervalFormatter();
-        }
+        $formatter ??= new SimpleDateTimeIntervalFormatter();
 
         return $formatter->format($this->toDateInterval(DayOfYear::DEFAULT_FORMAT_YEAR), $format);
     }
@@ -197,7 +193,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -209,7 +204,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -231,7 +225,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval $interval
-     * @return bool
      */
     public function contains(self $interval): bool
     {
@@ -258,7 +251,6 @@ class DayOfYearInterval implements ModuloInterval
 
     /**
      * @param DayOfYearInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -385,7 +377,7 @@ class DayOfYearInterval implements ModuloInterval
         $result1 = $a <= $b ? new static(new DayOfYear($a), new DayOfYear($b)) : static::empty();
         $result2 = $c <= $d ? new static(new DayOfYear($c), new DayOfYear($d)) : static::empty();
 
-        return (new DayOfYearIntervalSet([$result1, $result2]))->normalize();
+        return new DayOfYearIntervalSet([$result1, $result2])->normalize();
     }
 
     /** @phpstan-pure */

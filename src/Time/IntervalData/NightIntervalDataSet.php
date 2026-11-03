@@ -44,7 +44,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     use StrictBehaviorMixin;
 
     /** @var list<NightIntervalData<TData>> */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param list<NightIntervalData<TData>> $intervals
@@ -65,7 +65,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public static function createFromNightIntervalSet(NightIntervalSet $set, $data): self
     {
-        $intervals = array_map(static function (NightInterval $interval) use ($data) {
+        $intervals = array_map(static function (NightInterval $interval) use ($data): NightIntervalData {
             return NightIntervalData::createFromNightInterval($interval, $data);
         }, $set->getIntervals());
 
@@ -78,9 +78,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public static function createFromDateIntervalDataSet(DateIntervalDataSet $set): self
     {
-        return new static(array_map(static function (DateIntervalData $interval): NightIntervalData {
-            return NightIntervalData::createFromDateIntervalData($interval);
-        }, $set->getIntervals()));
+        return new static(array_map(NightIntervalData::createFromDateIntervalData(...), $set->getIntervals()));
     }
 
 	/**
@@ -163,7 +161,7 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     {
         $intervals = $this->getIntervals();
 
-        return array_merge(...array_map(static function (NightIntervalData $interval) {
+        return array_merge(...array_map(static function (NightIntervalData $interval): array {
             return $interval->toDateDataArray();
         }, $intervals));
     }
@@ -191,7 +189,6 @@ class NightIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @param self<TData> $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {

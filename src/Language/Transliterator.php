@@ -201,15 +201,9 @@ class Transliterator extends PhpTransliterator
     public const HALFWIDTH_TO_FULLWIDTH = 'Halfwidth-Fullwidth';
 
     /** @var PhpTransliterator[] */
-    private static $instances = [];
+    private static array $instances = [];
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $id
-     * @param int|null $direction
-     * @return PhpTransliterator
-     */
-    public static function create($id, $direction = null): PhpTransliterator
+    public static function create(string $id, ?int $direction = null): PhpTransliterator
     {
         if (isset(self::$instances[$id])) {
             return self::$instances[$id];
@@ -224,13 +218,7 @@ class Transliterator extends PhpTransliterator
         return $transliterator;
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param string $rules
-     * @param int|null $direction
-     * @return PhpTransliterator
-     */
-    public static function createFromRules($rules, $direction = null): PhpTransliterator
+    public static function createFromRules(string $rules, ?int $direction = null): PhpTransliterator
     {
         $transliterator = $direction !== null
             ? parent::createFromRules($rules, $direction)
@@ -256,11 +244,10 @@ class Transliterator extends PhpTransliterator
      * @see https://unicode-org.github.io/icu/userguide/transforms/general/rules.html
      *
      * @param non-empty-list<string|array{string, string|non-empty-list<string>}> $rules
-     * @return PhpTransliterator
      */
     public static function createFromIds(array $rules, ?int $direction = null): PhpTransliterator
     {
-        $rules = array_map(static function ($rule): string {
+        $rules = array_map(static function (array|string $rule): string {
             if (is_string($rule)) {
                 return $rule;
             }

@@ -17,7 +17,7 @@ final class ConfigurationProfile extends stdClass
     use StrictBehaviorMixin;
 
     /** @var mixed[] */
-    private $values;
+    private array $values;
 
     /**
      * @param mixed[] $values
@@ -27,10 +27,7 @@ final class ConfigurationProfile extends stdClass
         $this->values = $values;
     }
 
-    /**
-     * @return mixed
-     */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->values[$name] ?? null;
     }

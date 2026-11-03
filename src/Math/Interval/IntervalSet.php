@@ -66,20 +66,17 @@ abstract class IntervalSet implements Equalable, Dumpable, IteratorAggregate, Co
     abstract public function collect(callable $mapper);
 
     /**
-     * @param mixed $offset
-     * @param mixed $value
      * @throws BadMethodCallException
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException('Class is immutable');
     }
 
     /**
-     * @param mixed $offset
      * @throws BadMethodCallException
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException('Class is immutable');
     }
