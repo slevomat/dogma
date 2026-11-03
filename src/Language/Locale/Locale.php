@@ -21,6 +21,7 @@ use Dogma\Str;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Type;
 use Locale as PhpLocale;
+use function array_column;
 use function array_filter;
 use function array_values;
 use function implode;
@@ -81,9 +82,9 @@ class Locale
     ): self
     {
         $components = [
-            'language' => $language->getValue(),
-            'region' => $country ? $country->getValue() : null,
-            'script' => $script ? $script->getValue() : null,
+            'language' => $language->value,
+            'region' => $country !== null ? $country->value : null,
+            'script' => $script !== null ? $script->value : null,
         ];
         foreach (array_values($variants) as $n => $value) {
             $components['variant' . $n] = $value;
@@ -171,7 +172,7 @@ class Locale
         /** @var string $language */
         $language = $this->components['language'];
 
-        return Language::get($language);
+        return Language::parse($language);
     }
 
     public function getScript(): ?Script
@@ -182,7 +183,7 @@ class Locale
         /** @var string $script */
         $script = $this->components['script'];
 
-        return Script::get($script);
+        return Script::parse($script);
     }
 
     public function getCountry(): ?Country
@@ -193,7 +194,7 @@ class Locale
         /** @var string $country */
         $country = $this->components['region'];
 
-        return Country::get($country);
+        return Country::parse($country);
     }
 
     /**
@@ -274,28 +275,28 @@ class Locale
     {
         $value = $this->getKeyword(LocaleKeyword::CURRENCY);
 
-        return $value ? Currency::get($value) : null;
+        return $value ? Currency::parse($value) : null;
     }
 
     public function getNumbers(): ?LocaleNumbers
     {
         $value = $this->getKeyword(LocaleKeyword::NUMBERS);
 
-        return $value ? LocaleNumbers::get($value) : null;
+        return $value ? LocaleNumbers::parse($value) : null;
     }
 
     public function getCalendar(): ?LocaleCalendar
     {
         $value = $this->getKeyword(LocaleKeyword::CALENDAR);
 
-        return $value ? LocaleCalendar::get($value) : null;
+        return $value ? LocaleCalendar::parse($value) : null;
     }
 
     public function getCollation(): ?LocaleCollation
     {
         $value = $this->getKeyword(LocaleKeyword::COLLATION);
 
-        return $value ? LocaleCollation::get($value) : null;
+        return $value ? LocaleCollation::parse($value) : null;
     }
 
     /**
@@ -308,7 +309,7 @@ class Locale
         foreach (LocaleKeyword::getCollationOptions() as $keyword => $class) {
             $value = $this->getKeyword($keyword);
             if ($value !== null) {
-                $options[$keyword] = $class::get($value);
+                $options[$keyword] = $class::parse($value);
             }
         }
         /** @var LocaleCollationOption[] $options */
@@ -340,9 +341,9 @@ class Locale
             // language_Script_COUNTRY_VARIANT_VARIANT...@keyword=value;keyword=value...
             $regexp = sprintf(
                 '%s(?:_(?:%s))?(?:_(?:%s))?(?:_(?:%s))*(?:@(?:%s)=[a-zA-Z0-9-](?:;(?:%s)=[a-zA-Z0-9-])*)?',
-                Language::getValueRegexp(),
-                Script::getValueRegexp(),
-                Country::getValueRegexp(),
+                implode('|', array_column(Language::cases(), 'value')),
+                implode('|', array_column(Script::cases(), 'value')),
+                implode('|', array_column(Country::cases(), 'value')),
                 LocaleVariant::getValueRegexp(),
                 LocaleKeyword::getValueRegexp(),
                 LocaleKeyword::getValueRegexp()

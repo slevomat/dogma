@@ -101,8 +101,8 @@ Assert::same($denormalizedDay->getMonth(), 2);
 
 
 getMonthEnum:
-Assert::equal($day->getMonthEnum(), Month::february());
-Assert::equal($denormalizedDay->getMonthEnum(), Month::february());
+Assert::equal($day->getMonthEnum(), Month::February);
+Assert::equal($denormalizedDay->getMonthEnum(), Month::February);
 
 
 getDayOfMonth:

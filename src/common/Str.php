@@ -796,7 +796,7 @@ class Str
         static $transliterator;
         $transliterator ??= Transliterator::createFromIds([
             Transliterator::DECOMPOSE,
-            [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+            [Transliterator::REMOVE, UnicodeCharacterCategory::NonspacingMark->value],
             Transliterator::COMPOSE,
         ]);
 
@@ -808,7 +808,7 @@ class Str
         static $transliterator;
         $transliterator ??= Transliterator::createFromIds([
             Transliterator::DECOMPOSE,
-            [Transliterator::REMOVE, UnicodeCharacterCategory::NONSPACING_MARK],
+            [Transliterator::REMOVE, UnicodeCharacterCategory::NonspacingMark->value],
             Transliterator::COMPOSE,
             Transliterator::LOWER_CASE,
         ]);

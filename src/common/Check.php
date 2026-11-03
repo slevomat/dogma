@@ -18,7 +18,6 @@ use function count;
 use function explode;
 use function get_resource_type;
 use function gettype;
-use function implode;
 use function in_array;
 use function is_a;
 use function is_array;
@@ -30,10 +29,8 @@ use function is_nan;
 use function is_numeric;
 use function is_object;
 use function is_resource;
-use function is_scalar;
 use function is_string;
 use function is_subclass_of;
-use function method_exists;
 use function preg_match;
 use function range;
 use function rtrim;
@@ -1125,21 +1122,6 @@ final class Check
         }
         if ($count !== 1) {
             throw new ValueOutOfRangeException($count, 1, 1);
-        }
-    }
-
-    /**
-     * @throws InvalidValueException
-     */
-    public static function enum(mixed $value, mixed ...$allowedValues): void
-    {
-        if (!in_array($value, $allowedValues, true)) {
-            $allowed = implode('|', Arr::map($allowedValues, static function (mixed $value): string {
-                return (is_scalar($value) || (is_object($value) && method_exists($value, '__toString')))
-                    ? (string) $value
-                    : gettype($value);
-            }));
-            throw new InvalidValueException($value, $allowed);
         }
     }
 

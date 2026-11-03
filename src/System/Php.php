@@ -34,7 +34,7 @@ class Php
 
     public static function getSapi(): Sapi
     {
-        return Sapi::get(PHP_SAPI);
+        return Sapi::from(PHP_SAPI);
     }
 
     public static function isMultithreaded(): bool

@@ -11,87 +11,26 @@
 
 namespace Dogma\Time;
 
-use Dogma\Enum\IntEnum;
 use Dogma\InvalidValueException;
 use function array_search;
 use function is_int;
 use function strtolower;
 
-class Month extends IntEnum
+enum Month: int
 {
 
-    public const JANUARY = 1;
-    public const FEBRUARY = 2;
-    public const MARCH = 3;
-    public const APRIL = 4;
-    public const MAY = 5;
-    public const JUNE = 6;
-    public const JULY = 7;
-    public const AUGUST = 8;
-    public const SEPTEMBER = 9;
-    public const OCTOBER = 10;
-    public const NOVEMBER = 11;
-    public const DECEMBER = 12;
-
-    public static function january(): self
-    {
-        return self::get(self::JANUARY);
-    }
-
-    public static function february(): self
-    {
-        return self::get(self::FEBRUARY);
-    }
-
-    public static function march(): self
-    {
-        return self::get(self::MARCH);
-    }
-
-    public static function april(): self
-    {
-        return self::get(self::APRIL);
-    }
-
-    public static function may(): self
-    {
-        return self::get(self::MAY);
-    }
-
-    public static function june(): self
-    {
-        return self::get(self::JUNE);
-    }
-
-    public static function july(): self
-    {
-        return self::get(self::JULY);
-    }
-
-    public static function august(): self
-    {
-        return self::get(self::AUGUST);
-    }
-
-    public static function september(): self
-    {
-        return self::get(self::SEPTEMBER);
-    }
-
-    public static function october(): self
-    {
-        return self::get(self::OCTOBER);
-    }
-
-    public static function november(): self
-    {
-        return self::get(self::NOVEMBER);
-    }
-
-    public static function december(): self
-    {
-        return self::get(self::DECEMBER);
-    }
+    case January = 1;
+    case February = 2;
+    case March = 3;
+    case April = 4;
+    case May = 5;
+    case June = 6;
+    case July = 7;
+    case August = 8;
+    case September = 9;
+    case October = 10;
+    case November = 11;
+    case December = 12;
 
     public static function getByName(string $name): self
     {
@@ -101,7 +40,7 @@ class Month extends IntEnum
             throw new InvalidValueException($name, static::class);
         }
 
-        return self::get($number);
+        return self::from($number);
     }
 
     /**
@@ -110,18 +49,18 @@ class Month extends IntEnum
     public static function getNames(): array
     {
         return [
-            self::JANUARY => 'january',
-            self::FEBRUARY => 'february',
-            self::MARCH => 'march',
-            self::APRIL => 'april',
-            self::MAY => 'may',
-            self::JUNE => 'june',
-            self::JULY => 'july',
-            self::AUGUST => 'august',
-            self::SEPTEMBER => 'september',
-            self::OCTOBER => 'october',
-            self::NOVEMBER => 'november',
-            self::DECEMBER => 'december',
+            self::January->value => 'january',
+            self::February->value => 'february',
+            self::March->value => 'march',
+            self::April->value => 'april',
+            self::May->value => 'may',
+            self::June->value => 'june',
+            self::July->value => 'july',
+            self::August->value => 'august',
+            self::September->value => 'september',
+            self::October->value => 'october',
+            self::November->value => 'november',
+            self::December->value => 'december',
         ];
     }
 
@@ -131,18 +70,18 @@ class Month extends IntEnum
     public static function getShortcuts(): array
     {
         return [
-            self::JANUARY => 'jan',
-            self::FEBRUARY => 'feb',
-            self::MARCH => 'mar',
-            self::APRIL => 'apr',
-            self::MAY => 'may',
-            self::JUNE => 'jun',
-            self::JULY => 'jul',
-            self::AUGUST => 'aug',
-            self::SEPTEMBER => 'sep',
-            self::OCTOBER => 'oct',
-            self::NOVEMBER => 'nov',
-            self::DECEMBER => 'dec',
+            self::January->value => 'jan',
+            self::February->value => 'feb',
+            self::March->value => 'mar',
+            self::April->value => 'apr',
+            self::May->value => 'may',
+            self::June->value => 'jun',
+            self::July->value => 'jul',
+            self::August->value => 'aug',
+            self::September->value => 'sep',
+            self::October->value => 'oct',
+            self::November->value => 'nov',
+            self::December->value => 'dec',
         ];
     }
 
@@ -153,31 +92,31 @@ class Month extends IntEnum
     {
         return $leapYear
             ? [
-                self::JANUARY => 31,
-                self::FEBRUARY => 29,
-                self::MARCH => 31,
-                self::APRIL => 30,
-                self::MAY => 31,
-                self::JUNE => 30,
-                self::JULY => 31,
-                self::AUGUST => 31,
-                self::SEPTEMBER => 30,
-                self::OCTOBER => 31,
-                self::NOVEMBER => 30,
-                self::DECEMBER => 31,
+                self::January->value => 31,
+                self::February->value => 29,
+                self::March->value => 31,
+                self::April->value => 30,
+                self::May->value => 31,
+                self::June->value => 30,
+                self::July->value => 31,
+                self::August->value => 31,
+                self::September->value => 30,
+                self::October->value => 31,
+                self::November->value => 30,
+                self::December->value => 31,
             ] : [
-                self::JANUARY => 31,
-                self::FEBRUARY => 28,
-                self::MARCH => 31,
-                self::APRIL => 30,
-                self::MAY => 31,
-                self::JUNE => 30,
-                self::JULY => 31,
-                self::AUGUST => 31,
-                self::SEPTEMBER => 30,
-                self::OCTOBER => 31,
-                self::NOVEMBER => 30,
-                self::DECEMBER => 31,
+                self::January->value => 31,
+                self::February->value => 28,
+                self::March->value => 31,
+                self::April->value => 30,
+                self::May->value => 31,
+                self::June->value => 30,
+                self::July->value => 31,
+                self::August->value => 31,
+                self::September->value => 30,
+                self::October->value => 31,
+                self::November->value => 30,
+                self::December->value => 31,
             ];
     }
 
@@ -193,24 +132,24 @@ class Month extends IntEnum
 
     public function getName(): string
     {
-        return self::getNames()[$this->getValue()];
+        return self::getNames()[$this->value];
     }
 
     public function getShortcut(): string
     {
-        return self::getShortcuts()[$this->getName()];
+        return self::getShortcuts()[$this->value];
     }
 
     public function getDays(bool $leapYear): int
     {
-        return self::getLengths($leapYear)[$this->getValue()];
+        return self::getLengths($leapYear)[$this->value];
     }
 
     public function getDaysForYear(int $year): int
     {
         $leapYear = ($year % 4) === 0 && (($year % 100) !== 0 || ($year % 400) === 0);
 
-        return self::getLengths($leapYear)[$this->getValue()];
+        return self::getLengths($leapYear)[$this->value];
     }
 
 }

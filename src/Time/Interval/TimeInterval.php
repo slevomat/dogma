@@ -93,12 +93,12 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
         if (!$unit->isTime()) {
             throw new InvalidDateTimeUnitException($unit);
         }
-        if ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::microsecond();
+        if ($unit === DateTimeUnit::Milisecond) {
+            $unit = DateTimeUnit::Microsecond;
             $amount *= 1000;
         }
 
-        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->value));
     }
 
     public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self

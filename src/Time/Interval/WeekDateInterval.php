@@ -26,7 +26,7 @@ class WeekDateInterval extends DateInterval
     {
         parent::validate($start, $end);
 
-        if ($start->getDayOfWeek() !== DayOfWeek::MONDAY) {
+        if ($start->getDayOfWeek() !== DayOfWeek::Monday->value) {
             throw new InvalidWeekDateIntervalException($start, $end);
         } elseif ($start->difference($end)->getDaysTotal() !== 6) {
             throw new InvalidWeekDateIntervalException($start, $end);
@@ -50,7 +50,7 @@ class WeekDateInterval extends DateInterval
 
     public static function createFromIsoYearAndWeek(int $year, int $week): self
     {
-        $start = Date::createFromIsoYearAndWeek($year, $week, DayOfWeek::MONDAY);
+        $start = Date::createFromIsoYearAndWeek($year, $week, DayOfWeek::Monday->value);
         $end = $start->modify('+ 6 days');
 
         return new static($start, $end);

@@ -14,8 +14,8 @@ use Error;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-$utf8 = Encoding::get(Encoding::UTF_8);
-$czech = Locale::create(Language::get(Language::CZECH), Country::get(Country::CZECHIA));
+$utf8 = Encoding::from(Encoding::Utf8->value);
+$czech = Locale::create(Language::from(Language::Czech->value), Country::from(Country::Czechia->value));
 
 $string = Type::string();
 $stringLength = Type::string(32);

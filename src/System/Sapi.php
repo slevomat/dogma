@@ -10,62 +10,60 @@
 namespace Dogma\System;
 
 use Dogma\Arr;
-use Dogma\Enum\StringEnum;
 
-class Sapi extends StringEnum
+enum Sapi: string
 {
 
-    public const AOL_SERVER = 'aolserver';
-    public const APACHE = 'apache';
-    public const APACHE_2_FILTER = 'apache2filter';
-    public const APACHE_2_HANDLER = 'apache2handler';
-    public const CAUDIUM = 'caudium';
-    public const CGI = 'cgi'; // (until PHP 5.3)
-    public const CGI_FCGI = 'cgi-fcgi';
-    public const CLI = 'cli';
-    public const CLI_SERVER = 'cli-server';
-    public const CONTINUITY = 'continuity';
-    public const EMBED = 'embed';
-    public const FPM_FCGI = 'fpm-fcgi';
-    public const ISAPI = 'isapi';
-    public const LITESPEED = 'litespeed';
-    public const MILTER = 'milter';
-    public const NSAPI = 'nsapi';
-    public const PHTTPD = 'phttpd';
-    public const PI3WEB = 'pi3web';
-    public const ROXEN = 'roxen';
-    public const THTTPD = 'thttpd';
-    public const TUX = 'tux';
-    public const WEBJAMES = 'webjames';
+    case AolServer = 'aolserver';
+    case Apache = 'apache';
+    case Apache2Filter = 'apache2filter';
+    case Apache2Handler = 'apache2handler';
+    case Caudium = 'caudium';
+    case Cgi = 'cgi'; // (until PHP 5.3)
+    case CgiFcgi = 'cgi-fcgi';
+    case Cli = 'cli';
+    case CliServer = 'cli-server';
+    case Continuity = 'continuity';
+    case Embed = 'embed';
+    case FpmFcgi = 'fpm-fcgi';
+    case Isapi = 'isapi';
+    case Litespeed = 'litespeed';
+    case Milter = 'milter';
+    case Nsapi = 'nsapi';
+    case Phttpd = 'phttpd';
+    case Pi3web = 'pi3web';
+    case Roxen = 'roxen';
+    case Thttpd = 'thttpd';
+    case Tux = 'tux';
+    case Webjames = 'webjames';
 
-    /** @var string[] */
-    private static array $multithreaded = [
-        self::AOL_SERVER,
-        self::APACHE,
-        self::APACHE_2_FILTER,
-        self::APACHE_2_HANDLER,
-        self::CAUDIUM,
-        self::CONTINUITY,
-        self::ISAPI,
-        self::LITESPEED,
-        self::MILTER,
-        self::NSAPI,
-        self::PHTTPD,
-        self::PI3WEB,
-        self::ROXEN,
-        self::THTTPD,
-        self::TUX,
-        self::WEBJAMES,
+    private const array MULTITHREADED = [
+        self::AolServer->value,
+        self::Apache->value,
+        self::Apache2Filter->value,
+        self::Apache2Handler->value,
+        self::Caudium->value,
+        self::Continuity->value,
+        self::Isapi->value,
+        self::Litespeed->value,
+        self::Milter->value,
+        self::Nsapi->value,
+        self::Phttpd->value,
+        self::Pi3web->value,
+        self::Roxen->value,
+        self::Thttpd->value,
+        self::Tux->value,
+        self::Webjames->value,
     ];
 
     public function isCli(): bool
     {
-        return $this->getValue() === self::CLI;
+        return $this->value === self::Cli->value;
     }
 
     public function isMultithreaded(): bool
     {
-        return Arr::contains(self::$multithreaded, $this->getValue());
+        return Arr::contains(self::MULTITHREADED, $this->value);
     }
 
 }

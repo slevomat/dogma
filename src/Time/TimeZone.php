@@ -10,14 +10,36 @@
 namespace Dogma\Time;
 
 use DateTimeZone;
-use Dogma\Enum\PartialStringEnum;
 use Dogma\InvalidValueException;
+use ReflectionClass;
+use ReflectionClassConstant;
 use function date_default_timezone_get;
 use function date_default_timezone_set;
 use function in_array;
 
-class TimeZone extends PartialStringEnum
+final readonly class TimeZone
 {
+
+    public string $value;
+
+    public function __construct(string $value)
+    {
+        if (!self::validateValue($value)) {
+            throw new InvalidValueException($value, self::class);
+        }
+
+        $this->value = $value;
+    }
+
+    public static function from(string $value): self
+    {
+        return new self($value);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
 
     public const UTC = 'UTC';
 
@@ -446,11 +468,7 @@ class TimeZone extends PartialStringEnum
     public const PACIFIC_WAKE = 'Pacific/Wake';
     public const PACIFIC_WALLIS = 'Pacific/Wallis';
 
-    /**
-     * @see https://secure.php.net/manual/en/timezones.others.php for deprecated timezones info
-     * @var string[]
-     */
-    private static array $deprecated = [
+    private const array DEPRECATED = [
         'Africa/Asmera',
         'Africa/Timbuktu',
         'America/Argentina/ComodRivadavia',
@@ -624,25 +642,33 @@ class TimeZone extends PartialStringEnum
 
     public static function validateValue(string &$value): bool
     {
-        return in_array($value, self::getAllowedValues(), true) || in_array($value, self::$deprecated, true);
+        return self::isKnownValue($value) || in_array($value, self::DEPRECATED, true);
+    }
+
+    public static function isKnownValue(string $value): bool
+    {
+        static $values;
+        $values ??= (new ReflectionClass(self::class))->getConstants(ReflectionClassConstant::IS_PUBLIC);
+
+        return in_array($value, $values, true);
     }
 
     public function isDeprecated(): bool
     {
-        return !self::isKnownValue($this->getValue());
+        return !self::isKnownValue($this->value);
     }
 
     // DateTimeZone ----------------------------------------------------------------------------------------------------
 
     public function getDateTimeZone(): DateTimeZone
     {
-        return new DateTimeZone($this->getValue());
+        return new DateTimeZone($this->value);
     }
 
     private static function createDateTimeZone(string $name): DateTimeZone
     {
         try {
-            $timeZone = self::get($name);
+            $timeZone = self::from($name);
         } catch (InvalidValueException $e) {
             throw new InvalidOrDeprecatedTimeZoneException($name);
         }
@@ -666,7 +692,7 @@ class TimeZone extends PartialStringEnum
 
     public static function setDefault(self $timeZone): void
     {
-        date_default_timezone_set($timeZone->getValue());
+        date_default_timezone_set($timeZone->value);
     }
 
 }

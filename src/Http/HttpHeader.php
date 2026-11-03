@@ -11,15 +11,38 @@
 
 namespace Dogma\Http;
 
-use Dogma\Enum\PartialStringEnum;
+use Dogma\InvalidRegularExpressionException;
+use Dogma\InvalidValueException;
 use function array_map;
 use function explode;
 use function implode;
+use function preg_match;
 use function strtolower;
 use function ucfirst;
 
-class HttpHeader extends PartialStringEnum
+final readonly class HttpHeader
 {
+
+    public string $value;
+
+    public function __construct(string $value)
+    {
+        if (!self::validateValue($value)) {
+            throw new InvalidValueException($value, self::class);
+        }
+
+        $this->value = $value;
+    }
+
+    public static function from(string $value): self
+    {
+        return new self($value);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
 
     // IETF
     public const ACCEPT = 'Accept';
@@ -117,8 +140,7 @@ class HttpHeader extends PartialStringEnum
     public const X_WAP_PROFILE = 'X-Wap-Profile';
     public const X_WEBKIT_CSP = 'X-WebKit-CSP';
 
-    /** @var string[] */
-    private static array $exceptions = [
+    private const array EXCEPTIONS = [
         'et' => 'ET',
         'etag' => 'ETag',
         'te' => 'TE',
@@ -138,7 +160,7 @@ class HttpHeader extends PartialStringEnum
     {
         $name = strtolower($name);
 
-        return self::$exceptions[$name]
+        return self::EXCEPTIONS[$name]
             ?? implode('-', array_map(ucfirst(...), explode('-', $name)));
     }
 
@@ -146,12 +168,18 @@ class HttpHeader extends PartialStringEnum
     {
         $value = self::normalizeName($value);
 
-        return parent::validateValue($value);
+        $regexp = '/^' . self::getValueRegexp() . '?$/';
+        $result = preg_match($regexp, $value);
+        if ($result === false) {
+            throw new InvalidRegularExpressionException($regexp);
+        }
+
+        return (bool) $result;
     }
 
     public static function getValueRegexp(): string
     {
-        return '(?:X-)?[A-Z][a-z]+(?:[A-Z][a-z]+)*|' . implode('|', self::$exceptions);
+        return '(?:X-)?[A-Z][a-z]+(?:[A-Z][a-z]+)*|' . implode('|', self::EXCEPTIONS);
     }
 
 }

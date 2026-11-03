@@ -11,7 +11,6 @@
 
 namespace Dogma\Time;
 
-use Dogma\Enum\IntEnum;
 use Dogma\InvalidValueException;
 use function array_search;
 use function is_int;
@@ -20,51 +19,16 @@ use function strtolower;
 /**
  * Day of week as defined in ISO-8601 (1 for Monday through 7 for Sunday)
  */
-class DayOfWeek extends IntEnum
+enum DayOfWeek: int
 {
 
-    public const MONDAY = 1;
-    public const TUESDAY = 2;
-    public const WEDNESDAY = 3;
-    public const THURSDAY = 4;
-    public const FRIDAY = 5;
-    public const SATURDAY = 6;
-    public const SUNDAY = 7;
-
-    public static function monday(): self
-    {
-        return self::get(self::MONDAY);
-    }
-
-    public static function tuesday(): self
-    {
-        return self::get(self::TUESDAY);
-    }
-
-    public static function wednesday(): self
-    {
-        return self::get(self::WEDNESDAY);
-    }
-
-    public static function thursday(): self
-    {
-        return self::get(self::THURSDAY);
-    }
-
-    public static function friday(): self
-    {
-        return self::get(self::FRIDAY);
-    }
-
-    public static function saturday(): self
-    {
-        return self::get(self::SATURDAY);
-    }
-
-    public static function sunday(): self
-    {
-        return self::get(self::SUNDAY);
-    }
+    case Monday = 1;
+    case Tuesday = 2;
+    case Wednesday = 3;
+    case Thursday = 4;
+    case Friday = 5;
+    case Saturday = 6;
+    case Sunday = 7;
 
     public static function getByName(string $name): self
     {
@@ -74,7 +38,7 @@ class DayOfWeek extends IntEnum
             throw new InvalidValueException($name, static::class);
         }
 
-        return self::get($number);
+        return self::from($number);
     }
 
     /**
@@ -83,13 +47,13 @@ class DayOfWeek extends IntEnum
     public static function getNames(): array
     {
         return [
-            self::MONDAY => 'monday',
-            self::TUESDAY => 'tuesday',
-            self::WEDNESDAY => 'wednesday',
-            self::THURSDAY => 'thursday',
-            self::FRIDAY => 'friday',
-            self::SATURDAY => 'saturday',
-            self::SUNDAY => 'sunday',
+            self::Monday->value => 'monday',
+            self::Tuesday->value => 'tuesday',
+            self::Wednesday->value => 'wednesday',
+            self::Thursday->value => 'thursday',
+            self::Friday->value => 'friday',
+            self::Saturday->value => 'saturday',
+            self::Sunday->value => 'sunday',
         ];
     }
 
@@ -99,31 +63,31 @@ class DayOfWeek extends IntEnum
     public static function getShortcuts(): array
     {
         return [
-            self::MONDAY => 'mon',
-            self::TUESDAY => 'tue',
-            self::WEDNESDAY => 'wed',
-            self::THURSDAY => 'thu',
-            self::FRIDAY => 'fri',
-            self::SATURDAY => 'sat',
-            self::SUNDAY => 'sun',
+            self::Monday->value => 'mon',
+            self::Tuesday->value => 'tue',
+            self::Wednesday->value => 'wed',
+            self::Thursday->value => 'thu',
+            self::Friday->value => 'fri',
+            self::Saturday->value => 'sat',
+            self::Sunday->value => 'sun',
         ];
     }
 
     public function getName(): string
     {
-        return self::getNames()[$this->getValue()];
+        return self::getNames()[$this->value];
     }
 
     public function getShortcut(): string
     {
-        return self::getShortcuts()[$this->getValue()];
+        return self::getShortcuts()[$this->value];
     }
 
     public function isWeekend(): bool
     {
-        $value = $this->getValue();
+        $value = $this->value;
 
-        return $value === self::SATURDAY || $value === self::SUNDAY;
+        return $value === self::Saturday->value || $value === self::Sunday->value;
     }
 
 }

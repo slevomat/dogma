@@ -46,7 +46,7 @@ class WeekDayHours implements Pokeable, Dumpable
         return sprintf(
             '%s(%s %s #%s)',
             Cls::short(static::class),
-            $this->day->dump(),
+            $this->day->name,
             $this->hours->dump(),
             Obj::dumpHash($this)
         );

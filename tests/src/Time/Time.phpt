@@ -139,11 +139,11 @@ Assert::true($time->isBetween(new Time('22:00:00'), new Time('04:00:00')));
 
 // rounding ------------------------------------------------------------------------------------------------------------
 
-$hour = DateTimeUnit::hour();
-$minute = DateTimeUnit::minute();
-$second = DateTimeUnit::second();
-$milisecond = DateTimeUnit::milisecond();
-$microsecond = DateTimeUnit::microsecond();
+$hour = DateTimeUnit::Hour;
+$minute = DateTimeUnit::Minute;
+$second = DateTimeUnit::Second;
+$milisecond = DateTimeUnit::Milisecond;
+$microsecond = DateTimeUnit::Microsecond;
 $hours = [0, 8, 16];
 $minutes = [0, 15, 30, 45];
 $seconds = [0, 15, 30, 45];

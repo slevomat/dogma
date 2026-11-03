@@ -7,38 +7,35 @@
  * For the full copyright and license information read the file 'license.md'; distributed with this source code
  */
 
-// spell-check-ignore: big5han ducet DUCET eor EOR phonebook PHONEBOOK searchjl SEARCHJL UNIHAN unihan ZHUYIN zhuyin
+// spell-check-ignore: big5han ducet eor phonebook searchjl unihan zhuyin Ducet Phonebook Searchjl Unihan Zhuyin
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\StringEnum;
 use function strtolower;
 
-class LocaleCollation extends StringEnum
+enum LocaleCollation: string
 {
 
-    public const BIG5 = 'big5han';
-    public const DICTIONARY = 'dictionary';
-    public const DUCET = 'ducet';
-    public const EOR = 'eor';
-    public const GB2312 = 'gb2312han';
-    public const PHONEBOOK = 'phonebook';
-    public const PHONETIC = 'phonetic';
-    public const PINYIN = 'pinyin';
-    public const REFORMED = 'reformed';
-    public const SEARCH = 'search';
-    public const SEARCHJL = 'searchjl';
-    public const STANDARD = 'standard';
-    public const STOKE = 'stroke';
-    public const TRADITIONAL = 'traditional';
-    public const UNIHAN = 'unihan';
-    public const ZHUYIN = 'zhuyin';
+    case Big5 = 'big5han';
+    case Dictionary = 'dictionary';
+    case Ducet = 'ducet';
+    case Eor = 'eor';
+    case Gb2312 = 'gb2312han';
+    case Phonebook = 'phonebook';
+    case Phonetic = 'phonetic';
+    case Pinyin = 'pinyin';
+    case Reformed = 'reformed';
+    case Search = 'search';
+    case Searchjl = 'searchjl';
+    case Standard = 'standard';
+    case Stoke = 'stroke';
+    case Traditional = 'traditional';
+    case Unihan = 'unihan';
+    case Zhuyin = 'zhuyin';
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = strtolower($value);
-
-        return parent::validateValue($value);
+        return self::from(strtolower($value));
     }
 
 }

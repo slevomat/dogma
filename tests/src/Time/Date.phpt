@@ -5,7 +5,6 @@ namespace Dogma\Tests\Time;
 use DateTime as PhpDateTime;
 use DateTimeImmutable;
 use DateTimeZone;
-use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -13,6 +12,7 @@ use Dogma\Time\DayOfWeek;
 use Dogma\Time\Interval\DateTimeInterval;
 use Dogma\Time\InvalidDateTimeException;
 use Dogma\Time\Month;
+use ValueError;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -163,20 +163,20 @@ $sunday = new Date('2016-11-06');
 
 
 getDayOfWeekEnum:
-Assert::equal($monday->getDayOfWeekEnum(), DayOfWeek::monday());
-Assert::equal($friday->getDayOfWeekEnum(), DayOfWeek::friday());
-Assert::equal($saturday->getDayOfWeekEnum(), DayOfWeek::saturday());
-Assert::equal($sunday->getDayOfWeekEnum(), DayOfWeek::sunday());
+Assert::equal($monday->getDayOfWeekEnum(), DayOfWeek::Monday);
+Assert::equal($friday->getDayOfWeekEnum(), DayOfWeek::Friday);
+Assert::equal($saturday->getDayOfWeekEnum(), DayOfWeek::Saturday);
+Assert::equal($sunday->getDayOfWeekEnum(), DayOfWeek::Sunday);
 
 
 isDayOfWeek:
 Assert::true($monday->isDayOfWeek(1));
-Assert::true($monday->isDayOfWeek(DayOfWeek::monday()));
+Assert::true($monday->isDayOfWeek(DayOfWeek::Monday));
 Assert::false($monday->isDayOfWeek(7));
-Assert::false($monday->isDayOfWeek(DayOfWeek::sunday()));
+Assert::false($monday->isDayOfWeek(DayOfWeek::Sunday));
 Assert::exception(static function () use ($monday): void {
     $monday->isDayOfWeek(8);
-}, InvalidValueException::class);
+}, ValueError::class);
 
 
 isWeekend:
@@ -187,14 +187,14 @@ Assert::true($sunday->isWeekend());
 
 
 getMonthEnum:
-Assert::equal($monday->getMonthEnum(), Month::november());
+Assert::equal($monday->getMonthEnum(), Month::November);
 
 
 isMonth:
 Assert::true($monday->isMonth(11));
-Assert::true($monday->isMonth(Month::november()));
+Assert::true($monday->isMonth(Month::November));
 Assert::false($monday->isMonth(12));
-Assert::false($monday->isMonth(Month::december()));
+Assert::false($monday->isMonth(Month::December));
 Assert::exception(static function () use ($monday): void {
     $monday->isMonth(13);
-}, InvalidValueException::class);
+}, ValueError::class);

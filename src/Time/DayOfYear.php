@@ -297,7 +297,7 @@ class DayOfYear implements Equalable, Comparable, Dumpable
 
     public function getMonthEnum(): Month
     {
-        return Month::get($this->month);
+        return Month::from($this->month);
     }
 
     public function getDayOfMonth(): int

@@ -18,7 +18,7 @@ class InvalidDateTimeUnitException extends TimeException
     {
         $expected = $unit->isTime() ? 'Date' : 'Time';
 
-        parent::__construct("$expected unit expected, but '{$unit->getValue()}' given.", $previous);
+        parent::__construct("$expected unit expected, but '{$unit->value}' given.", $previous);
     }
 
 }

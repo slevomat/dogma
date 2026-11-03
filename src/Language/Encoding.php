@@ -7,11 +7,10 @@
  * For the full copyright and license information read the file 'license.md', distributed with this source code
  */
 
-// spell-check-ignore: euccn eucjp eucjpwin euckr euctw jisms koi8r koi8t koi8u sjismac sjiswin ucs2be ucs2le ucs4be ucs4le utf7imap
+// spell-check-ignore: euccn eucjp eucjpwin euckr euctw jisms koi8r koi8t koi8u sjismac sjiswin utf7imap
 
 namespace Dogma\Language;
 
-use Dogma\Enum\StringEnum;
 use function preg_match;
 use function str_replace;
 use function strtolower;
@@ -20,235 +19,231 @@ use function strtoupper;
 /**
  * Encoding codes accepted by mbstring and iconv (except BINARY; not all of them)
  */
-class Encoding extends StringEnum
+enum Encoding: string
 {
 
-    public const BINARY = 'BINARY';
+    case Binary = 'BINARY';
 
-    public const ASCII = 'ASCII';
+    case Ascii = 'ASCII';
 
-    public const UTF_8 = 'UTF-8';
+    case Utf8 = 'UTF-8';
 
-    public const UTF_7 = 'UTF-7';
-    public const UTF_7_IMAP = 'UTF7-IMAP';
+    case Utf7 = 'UTF-7';
+    case Utf7Imap = 'UTF7-IMAP';
 
-    public const UTF_16 = 'UTF-16';
-    public const UTF_16BE = 'UTF-16BE';
-    public const UTF_16LE = 'UTF-16LE';
+    case Utf16 = 'UTF-16';
+    case Utf16be = 'UTF-16BE';
+    case Utf16le = 'UTF-16LE';
 
-    public const UTF_32 = 'UTF-32';
-    public const UTF_32BE = 'UTF-32BE';
-    public const UTF_32LE = 'UTF-32LE';
+    case Utf32 = 'UTF-32';
+    case Utf32be = 'UTF-32BE';
+    case Utf32le = 'UTF-32LE';
 
-    public const UCS_2 = 'UCS-2';
-    public const UCS_2BE = 'UCS-2BE';
-    public const UCS_2LE = 'UCS-2LE';
+    case Ucs2 = 'UCS-2';
+    case Ucs2be = 'UCS-2BE';
+    case Ucs2le = 'UCS-2LE';
 
-    public const UCS_4 = 'UCS-4';
-    public const UCS_4BE = 'UCS-4BE';
-    public const UCS_4LE = 'UCS-4LE';
+    case Ucs4 = 'UCS-4';
+    case Ucs4be = 'UCS-4BE';
+    case Ucs4le = 'UCS-4LE';
 
-    public const ISO_8859_1 = 'ISO-8859-1'; // Latin-1 Western European
-    public const ISO_8859_2 = 'ISO-8859-2'; // Latin-2 Central European
-    public const ISO_8859_3 = 'ISO-8859-3'; // Latin-3 South European
-    public const ISO_8859_4 = 'ISO-8859-4'; // Latin-4 North European
-    public const ISO_8859_5 = 'ISO-8859-5'; // Latin/Cyrillic
-    public const ISO_8859_6 = 'ISO-8859-6'; // Latin/Arabic
-    public const ISO_8859_7 = 'ISO-8859-7'; // Latin/Greek
-    public const ISO_8859_8 = 'ISO-8859-8'; // Latin/Hebrew
-    public const ISO_8859_9 = 'ISO-8859-9'; // Latin-5 Turkish
-    public const ISO_8859_10 = 'ISO-8859-10'; // Latin-6 Nordic
-    public const ISO_8859_11 = 'ISO-8859-11'; // Latin/Thai
-    public const ISO_8859_13 = 'ISO-8859-13'; // Latin-7 Baltic Rim
-    public const ISO_8859_14 = 'ISO-8859-14'; // Latin-8 Celtic
-    public const ISO_8859_15 = 'ISO-8859-15'; // Latin-9
-    public const ISO_8859_16 = 'ISO-8859-16'; // Latin-10 South-Eastern European
+    case Iso88591 = 'ISO-8859-1'; // Latin-1 Western European
+    case Iso88592 = 'ISO-8859-2'; // Latin-2 Central European
+    case Iso88593 = 'ISO-8859-3'; // Latin-3 South European
+    case Iso88594 = 'ISO-8859-4'; // Latin-4 North European
+    case Iso88595 = 'ISO-8859-5'; // Latin/Cyrillic
+    case Iso88596 = 'ISO-8859-6'; // Latin/Arabic
+    case Iso88597 = 'ISO-8859-7'; // Latin/Greek
+    case Iso88598 = 'ISO-8859-8'; // Latin/Hebrew
+    case Iso88599 = 'ISO-8859-9'; // Latin-5 Turkish
+    case Iso885910 = 'ISO-8859-10'; // Latin-6 Nordic
+    case Iso885911 = 'ISO-8859-11'; // Latin/Thai
+    case Iso885913 = 'ISO-8859-13'; // Latin-7 Baltic Rim
+    case Iso885914 = 'ISO-8859-14'; // Latin-8 Celtic
+    case Iso885915 = 'ISO-8859-15'; // Latin-9
+    case Iso885916 = 'ISO-8859-16'; // Latin-10 South-Eastern European
 
-    public const WINDOWS_1250 = 'WINDOWS-1250'; // Latin 2 / Central European
-    public const WINDOWS_1251 = 'WINDOWS-1251'; // Cyrillic
-    public const WINDOWS_1252 = 'WINDOWS-1252'; // Latin 1 / Western European
-    public const WINDOWS_1253 = 'WINDOWS-1253'; // Greek
-    public const WINDOWS_1254 = 'WINDOWS-1254'; // Turkish
-    public const WINDOWS_1255 = 'WINDOWS-1255'; // Hebrew
-    public const WINDOWS_1256 = 'WINDOWS-1256'; // Arabic
-    public const WINDOWS_1257 = 'WINDOWS-1257'; // Baltic
-    public const WINDOWS_1258 = 'WINDOWS-1258'; // Vietnamese
+    case Windows1250 = 'WINDOWS-1250'; // Latin 2 / Central European
+    case Windows1251 = 'WINDOWS-1251'; // Cyrillic
+    case Windows1252 = 'WINDOWS-1252'; // Latin 1 / Western European
+    case Windows1253 = 'WINDOWS-1253'; // Greek
+    case Windows1254 = 'WINDOWS-1254'; // Turkish
+    case Windows1255 = 'WINDOWS-1255'; // Hebrew
+    case Windows1256 = 'WINDOWS-1256'; // Arabic
+    case Windows1257 = 'WINDOWS-1257'; // Baltic
+    case Windows1258 = 'WINDOWS-1258'; // Vietnamese
 
-    public const CP850 = 'CP850'; // DOS Latin 1 Western European
-    public const CP852 = 'CP852'; // DOS Latin 2 Central European
-    public const CP862 = 'CP862'; // DOS Hebrew
-    public const CP866 = 'CP866'; // DOS Cyrillic
-    public const CP932 = 'CP932'; // IBM SJIS
-    public const CP936 = 'CP936'; // IBM Simplified Chinese
-    public const CP950 = 'CP950'; // MS BIG-5
+    case Cp850 = 'CP850'; // DOS Latin 1 Western European
+    case Cp852 = 'CP852'; // DOS Latin 2 Central European
+    case Cp862 = 'CP862'; // DOS Hebrew
+    case Cp866 = 'CP866'; // DOS Cyrillic
+    case Cp932 = 'CP932'; // IBM SJIS
+    case Cp936 = 'CP936'; // IBM Simplified Chinese
+    case Cp950 = 'CP950'; // MS BIG-5
 
-    public const CP50220 = 'CP50220';
-    public const CP50221 = 'CP50221';
-    public const CP50222 = 'CP50222';
-    public const CP51932 = 'CP51932';
+    case Cp50220 = 'CP50220';
+    case Cp50221 = 'CP50221';
+    case Cp50222 = 'CP50222';
+    case Cp51932 = 'CP51932';
 
-    public const EUC_JP = 'EUC-JP';
-    public const EUC_JP_WIN = 'EUC-JP-WIN';
-    public const EUC_JP_2004 = 'EUC-JP-2004';
-    public const EUC_CN = 'EUC-CN';
-    public const EUC_TW = 'EUC-TW';
-    public const EUC_KR = 'EUC-KR';
+    case EucJp = 'EUC-JP';
+    case EucJpWin = 'EUC-JP-WIN';
+    case EucJp2004 = 'EUC-JP-2004';
+    case EucCn = 'EUC-CN';
+    case EucTw = 'EUC-TW';
+    case EucKr = 'EUC-KR';
 
-    public const JIS = 'JIS';
-    public const JIS_MS = 'JIS-MS';
+    case Jis = 'JIS';
+    case JisMs = 'JIS-MS';
 
-    public const SJIS = 'SJIS';
-    public const SJIS_WIN = 'SJIS-WIN';
-    public const SJIS_MAC = 'SJIS-MAC';
-    public const SJIS_2004 = 'SJIS-2004';
+    case Sjis = 'SJIS';
+    case SjisWin = 'SJIS-WIN';
+    case SjisMac = 'SJIS-MAC';
+    case Sjis2004 = 'SJIS-2004';
 
-    public const ISO_2022_JP = 'ISO-2022-JP';
-    public const ISO_2022_JP_MS = 'ISO-2022-JP-MS';
-    public const ISO_2022_JP_2004 = 'ISO-2022-JP-2004';
-    public const ISO_2022_KR = 'ISO-2022-KR';
+    case Iso2022Jp = 'ISO-2022-JP';
+    case Iso2022JpMs = 'ISO-2022-JP-MS';
+    case Iso2022Jp2004 = 'ISO-2022-JP-2004';
+    case Iso2022Kr = 'ISO-2022-KR';
 
-    public const KOI8_R = 'KOI8-R';
-    public const KOI8_U = 'KOI8-U';
-    public const KOI8_T = 'KOI8-T';
+    case Koi8R = 'KOI8-R';
+    case Koi8U = 'KOI8-U';
+    case Koi8T = 'KOI8-T';
 
-    public const GB18030 = 'GB18030';
+    case Gb18030 = 'GB18030';
 
-    public const BIG_5 = 'BIG-5';
+    case Big5 = 'BIG-5';
 
-    public const UHC = 'UHC';
+    case Uhc = 'UHC';
 
-    public const HZ = 'HZ';
+    case Hz = 'HZ';
 
-    public const ARMSCII_8 = 'ARMSCII-8';
+    case Armscii8 = 'ARMSCII-8';
 
-    /** @var string[] */
-    private static array $aliases = [
-        'bin' => self::BINARY,
-        'binary' => self::BINARY,
-        'ascii' => self::ASCII,
-        'utf8' => self::UTF_8,
-        'utf7' => self::UTF_7,
-        'utf7imap' => self::UTF_7_IMAP,
-        'utf16' => self::UTF_16,
-        'utf16be' => self::UTF_16BE,
-        'utf16le' => self::UTF_16LE,
-        'utf32' => self::UTF_32,
-        'utf32be' => self::UTF_32BE,
-        'utf32le' => self::UTF_32LE,
-        'ucs2' => self::UCS_2,
-        'ucs2be' => self::UCS_2BE,
-        'ucs2le' => self::UCS_2LE,
-        'ucs4' => self::UCS_4,
-        'ucs4be' => self::UCS_4BE,
-        'ucs4le' => self::UCS_4LE,
-        'iso88591' => self::ISO_8859_1,
-        'latin1' => self::ISO_8859_1,
-        'iso88592' => self::ISO_8859_2,
-        'latin2' => self::ISO_8859_2,
-        'iso88593' => self::ISO_8859_3,
-        'latin3' => self::ISO_8859_3,
-        'iso88594' => self::ISO_8859_4,
-        'latin4' => self::ISO_8859_4,
-        'iso88595' => self::ISO_8859_5, // Latin/Cyrillic
-        'iso88596' => self::ISO_8859_6, // Latin/Arabic
-        'iso88597' => self::ISO_8859_7, // Latin/Greek
-        'iso88598' => self::ISO_8859_8, // Latin/Hebrew
-        'iso88599' => self::ISO_8859_9,
-        'latin5' => self::ISO_8859_9,
-        'iso885910' => self::ISO_8859_10,
-        'latin6' => self::ISO_8859_10,
-        'iso885911' => self::ISO_8859_11, // Latin/Thai
-        'iso885913' => self::ISO_8859_13,
-        'latin7' => self::ISO_8859_13,
-        'iso885914' => self::ISO_8859_14,
-        'latin8' => self::ISO_8859_14,
-        'iso885915' => self::ISO_8859_15,
-        'latin9' => self::ISO_8859_15,
-        'iso885916' => self::ISO_8859_16,
-        'latin10' => self::ISO_8859_16,
-        'windows1250' => self::WINDOWS_1250, // Latin 2 / Central European
-        'windows1251' => self::WINDOWS_1251, // Cyrillic
-        'windows1252' => self::WINDOWS_1252, // Latin 1 / Western European
-        'windows1253' => self::WINDOWS_1253, // Greek
-        'windows1254' => self::WINDOWS_1254, // Turkish
-        'windows1255' => self::WINDOWS_1255, // Hebrew
-        'windows1256' => self::WINDOWS_1256, // Arabic
-        'windows1257' => self::WINDOWS_1257, // Baltic
-        'windows1258' => self::WINDOWS_1258, // Vietnamese
-        'cp850' => self::CP850, // DOS Latin 1 Western European
-        'cp852' => self::CP852, // DOS Latin 2 Central European
-        'cp862' => self::CP862, // DOS Hebrew
-        'cp866' => self::CP866, // DOS Cyrillic
-        'cp932' => self::CP932, // IBM SJIS
-        'cp936' => self::CP936, // IBM Simplified Chinese
-        'cp950' => self::CP950, // MS BIG-5
-        'cp50220' => self::CP50220,
-        'cp50221' => self::CP50221,
-        'cp50222' => self::CP50222,
-        'cp51932' => self::CP51932,
-        'eucjp' => self::EUC_JP,
-        'eucjpwin' => self::EUC_JP_WIN,
-        'eucjp2004' => self::EUC_JP_2004,
-        'euccn' => self::EUC_CN,
-        'euctw' => self::EUC_TW,
-        'euckr' => self::EUC_KR,
-        'jis' => self::JIS,
-        'jisms' => self::JIS_MS,
-        'sjis' => self::SJIS,
-        'sjiswin' => self::SJIS_WIN,
-        'sjismac' => self::SJIS_MAC,
-        'sjis2004' => self::SJIS_2004,
-        'iso2022jp' => self::ISO_2022_JP,
-        'iso2022jpms' => self::ISO_2022_JP_MS,
-        'iso2022jp2004' => self::ISO_2022_JP_2004,
-        'iso2022kr' => self::ISO_2022_KR,
-        'koi8r' => self::KOI8_R,
-        'koi8u' => self::KOI8_U,
-        'koi8t' => self::KOI8_T,
-        'gb18030' => self::GB18030,
-        'big5' => self::BIG_5,
-        'uhc' => self::UHC,
-        'hz' => self::HZ,
-        'armscii8' => self::ARMSCII_8,
+    private const array ALIASES = [
+        'bin' => self::Binary->value,
+        'binary' => self::Binary->value,
+        'ascii' => self::Ascii->value,
+        'utf8' => self::Utf8->value,
+        'utf7' => self::Utf7->value,
+        'utf7imap' => self::Utf7Imap->value,
+        'utf16' => self::Utf16->value,
+        'utf16be' => self::Utf16be->value,
+        'utf16le' => self::Utf16le->value,
+        'utf32' => self::Utf32->value,
+        'utf32be' => self::Utf32be->value,
+        'utf32le' => self::Utf32le->value,
+        'ucs2' => self::Ucs2->value,
+        'ucs2be' => self::Ucs2be->value,
+        'ucs2le' => self::Ucs2le->value,
+        'ucs4' => self::Ucs4->value,
+        'ucs4be' => self::Ucs4be->value,
+        'ucs4le' => self::Ucs4le->value,
+        'iso88591' => self::Iso88591->value,
+        'latin1' => self::Iso88591->value,
+        'iso88592' => self::Iso88592->value,
+        'latin2' => self::Iso88592->value,
+        'iso88593' => self::Iso88593->value,
+        'latin3' => self::Iso88593->value,
+        'iso88594' => self::Iso88594->value,
+        'latin4' => self::Iso88594->value,
+        'iso88595' => self::Iso88595->value, // Latin/Cyrillic
+        'iso88596' => self::Iso88596->value, // Latin/Arabic
+        'iso88597' => self::Iso88597->value, // Latin/Greek
+        'iso88598' => self::Iso88598->value, // Latin/Hebrew
+        'iso88599' => self::Iso88599->value,
+        'latin5' => self::Iso88599->value,
+        'iso885910' => self::Iso885910->value,
+        'latin6' => self::Iso885910->value,
+        'iso885911' => self::Iso885911->value, // Latin/Thai
+        'iso885913' => self::Iso885913->value,
+        'latin7' => self::Iso885913->value,
+        'iso885914' => self::Iso885914->value,
+        'latin8' => self::Iso885914->value,
+        'iso885915' => self::Iso885915->value,
+        'latin9' => self::Iso885915->value,
+        'iso885916' => self::Iso885916->value,
+        'latin10' => self::Iso885916->value,
+        'windows1250' => self::Windows1250->value, // Latin 2 / Central European
+        'windows1251' => self::Windows1251->value, // Cyrillic
+        'windows1252' => self::Windows1252->value, // Latin 1 / Western European
+        'windows1253' => self::Windows1253->value, // Greek
+        'windows1254' => self::Windows1254->value, // Turkish
+        'windows1255' => self::Windows1255->value, // Hebrew
+        'windows1256' => self::Windows1256->value, // Arabic
+        'windows1257' => self::Windows1257->value, // Baltic
+        'windows1258' => self::Windows1258->value, // Vietnamese
+        'cp850' => self::Cp850->value, // DOS Latin 1 Western European
+        'cp852' => self::Cp852->value, // DOS Latin 2 Central European
+        'cp862' => self::Cp862->value, // DOS Hebrew
+        'cp866' => self::Cp866->value, // DOS Cyrillic
+        'cp932' => self::Cp932->value, // IBM SJIS
+        'cp936' => self::Cp936->value, // IBM Simplified Chinese
+        'cp950' => self::Cp950->value, // MS BIG-5
+        'cp50220' => self::Cp50220->value,
+        'cp50221' => self::Cp50221->value,
+        'cp50222' => self::Cp50222->value,
+        'cp51932' => self::Cp51932->value,
+        'eucjp' => self::EucJp->value,
+        'eucjpwin' => self::EucJpWin->value,
+        'eucjp2004' => self::EucJp2004->value,
+        'euccn' => self::EucCn->value,
+        'euctw' => self::EucTw->value,
+        'euckr' => self::EucKr->value,
+        'jis' => self::Jis->value,
+        'jisms' => self::JisMs->value,
+        'sjis' => self::Sjis->value,
+        'sjiswin' => self::SjisWin->value,
+        'sjismac' => self::SjisMac->value,
+        'sjis2004' => self::Sjis2004->value,
+        'iso2022jp' => self::Iso2022Jp->value,
+        'iso2022jpms' => self::Iso2022JpMs->value,
+        'iso2022jp2004' => self::Iso2022Jp2004->value,
+        'iso2022kr' => self::Iso2022Kr->value,
+        'koi8r' => self::Koi8R->value,
+        'koi8u' => self::Koi8U->value,
+        'koi8t' => self::Koi8T->value,
+        'gb18030' => self::Gb18030->value,
+        'big5' => self::Big5->value,
+        'uhc' => self::Uhc->value,
+        'hz' => self::Hz->value,
+        'armscii8' => self::Armscii8->value,
     ];
 
-    /** @var string[] */
-    private static array $unused = [
-        self::ISO_8859_1 => "~[\x7F-\xFF]~",
-        self::ISO_8859_2 => "~[\x7F-\xFF]~",
-        self::ISO_8859_3 => "~[\x7F-\xFF\xA5\xAE\xBE\xC3\xD0\xE3\xF0]~",
-        self::ISO_8859_4 => "~[\x7F-\xFF]~",
-        self::ISO_8859_5 => "~[\x7F-\xFF]~",
-        self::ISO_8859_6 => "~[\x7F-\xFF\xA1-\xA3\xA5-\xAB\xAE-\xBA\xBC-\xBE\xC0\xDB-\xDF\xF3-\xFF]~",
-        self::ISO_8859_7 => "~[\x7F-\xFF\xAE\xD2\xFF]~",
-        self::ISO_8859_8 => "~[\x7F-\xFF\xA1\xBF-\xDE\xFB\xFC\xFF]~",
-        self::ISO_8859_9 => "~[\x7F-\xFF]~",
-        self::ISO_8859_10 => "~[\x7F-\xFF]~",
-        self::ISO_8859_11 => "~[\x7F-\xFF\xDB-\xDE\xFC-\xFF]~",
-        self::ISO_8859_13 => "~[\x7F-\xFF]~",
-        self::ISO_8859_14 => "~[\x7F-\xFF]~",
-        self::ISO_8859_15 => "~[\x7F-\xFF]~",
-        self::ISO_8859_16 => "~[\x7F-\xFF]~",
-        self::WINDOWS_1250 => "~[\x81\x83\x88\x90\x98]~",
-        self::WINDOWS_1251 => "~[\x98]~",
-        self::WINDOWS_1252 => "~[\x81\x8D\x8F\x90\x9D]~",
-        self::WINDOWS_1253 => "~[\x81\x88\x8A\x8C-\x8F\x90\x98\x9A\x9C-\x9F\xAA\xD2\xFF]~",
-        self::WINDOWS_1254 => "~[\x81\x8D-\x8F\x90\x9D\x9E]~",
-        self::WINDOWS_1255 => "~[\x81\x8A\x8C-\x8F\x90\x9A\x9C-\x9F\xD9-\xDE\xFB\xFC\xFF]~",
-        self::WINDOWS_1256 => "~^(?!x)x~", // match nothing
-        self::WINDOWS_1257 => "~[\x81\x83\x88\x8A\x8C\x90\x98\x9A\x9C\x9F\xA1\xA5]~",
-        self::WINDOWS_1258 => "~[\x81\x8A\x8D-\x8F\x90\x9A\x9D\x9E]~",
-        self::CP850 => "~^(?!x)x~", // match nothing
-        self::CP852 => "~^(?!x)x~", // match nothing
-        self::CP862 => "~^(?!x)x~", // match nothing
-        self::CP866 => "~^(?!x)x~", // match nothing
+    private const array UNUSED = [
+        self::Iso88591->value => "~[\x7F-\xFF]~",
+        self::Iso88592->value => "~[\x7F-\xFF]~",
+        self::Iso88593->value => "~[\x7F-\xFF\xA5\xAE\xBE\xC3\xD0\xE3\xF0]~",
+        self::Iso88594->value => "~[\x7F-\xFF]~",
+        self::Iso88595->value => "~[\x7F-\xFF]~",
+        self::Iso88596->value => "~[\x7F-\xFF\xA1-\xA3\xA5-\xAB\xAE-\xBA\xBC-\xBE\xC0\xDB-\xDF\xF3-\xFF]~",
+        self::Iso88597->value => "~[\x7F-\xFF\xAE\xD2\xFF]~",
+        self::Iso88598->value => "~[\x7F-\xFF\xA1\xBF-\xDE\xFB\xFC\xFF]~",
+        self::Iso88599->value => "~[\x7F-\xFF]~",
+        self::Iso885910->value => "~[\x7F-\xFF]~",
+        self::Iso885911->value => "~[\x7F-\xFF\xDB-\xDE\xFC-\xFF]~",
+        self::Iso885913->value => "~[\x7F-\xFF]~",
+        self::Iso885914->value => "~[\x7F-\xFF]~",
+        self::Iso885915->value => "~[\x7F-\xFF]~",
+        self::Iso885916->value => "~[\x7F-\xFF]~",
+        self::Windows1250->value => "~[\x81\x83\x88\x90\x98]~",
+        self::Windows1251->value => "~[\x98]~",
+        self::Windows1252->value => "~[\x81\x8D\x8F\x90\x9D]~",
+        self::Windows1253->value => "~[\x81\x88\x8A\x8C-\x8F\x90\x98\x9A\x9C-\x9F\xAA\xD2\xFF]~",
+        self::Windows1254->value => "~[\x81\x8D-\x8F\x90\x9D\x9E]~",
+        self::Windows1255->value => "~[\x81\x8A\x8C-\x8F\x90\x9A\x9C-\x9F\xD9-\xDE\xFB\xFC\xFF]~",
+        self::Windows1256->value => "~^(?!x)x~", // match nothing
+        self::Windows1257->value => "~[\x81\x83\x88\x8A\x8C\x90\x98\x9A\x9C\x9F\xA1\xA5]~",
+        self::Windows1258->value => "~[\x81\x8A\x8D-\x8F\x90\x9A\x9D\x9E]~",
+        self::Cp850->value => "~^(?!x)x~", // match nothing
+        self::Cp852->value => "~^(?!x)x~", // match nothing
+        self::Cp862->value => "~^(?!x)x~", // match nothing
+        self::Cp866->value => "~^(?!x)x~", // match nothing
     ];
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = self::normalize($value);
-
-        return parent::validateValue($value);
+        return self::from(self::normalize($value));
     }
 
     public static function getValueRegexp(): string
@@ -263,21 +258,21 @@ class Encoding extends StringEnum
     {
         $encoding = strtolower(str_replace(['-', '_'], '', $encoding));
 
-        return self::$aliases[$encoding] ?? strtoupper($encoding);
+        return self::ALIASES[$encoding] ?? strtoupper($encoding);
     }
 
     public static function canCheck(string $encoding): bool
     {
         $encoding = self::normalize($encoding);
 
-        return isset(self::$unused[$encoding]);
+        return isset(self::UNUSED[$encoding]);
     }
 
     public static function check(string $value, string $encoding): bool
     {
         $encoding = self::normalize($encoding);
 
-        $regexp = self::$unused[$encoding] ?? null;
+        $regexp = self::UNUSED[$encoding] ?? null;
         if ($regexp === null) {
             return false;
         }

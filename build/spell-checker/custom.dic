@@ -5,7 +5,6 @@ bsf
 cb
 CP
 dst
-pthreads
 uint
 Vector3i
 µs
@@ -33,7 +32,6 @@ codepoint
 csp
 csrf
 cygwin
-darwin
 euc
 hiragana
 ietf
@@ -43,7 +41,12 @@ jis
 linux
 sjis
 solaris
+str
 ucs
+ucs2be
+ucs2le
+ucs4be
+ucs4le
 uhc
 unicode
 unix
@@ -67,7 +70,6 @@ lucas
 biatch
 dumpable
 enquiry
-enums
 equalable
 getters
 hashmap
@@ -83,10 +85,8 @@ pragma
 pseudotype
 pseudotypes
 radians
-recode
 referer
 runned
-subtype
 timestamps
 timezones
 wakeup
@@ -109,7 +109,6 @@ permutate
 pokeable
 prepend
 quaternary
-reimplement
 splitter
 submatch
 subpattern

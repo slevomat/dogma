@@ -111,12 +111,12 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         if (!$unit->isDate()) {
             throw new InvalidDateTimeUnitException($unit);
         }
-        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::month();
+        if ($unit === DateTimeUnit::Quarter) {
+            $unit = DateTimeUnit::Month;
             $amount *= 3;
         }
 
-        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue() . ' -1 day'));
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->value . ' -1 day'));
     }
 
     public static function future(?TimeProvider $timeProvider = null): self

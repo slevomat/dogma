@@ -302,29 +302,29 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     /** @phpstan-pure */
     public function addUnit(DateTimeUnit $unit, int $amount = 1): self
     {
-        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::month();
+        if ($unit === DateTimeUnit::Quarter) {
+            $unit = DateTimeUnit::Month;
             $amount *= 3;
-        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::microsecond();
+        } elseif ($unit === DateTimeUnit::Milisecond) {
+            $unit = DateTimeUnit::Microsecond;
             $amount *= 1000;
         }
 
-        return $this->modify('+' . $amount . ' ' . $unit->getValue() . 's');
+        return $this->modify('+' . $amount . ' ' . $unit->value . 's');
     }
 
     /** @phpstan-pure */
     public function subtractUnit(DateTimeUnit $unit, int $amount = 1): self
     {
-        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::month();
+        if ($unit === DateTimeUnit::Quarter) {
+            $unit = DateTimeUnit::Month;
             $amount *= 3;
-        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::microsecond();
+        } elseif ($unit === DateTimeUnit::Milisecond) {
+            $unit = DateTimeUnit::Microsecond;
             $amount *= 1000;
         }
 
-        return $this->modify('-' . $amount . ' ' . $unit->getValue() . 's');
+        return $this->modify('-' . $amount . ' ' . $unit->value . 's');
     }
 
     /**
@@ -459,7 +459,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function equalsUpTo(DateTimeInterface $other, DateTimeUnit $unit): bool
     {
-        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
+        if ($unit === DateTimeUnit::Quarter) {
             return $this->getYear() === (int) $other->format('Y')
                 && (int) ceil($this->getMonth() / 3) === (int) ceil($other->format('m') / 3);
         }
@@ -589,12 +589,12 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     public function isDayOfWeek(DayOfWeek|int|string $day): bool
     {
         if (is_int($day)) {
-            $day = DayOfWeek::get($day);
+            $day = DayOfWeek::from($day);
         } elseif (is_string($day)) {
             $day = DayOfWeek::getByName($day);
         }
 
-        return (int) $this->format('N') === $day->getValue();
+        return (int) $this->format('N') === $day->value;
     }
 
     public function isWeekend(): bool
@@ -605,12 +605,12 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
     public function isMonth(Month|int|string $month): bool
     {
         if (is_int($month)) {
-            $month = Month::get($month);
+            $month = Month::from($month);
         } elseif (is_string($month)) {
             $month = Month::getByName($month);
         }
 
-        return (int) $this->format('n') === $month->getValue();
+        return (int) $this->format('n') === $month->value;
     }
 
     // getters ---------------------------------------------------------------------------------------------------------
@@ -648,7 +648,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function getMonthEnum(): Month
     {
-        return Month::get((int) $this->format('n'));
+        return Month::from((int) $this->format('n'));
     }
 
     public function getDay(): int
@@ -663,7 +663,7 @@ class DateTime extends DateTimeImmutable implements DateOrDateTime, DateTimeOrTi
 
     public function getDayOfWeekEnum(): DayOfWeek
     {
-        return DayOfWeek::get((int) $this->format('N'));
+        return DayOfWeek::from((int) $this->format('N'));
     }
 
     public function getHours(): int

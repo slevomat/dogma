@@ -10,34 +10,31 @@
 namespace Dogma\Language\Locale;
 
 use Collator;
-use Dogma\Enum\StringEnum;
 use function strtolower;
 
-class LocaleColStrength extends StringEnum implements LocaleCollationOption
+enum LocaleColStrength: string implements LocaleCollationOption
 {
 
-    public const PRIMARY = 'primary';
-    public const SECONDARY = 'secondary';
-    public const TERTIARY = 'tertiary';
-    public const QUATERNARY = 'quaternary';
-    public const IDENTICAL = 'identical';
+    case Primary = 'primary';
+    case Secondary = 'secondary';
+    case Tertiary = 'tertiary';
+    case Quaternary = 'quaternary';
+    case Identical = 'identical';
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = strtolower($value);
-
-        return parent::validateValue($value);
+        return self::from(strtolower($value));
     }
 
     public function getCollatorValue(): int
     {
         return [
-            self::PRIMARY => Collator::PRIMARY,
-            self::SECONDARY => Collator::SECONDARY,
-            self::TERTIARY => Collator::TERTIARY,
-            self::QUATERNARY => Collator::TERTIARY,
-            self::IDENTICAL => Collator::IDENTICAL,
-        ][$this->getValue()];
+            self::Primary->value => Collator::PRIMARY,
+            self::Secondary->value => Collator::SECONDARY,
+            self::Tertiary->value => Collator::TERTIARY,
+            self::Quaternary->value => Collator::TERTIARY,
+            self::Identical->value => Collator::IDENTICAL,
+        ][$this->value];
     }
 
 }

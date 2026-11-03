@@ -9,31 +9,28 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\StringEnum;
 use Dogma\Language\Collator;
 use function strtolower;
 
-class LocaleColCaseFirst extends StringEnum implements LocaleCollationOption
+enum LocaleColCaseFirst: string implements LocaleCollationOption
 {
 
-    public const UPPER = 'upper';
-    public const LOWER = 'lower';
-    public const NO = 'no';
+    case Upper = 'upper';
+    case Lower = 'lower';
+    case No = 'no';
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = strtolower($value);
-
-        return parent::validateValue($value);
+        return self::from(strtolower($value));
     }
 
     public function getCollatorValue(): int
     {
         return [
-            self::UPPER => Collator::UPPER_FIRST,
-            self::LOWER => Collator::LOWER_FIRST,
-            self::NO => Collator::OFF,
-        ][$this->getValue()];
+            self::Upper->value => Collator::UPPER_FIRST,
+            self::Lower->value => Collator::LOWER_FIRST,
+            self::No->value => Collator::OFF,
+        ][$this->value];
     }
 
 }

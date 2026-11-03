@@ -11,11 +11,34 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\PartialStringEnum;
+use Dogma\InvalidRegularExpressionException;
+use Dogma\InvalidValueException;
+use function preg_match;
 use function strtolower;
 
-class LocaleKeyword extends PartialStringEnum
+final readonly class LocaleKeyword
 {
+
+    public string $value;
+
+    public function __construct(string $value)
+    {
+        if (!self::validateValue($value)) {
+            throw new InvalidValueException($value, self::class);
+        }
+
+        $this->value = $value;
+    }
+
+    public static function from(string $value): self
+    {
+        return new self($value);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
 
     public const CALENDAR = 'calendar';
     public const COLLATION = 'collation';
@@ -50,7 +73,13 @@ class LocaleKeyword extends PartialStringEnum
     {
         $value = strtolower($value);
 
-        return parent::validateValue($value);
+        $regexp = '/^' . self::getValueRegexp() . '?$/';
+        $result = preg_match($regexp, $value);
+        if ($result === false) {
+            throw new InvalidRegularExpressionException($regexp);
+        }
+
+        return (bool) $result;
     }
 
     public static function getValueRegexp(): string

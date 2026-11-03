@@ -36,18 +36,18 @@ $simple = Locale::get('cs');
 
 create:
 $created = Locale::create(
-    Language::get(Language::CZECH),
-    Country::get(Country::CZECHIA),
-    Script::get(Script::LATIN),
+    Language::from(Language::Czech->value),
+    Country::from(Country::Czechia->value),
+    Script::from(Script::Latin->value),
     ['VAR1', 'VAR2'],
     ['PRI1', 'PRI2'],
     [
-        LocaleKeyword::CALENDAR => LocaleCalendar::ISO8601,
-        LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::YES,
-        LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::LOWER,
-        LocaleKeyword::COLLATION => LocaleCollation::PHONEBOOK,
-        LocaleKeyword::CURRENCY => Currency::CZECH_KORUNA,
-        LocaleKeyword::NUMBERS => LocaleNumbers::ARABIC_INDIC,
+        LocaleKeyword::CALENDAR => LocaleCalendar::Iso8601->value,
+        LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::Yes->value,
+        LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::Lower->value,
+        LocaleKeyword::COLLATION => LocaleCollation::Phonebook->value,
+        LocaleKeyword::CURRENCY => Currency::CzechKoruna->value,
+        LocaleKeyword::NUMBERS => LocaleNumbers::ArabicIndic->value,
     ]
 );
 Assert::same($created, $locale);
@@ -83,17 +83,17 @@ Assert::same($simple->getValue(), 'cs');
 
 
 getLanguage:
-Assert::same($locale->getLanguage(), Language::get(Language::CZECH));
-Assert::same($simple->getLanguage(), Language::get(Language::CZECH));
+Assert::same($locale->getLanguage(), Language::from(Language::Czech->value));
+Assert::same($simple->getLanguage(), Language::from(Language::Czech->value));
 
 
 getScript:
-Assert::same($locale->getScript(), Script::get(Script::LATIN));
+Assert::same($locale->getScript(), Script::from(Script::Latin->value));
 Assert::null($simple->getScript());
 
 
 getCountry:
-Assert::same($locale->getCountry(), Country::get(Country::CZECHIA));
+Assert::same($locale->getCountry(), Country::from(Country::Czechia->value));
 Assert::null($simple->getCountry());
 
 
@@ -127,49 +127,49 @@ Assert::null($simple->getPrivate(0));
 
 getKeywords:
 Assert::same($locale->getKeywords(), [
-    LocaleKeyword::CALENDAR => LocaleCalendar::ISO8601,
-    LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::YES,
-    LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::LOWER,
-    LocaleKeyword::COLLATION => LocaleCollation::PHONEBOOK,
-    LocaleKeyword::CURRENCY => Currency::CZECH_KORUNA,
-    LocaleKeyword::NUMBERS => LocaleNumbers::ARABIC_INDIC,
+    LocaleKeyword::CALENDAR => LocaleCalendar::Iso8601->value,
+    LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::Yes->value,
+    LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::Lower->value,
+    LocaleKeyword::COLLATION => LocaleCollation::Phonebook->value,
+    LocaleKeyword::CURRENCY => Currency::CzechKoruna->value,
+    LocaleKeyword::NUMBERS => LocaleNumbers::ArabicIndic->value,
 ]);
 Assert::same($simple->getKeywords(), []);
 
 
 getKeyword:
-Assert::same($locale->getKeyword(LocaleKeyword::CURRENCY), Currency::CZECH_KORUNA);
-Assert::same($locale->getKeyword(LocaleKeyword::NUMBERS), LocaleNumbers::ARABIC_INDIC);
-Assert::same($locale->getKeyword(LocaleKeyword::CALENDAR), LocaleCalendar::ISO8601);
-Assert::same($locale->getKeyword(LocaleKeyword::COLLATION), LocaleCollation::PHONEBOOK);
-Assert::same($locale->getKeyword(LocaleKeyword::COL_BACKWARDS), LocaleColBackwards::YES);
-Assert::same($locale->getKeyword(LocaleKeyword::COL_CASE_FIRST), LocaleColCaseFirst::LOWER);
+Assert::same($locale->getKeyword(LocaleKeyword::CURRENCY), Currency::CzechKoruna->value);
+Assert::same($locale->getKeyword(LocaleKeyword::NUMBERS), LocaleNumbers::ArabicIndic->value);
+Assert::same($locale->getKeyword(LocaleKeyword::CALENDAR), LocaleCalendar::Iso8601->value);
+Assert::same($locale->getKeyword(LocaleKeyword::COLLATION), LocaleCollation::Phonebook->value);
+Assert::same($locale->getKeyword(LocaleKeyword::COL_BACKWARDS), LocaleColBackwards::Yes->value);
+Assert::same($locale->getKeyword(LocaleKeyword::COL_CASE_FIRST), LocaleColCaseFirst::Lower->value);
 Assert::null($locale->getKeyword('foo'));
 
 
 getCurrency:
-Assert::same($locale->getCurrency(), Currency::get(Currency::CZECH_KORUNA));
+Assert::same($locale->getCurrency(), Currency::from(Currency::CzechKoruna->value));
 Assert::null($simple->getCurrency());
 
 
 getNumbers:
-Assert::same($locale->getNumbers(), LocaleNumbers::get(LocaleNumbers::ARABIC_INDIC));
+Assert::same($locale->getNumbers(), LocaleNumbers::from(LocaleNumbers::ArabicIndic->value));
 Assert::null($simple->getNumbers());
 
 
 getCalendar:
-Assert::same($locale->getCalendar(), LocaleCalendar::get(LocaleCalendar::ISO8601));
+Assert::same($locale->getCalendar(), LocaleCalendar::from(LocaleCalendar::Iso8601->value));
 Assert::null($simple->getCalendar());
 
 
 getCollation:
-Assert::same($locale->getCollation(), LocaleCollation::get(LocaleCollation::PHONEBOOK));
+Assert::same($locale->getCollation(), LocaleCollation::from(LocaleCollation::Phonebook->value));
 Assert::null($simple->getCollation());
 
 
 getCollationOptions:
 Assert::same($locale->getCollationOptions(), [
-    LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::get(LocaleColBackwards::YES),
-    LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::get(LocaleColCaseFirst::LOWER),
+    LocaleKeyword::COL_BACKWARDS => LocaleColBackwards::from(LocaleColBackwards::Yes->value),
+    LocaleKeyword::COL_CASE_FIRST => LocaleColCaseFirst::from(LocaleColCaseFirst::Lower->value),
 ]);
 Assert::same($simple->getCollationOptions(), []);

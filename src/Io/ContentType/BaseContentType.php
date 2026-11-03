@@ -9,10 +9,33 @@
 
 namespace Dogma\Io\ContentType;
 
-use Dogma\Enum\PartialStringEnum;
+use Dogma\InvalidRegularExpressionException;
+use Dogma\InvalidValueException;
+use function preg_match;
 
-class BaseContentType extends PartialStringEnum
+final readonly class BaseContentType
 {
+
+    public string $value;
+
+    public function __construct(string $value)
+    {
+        if (!self::validateValue($value)) {
+            throw new InvalidValueException($value, self::class);
+        }
+
+        $this->value = $value;
+    }
+
+    public static function from(string $value): self
+    {
+        return new self($value);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
 
     public const APPLICATION = 'application';
     public const AUDIO = 'audio';
@@ -28,6 +51,17 @@ class BaseContentType extends PartialStringEnum
     public static function getValueRegexp(): string
     {
         return '[a-z_]+';
+    }
+
+    public static function validateValue(string &$value): bool
+    {
+        $regexp = '/^' . self::getValueRegexp() . '?$/';
+        $result = preg_match($regexp, $value);
+        if ($result === false) {
+            throw new InvalidRegularExpressionException($regexp);
+        }
+
+        return (bool) $result;
     }
 
 }
