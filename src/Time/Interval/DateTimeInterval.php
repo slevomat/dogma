@@ -45,8 +45,8 @@ use function range;
  */
 class DateTimeInterval implements Interval, DateOrTimeInterval
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = DateTime::MIN;
     public const MAX = DateTime::MAX;
@@ -54,10 +54,10 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     public const DEFAULT_FORMAT = 'Y-m-d H:i:s| - Y-m-d H:i:s';
 
     /** @var DateTime */
-    private $start;
+    private DateTimeInterface $start;
 
     /** @var DateTime */
-    private $end;
+    private DateTimeInterface $end;
 
     final public function __construct(DateTimeInterface $start, DateTimeInterface $end)
     {
@@ -212,9 +212,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new SimpleDateTimeIntervalFormatter();
-        }
+        $formatter ??= new SimpleDateTimeIntervalFormatter();
 
         return $formatter->format($this, $format);
     }
@@ -244,7 +242,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -256,7 +253,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -267,7 +263,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -310,7 +305,6 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     /**
      * @param DateTimeInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -339,7 +333,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
             $intervalStarts[] = floor($this->start->getMicroTimestamp() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts); /// why unique???
-        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp) {
+        $intervalStarts = Arr::map($intervalStarts, function (int $timestamp): DateTime {
             return DateTime::createFromMicroTimestamp($timestamp, $this->getStart()->getTimezone());
         });
 
@@ -408,9 +402,7 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
     {
         Check::positive($amount);
 
-        if ($reference === null) {
-            $reference = $this->createReference($unit, $amount);
-        }
+        $reference ??= $this->createReference($unit, $amount);
 
         $intervalStarts = [];
         $start = $reference->addUnit($unit, $amount);

@@ -20,28 +20,27 @@ final class Colors
 {
     use StaticClassMixin;
 
-    /** @var bool */
-    public static $off = false;
+    public static bool $off = false;
 
-    public const WHITE = 'white';
-    public const LGRAY = 'lgray';
-    public const GRAY = 'gray';
-    public const BLACK = 'black';
-    public const RED = 'red';
-    public const LRED = 'lred';
-    public const GREEN = 'green';
-    public const LGREEN = 'lgreen';
-    public const BLUE = 'blue';
-    public const LBLUE = 'lblue';
-    public const CYAN = 'cyan';
-    public const LCYAN = 'lcyan';
-    public const PURPLE = 'purple';
-    public const LPURPLE = 'lpurple';
-    public const YELLOW = 'yellow';
-    public const LYELLOW = 'lyellow';
+    public const string WHITE = 'white';
+    public const string LGRAY = 'lgray';
+    public const string GRAY = 'gray';
+    public const string BLACK = 'black';
+    public const string RED = 'red';
+    public const string LRED = 'lred';
+    public const string GREEN = 'green';
+    public const string LGREEN = 'lgreen';
+    public const string BLUE = 'blue';
+    public const string LBLUE = 'lblue';
+    public const string CYAN = 'cyan';
+    public const string LCYAN = 'lcyan';
+    public const string PURPLE = 'purple';
+    public const string LPURPLE = 'lpurple';
+    public const string YELLOW = 'yellow';
+    public const string LYELLOW = 'lyellow';
 
     /** @var string[] */
-    private static $fg = [
+    private static array $fg = [
         self::WHITE => '1;37',
         self::LGRAY => '0;37',
         self::GRAY => '1;30',
@@ -63,7 +62,7 @@ final class Colors
     ];
 
     /** @var string[] */
-    private static $bg = [
+    private static array $bg = [
         self::LGRAY => '47',
         self::BLACK => '40',
 
@@ -85,13 +84,9 @@ final class Colors
         if (!isset(self::$fg[$foreground]) && !isset(self::$bg[$background])) {
             return $string;
         }
-        if ($background === null) {
-            $background = '';
-        }
+        $background ??= '';
 
-        if ($foreground === null) {
-            $foreground = '';
-        }
+        $foreground ??= '';
 
         $out = '';
         if (isset(self::$fg[$foreground])) {
@@ -111,7 +106,6 @@ final class Colors
 
     /**
      * Remove formatting characters from a string
-     * @return string
      */
     public static function remove(string $string): string
     {
@@ -120,7 +114,6 @@ final class Colors
 
     /**
      * Safely pads string with formatting characters to length
-     * @return string
      */
     public static function padString(string $string, int $length, string $with = ' ', int $type = STR_PAD_RIGHT): string
     {

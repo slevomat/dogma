@@ -10,46 +10,33 @@
 namespace Dogma;
 
 use BadMethodCallException;
-use ReturnTypeWillChange;
 use function array_key_exists;
 
 trait ImmutableArrayAccessMixin
 {
 
-    /**
-     * @param mixed $key
-     * @return bool
-     */
-    public function offsetExists($key): bool
+    public function offsetExists(mixed $key): bool
     {
         return array_key_exists($key, $this->toArray());
     }
 
-    /**
-     * @param mixed $key
-     * @return mixed
-     */
-    #[ReturnTypeWillChange]
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         return $this->items[$key];
     }
 
     /**
-     * @param mixed $key
-     * @param mixed $value
      * @throws BadMethodCallException
      */
-    public function offsetSet($key, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         throw new BadMethodCallException('Cannot modify an item of immutable list.');
     }
 
     /**
-     * @param mixed $key
      * @throws BadMethodCallException
      */
-    public function offsetUnset($key): void
+    public function offsetUnset(mixed $key): void
     {
         throw new BadMethodCallException('Cannot unset an item of immutable list.');
     }

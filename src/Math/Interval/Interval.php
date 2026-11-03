@@ -21,15 +21,9 @@ interface Interval /*<T>*/ extends Equalable, Comparable, IntersectComparable, D
 
     public function format(): string;
 
-    /**
-     * @return mixed
-     */
-    public function getStart(); //: T
+    public function getStart(): mixed; //: T
 
-    /**
-     * @return mixed
-     */
-    public function getEnd(); //: T
+    public function getEnd(): mixed; //: T
 
     /**
      * @return mixed[]

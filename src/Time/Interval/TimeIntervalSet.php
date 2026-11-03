@@ -34,12 +34,12 @@ use function reset;
  */
 class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var TimeInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param TimeInterval[] $intervals
@@ -97,7 +97,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -164,7 +163,6 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -200,14 +198,13 @@ class TimeIntervalSet implements ModuloIntervalSet, DateOrTimeIntervalSet, Pokea
     /** @phpstan-pure */
     public function invert(): self
     {
-        return (new static([TimeInterval::all()]))->subtract($this);
+        return new static([TimeInterval::all()])->subtract($this);
     }
 
     /**
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

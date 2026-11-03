@@ -49,19 +49,17 @@ use function round;
  */
 class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;
 
     public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
-    /** @var Date */
-    private $start;
+    private ?Date $start = null;
 
-    /** @var Date */
-    private $end;
+    private ?Date $end = null;
 
     final public function __construct(Date $start, Date $end)
     {
@@ -234,9 +232,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new SimpleDateTimeIntervalFormatter();
-        }
+        $formatter ??= new SimpleDateTimeIntervalFormatter();
 
         return $formatter->format($this, $format);
     }
@@ -266,7 +262,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -277,7 +272,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -288,7 +282,6 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -302,11 +295,7 @@ class NightInterval implements Interval, DateOrTimeInterval, Pokeable
         );
     }
 
-    /**
-     * @param Date|DateTimeInterface $date
-     * @return bool
-     */
-    public function containsValue($date): bool
+    public function containsValue(Date|DateTimeInterface $date): bool
     {
         if ($this->isEmpty()) {
             return false;

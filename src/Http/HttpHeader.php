@@ -16,6 +16,7 @@ use function array_map;
 use function explode;
 use function implode;
 use function strtolower;
+use function ucfirst;
 
 class HttpHeader extends PartialStringEnum
 {
@@ -117,7 +118,7 @@ class HttpHeader extends PartialStringEnum
     public const X_WEBKIT_CSP = 'X-WebKit-CSP';
 
     /** @var string[] */
-    private static $exceptions = [
+    private static array $exceptions = [
         'et' => 'ET',
         'etag' => 'ETag',
         'te' => 'TE',
@@ -138,7 +139,7 @@ class HttpHeader extends PartialStringEnum
         $name = strtolower($name);
 
         return self::$exceptions[$name]
-            ?? implode('-', array_map('ucfirst', explode('-', $name)));
+            ?? implode('-', array_map(ucfirst(...), explode('-', $name)));
     }
 
     public static function validateValue(string &$value): bool

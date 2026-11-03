@@ -64,7 +64,6 @@ class IntCalc
      * Maps number from range 0.0 - 1.0 to integers 0 to $max with same probability for each integer
      *
      * @param float $n (range 0..1)
-     * @return int
      */
     public static function mapTo(float $n, int $max): int
     {
@@ -73,10 +72,8 @@ class IntCalc
 
     // factorization ---------------------------------------------------------------------------------------------------
 
-    /**
-     * @return int|float
-     */
-    public static function factorial(int $n)
+
+    public static function factorial(int $n): int|float
     {
         $sign = $n < 0 ? -1 : 1;
         $n = $sign * $n;

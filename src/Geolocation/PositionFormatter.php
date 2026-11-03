@@ -32,16 +32,16 @@ class PositionFormatter
     public const LONGITUDE_EW = 'e';
 
     // reserved
-    private const ALTITUDE = 'a';
-    private const ALTITUDE_SIGNED = 'A';
-    private const ALTITUDE_ABOVE_BELOW = 'B';
-    private const ALTITUDE_AB = 'b';
+    private const string ALTITUDE = 'a';
+    private const string ALTITUDE_SIGNED = 'A';
+    private const string ALTITUDE_ABOVE_BELOW = 'B';
+    private const string ALTITUDE_AB = 'b';
 
     public const FORMAT_PRETTY = 'nl,eo';
     public const FORMAT_DEFAULT = 'L,O';
 
     /** @var string[] */
-    private static $specialCharacters = [
+    private static array $specialCharacters = [
         self::LATITUDE,
         self::LATITUDE_SIGNED,
         self::LATITUDE_NORTH_SOUTH,
@@ -56,11 +56,9 @@ class PositionFormatter
         self::ALTITUDE_AB,
     ];
 
-    /** @var AngleFormatter */
-    private $angleFormatter;
+    private AngleFormatter $angleFormatter;
 
-    /** @var string */
-    private $format;
+    private string $format;
 
     public function __construct(string $format = self::FORMAT_DEFAULT, ?AngleFormatter $angleFormatter = null)
     {
@@ -74,9 +72,8 @@ class PositionFormatter
         ?AngleFormatter $angleFormatter = null
     ): string
     {
-        $format = $format ?? $this->format;
-        /** @var AngleFormatter $angleFormatter */
-        $angleFormatter = $angleFormatter ?? $this->angleFormatter;
+        $format ??= $this->format;
+        $angleFormatter ??= $this->angleFormatter;
 
         $result = '';
         $escaped = false;

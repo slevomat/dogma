@@ -20,15 +20,9 @@ interface ModuloInterval /*<T>*/ extends Equalable, Comparable, Dumpable
 
     public function format(): string;
 
-    /**
-     * @return mixed
-     */
-    public function getStart(); //: T
+    public function getStart(): mixed; //: T
 
-    /**
-     * @return mixed
-     */
-    public function getEnd(); //: T
+    public function getEnd(): mixed; //: T
 
     public function isEmpty(): bool;
 

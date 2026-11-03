@@ -21,7 +21,6 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_map;
 use function array_merge;
@@ -38,12 +37,12 @@ use function sprintf;
  */
 class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var list<NightInterval> */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param NightInterval[] $intervals
@@ -122,7 +121,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
      */
     public function toDateArray(): array
     {
-        return array_merge(...array_map(static function (NightInterval $interval) {
+        return array_merge(...array_map(static function (NightInterval $interval): array {
             return $interval->toDateArray();
         }, $this->intervals));
     }
@@ -151,11 +150,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         return count($this->intervals);
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset): NightInterval
+    public function offsetGet(mixed $offset): NightInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -164,10 +159,7 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }
@@ -187,7 +179,6 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -254,7 +245,6 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -290,14 +280,13 @@ class NightIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pok
     /** @phpstan-pure */
     public function invert(): self
     {
-        return (new static([NightInterval::all()]))->subtract($this);
+        return new static([NightInterval::all()])->subtract($this);
     }
 
     /**
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

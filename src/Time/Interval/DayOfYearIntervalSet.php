@@ -18,7 +18,6 @@ use Dogma\Math\Interval\IntervalSetDumpMixin;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\DayOfYear;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_merge;
 use function array_shift;
@@ -34,11 +33,11 @@ use function sprintf;
  */
 class DayOfYearIntervalSet extends IntervalSet
 {
-    use StrictBehaviorMixin;
     use IntervalSetDumpMixin;
+    use StrictBehaviorMixin;
 
     /** @var DayOfYearInterval[] */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param DayOfYearInterval[] $intervals
@@ -73,11 +72,7 @@ class DayOfYearIntervalSet extends IntervalSet
         return count($this->intervals);
     }
 
-    /**
-     * @param mixed $offset
-     */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset): DayOfYearInterval
+    public function offsetGet(mixed $offset): DayOfYearInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -86,10 +81,7 @@ class DayOfYearIntervalSet extends IntervalSet
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }
@@ -109,7 +101,6 @@ class DayOfYearIntervalSet extends IntervalSet
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -161,7 +152,6 @@ class DayOfYearIntervalSet extends IntervalSet
 
     /**
      * Join overlapping intervals in set.
-     * @return self
      */
     public function normalize(): self
     {
@@ -184,7 +174,6 @@ class DayOfYearIntervalSet extends IntervalSet
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -221,7 +210,6 @@ class DayOfYearIntervalSet extends IntervalSet
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

@@ -42,19 +42,17 @@ use function round;
  */
 class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = Date::MIN;
     public const MAX = Date::MAX;
 
     public const DEFAULT_FORMAT = 'Y-m-d| - Y-m-d';
 
-    /** @var Date */
-    private $start;
+    private Date $start;
 
-    /** @var Date */
-    private $end;
+    private Date $end;
 
     final public function __construct(Date $start, Date $end)
     {
@@ -236,9 +234,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new SimpleDateTimeIntervalFormatter();
-        }
+        $formatter ??= new SimpleDateTimeIntervalFormatter();
 
         return $formatter->format($this, $format);
     }
@@ -268,7 +264,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -279,7 +274,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -290,7 +284,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compareIntersects(IntersectComparable $other): int
     {
@@ -304,11 +297,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
         );
     }
 
-    /**
-     * @param Date|DateTimeInterface $date
-     * @return bool
-     */
-    public function containsValue($date): bool
+    public function containsValue(Date|DateTimeInterface $date): bool
     {
         if (!$date instanceof Date) {
             $date = Date::createFromDateTimeInterface($date);
@@ -333,7 +322,6 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
 
     /**
      * @param DateInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {
@@ -367,7 +355,7 @@ class DateInterval implements Interval, DateOrTimeInterval, Pokeable
             $intervalStarts[] = (int) round($this->start->getJulianDay() + $partSize * $n);
         }
         $intervalStarts = array_unique($intervalStarts);
-        $intervalStarts = Arr::map($intervalStarts, static function (int $julianDay) {
+        $intervalStarts = Arr::map($intervalStarts, static function (int $julianDay): Date {
             return Date::createFromJulianDay($julianDay);
         });
 

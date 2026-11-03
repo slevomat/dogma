@@ -22,7 +22,7 @@ class BreadthFirstSearchPathFinder
     use StrictBehaviorMixin;
 
     /** @var int[][]|string[][] */
-    private $edges;
+    private array $edges;
 
     /**
      * @param int[][]|string[][] $edges
@@ -32,12 +32,7 @@ class BreadthFirstSearchPathFinder
         $this->edges = $edges;
     }
 
-    /**
-     * @param int|string $i
-     * @param int|string $j
-     * @return int|null
-     */
-    public function getDistance($i, $j): ?int
+    public function getDistance(int|string $i, int|string $j): ?int
     {
         $path = $this->getPath($i, $j);
 
@@ -45,11 +40,9 @@ class BreadthFirstSearchPathFinder
     }
 
     /**
-     * @param int|string $i
-     * @param int|string $j
      * @return int[]|string[]|null
      */
-    public function getPath($i, $j): ?array
+    public function getPath(int|string $i, int|string $j): ?array
     {
         if ($i === $j) {
             return [$i];

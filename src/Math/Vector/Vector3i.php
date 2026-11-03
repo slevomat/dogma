@@ -17,14 +17,11 @@ class Vector3i implements Equalable
 {
     use StrictBehaviorMixin;
 
-    /** @var int */
-    private $x;
+    private int $x;
 
-    /** @var int */
-    private $y;
+    private int $y;
 
-    /** @var int */
-    private $z;
+    private int $z;
 
     final public function __construct(int $x, int $y, int $z)
     {
@@ -58,7 +55,6 @@ class Vector3i implements Equalable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {

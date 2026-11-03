@@ -28,19 +28,18 @@ class FloydWarshallPathFinder
     use StrictBehaviorMixin;
 
     /** @var int[][] */
-    private $weights;
+    private ?array $weights = null;
 
-    /** @var int */
-    private $nodeCount;
+    private ?int $nodeCount = null;
 
     /** @var string[]|int[] */
-    private $nodeNames = [];
+    private array $nodeNames = [];
 
     /** @var int[][] */
-    private $distances = [[]];
+    private array $distances = [[]];
 
     /** @var mixed[][] */
-    private $predecessors = [[]];
+    private array $predecessors = [[]];
 
     /**
      * @param int[][] $weights graph edge weights. may be sparse
@@ -58,13 +57,9 @@ class FloydWarshallPathFinder
             $nodeNames = [];
             $normalized = [];
             foreach ($weights as $i => $nodes) {
-                if (!isset($nodeNames[$i])) {
-                    $nodeNames[$i] = $n++;
-                }
+                $nodeNames[$i] ??= $n++;
                 foreach ($nodes as $j => $weight) {
-                    if (!isset($nodeNames[$j])) {
-                        $nodeNames[$j] = $n++;
-                    }
+                    $nodeNames[$j] ??= $n++;
                     $normalized[$nodeNames[$i]][$nodeNames[$j]] = $weight;
                 }
             }
@@ -107,11 +102,8 @@ class FloydWarshallPathFinder
 
     /**
      * Get total cost (distance) between point a and b
-     * @param int|string $i
-     * @param int|string $j
-     * @return int
      */
-    public function getDistance($i, $j): int
+    public function getDistance(int|string $i, int|string $j): int
     {
         if ($this->nodeNames !== []) {
             $i = $this->nodeNames[$i];
@@ -123,11 +115,9 @@ class FloydWarshallPathFinder
 
     /**
      * Get nodes between a and b
-     * @param int|string $i
-     * @param int|string $j
      * @return int[]|string[]
      */
-    public function getPath($i, $j): array
+    public function getPath(int|string $i, int|string $j): array
     {
         $names = array_keys($this->nodeNames);
         if ($this->nodeNames !== []) {

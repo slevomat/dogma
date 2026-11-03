@@ -28,16 +28,16 @@ class Position
     public const PLANET_EARTH_RADIUS = 6371000.0;
 
     /** @var float [m] */
-    private $planetRadius;
+    private float $planetRadius;
 
     /** @var float [degrees] */
-    private $latitude;
+    private float $latitude;
 
     /** @var float [degrees] */
-    private $longitude;
+    private float $longitude;
 
     /** @var float[] */
-    private $normalVector;
+    private ?array $normalVector = null;
 
     final public function __construct(float $latitude, float $longitude, float $planetRadius = self::PLANET_EARTH_RADIUS)
     {

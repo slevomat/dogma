@@ -44,7 +44,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     use StrictBehaviorMixin;
 
     /** @var list<DateIntervalData<TData>> */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param list<DateIntervalData<TData>> $intervals
@@ -65,7 +65,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
      */
     public static function createFromDateIntervalSet(DateIntervalSet $set, $data): self
     {
-        $intervals = array_map(static function (DateInterval $interval) use ($data) {
+        $intervals = array_map(static function (DateInterval $interval) use ($data): DateIntervalData {
             return DateIntervalData::createFromDateInterval($interval, $data);
         }, $set->getIntervals());
 
@@ -159,7 +159,7 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
     {
         $intervals = $this->getIntervals();
 
-        return array_merge(...array_map(static function (DateIntervalData $interval) {
+        return array_merge(...array_map(static function (DateIntervalData $interval): array {
             return $interval->toDateDataArray();
         }, $intervals));
     }
@@ -187,7 +187,6 @@ class DateIntervalDataSet implements Equalable, Pokeable, IteratorAggregate
 
     /**
      * @param self<TData> $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {

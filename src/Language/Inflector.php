@@ -22,7 +22,7 @@ class Inflector
     use StaticClassMixin;
 
     /** @var string[] */
-    public static $singulars = [
+    public static array $singulars = [
         '/(quiz)$/i' => '\1zes',
         '/^(ox)$/i' => '\1en',
         '/([m|l])ouse$/i' => '\1ice',
@@ -43,7 +43,7 @@ class Inflector
     ];
 
     /** @var string[] */
-    public static $plurals = [
+    public static array $plurals = [
         '/(database)s$/i' => '\1',
         '/(quiz)zes$/i' => '\1',
         '/(matr)ices$/i' => '\1ix',
@@ -72,7 +72,7 @@ class Inflector
     ];
 
     /** @var string[] of irregular nouns */
-    public static $irregular = [
+    public static array $irregular = [
         'person' => 'people',
         'man' => 'men',
         'child' => 'children',
@@ -82,7 +82,7 @@ class Inflector
     ];
 
     /** @var string[] of uncountable nouns */
-    public static $uncountable = [
+    public static array $uncountable = [
         'equipment',
         'information',
         'rice',
@@ -194,23 +194,18 @@ class Inflector
     /**
      * Ordinalize turns a number into an ordinal string used to denote
      * the position in an ordered sequence such as 1st, 2nd, 3rd, 4th.
-     * @return string
      */
     public static function ordinalize(int $number): string
     {
         if ($number % 100 >= 11 && $number % 100 <= 13) {
             return $number . 'th';
         } else {
-            switch ($number % 10) {
-                case 1:
-                    return $number . 'st';
-                case 2:
-                    return $number . 'nd';
-                case 3:
-                    return $number . 'rd';
-                default:
-                    return $number . 'th';
-            }
+            return match ($number % 10) {
+                1 => $number . 'st',
+                2 => $number . 'nd',
+                3 => $number . 'rd',
+                default => $number . 'th',
+            };
         }
     }
 

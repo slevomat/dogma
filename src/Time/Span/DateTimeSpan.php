@@ -41,26 +41,19 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public const DEFAULT_FORMAT = 'y-m-d h:i:S';
 
-    /** @var  int */
-    private $years;
+    private int $years;
 
-    /** @var int */
-    private $months;
+    private int $months;
 
-    /** @var int */
-    private $days;
+    private int $days;
 
-    /** @var int */
-    private $hours;
+    private int $hours;
 
-    /** @var int */
-    private $minutes;
+    private int $minutes;
 
-    /** @var int */
-    private $seconds;
+    private int $seconds;
 
-    /** @var int */
-    private $microseconds;
+    private int $microseconds;
 
     final public function __construct(
         int $years,
@@ -117,7 +110,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * Subtracts positive and negative values if needed
-     * @return DateInterval
      */
     public function toNative(): DateInterval
     {
@@ -262,16 +254,13 @@ class DateTimeSpan implements DateOrTimeSpan
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeSpanFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new DateTimeSpanFormatter();
-        }
+        $formatter ??= new DateTimeSpanFormatter();
 
         return $formatter->format($this, $format);
     }
 
     /**
      * @param DateTimeSpan $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -280,7 +269,6 @@ class DateTimeSpan implements DateOrTimeSpan
 
     /**
      * @param DateTimeSpan $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -378,7 +366,6 @@ class DateTimeSpan implements DateOrTimeSpan
      * Normalizes values by summarizing smaller units into bigger. eg: '34 days' -> '1 month, 4 days'
      *
      * @phpstan-pure
-     * @return self
      */
     public function normalize(bool $safeOnly = false): self
     {

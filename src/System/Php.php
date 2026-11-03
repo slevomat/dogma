@@ -11,7 +11,6 @@ namespace Dogma\System;
 
 use Dogma\Re;
 use Dogma\StaticClassMixin;
-use function extension_loaded;
 use function ob_get_clean;
 use function ob_start;
 use function phpinfo;
@@ -40,12 +39,7 @@ class Php
 
     public static function isMultithreaded(): bool
     {
-        return self::getSapi()->isMultithreaded() || self::hasPthreads() || self::isThreadSafe();
-    }
-
-    public static function hasPthreads(): bool
-    {
-        return extension_loaded('pthreads');
+        return self::getSapi()->isMultithreaded() || self::isThreadSafe();
     }
 
     public static function isThreadSafe(): bool

@@ -35,9 +35,9 @@ use function strlen;
  */
 class Type
 {
-    use StrictBehaviorMixin;
     use NonCloneableMixin;
     use NonSerializableMixin;
+    use StrictBehaviorMixin;
 
     // types
     public const BOOL = 'bool';
@@ -64,31 +64,25 @@ class Type
     public const NOT_NULLABLE = false;
 
     /** @var Type[] (string $id => $type) */
-    private static $instances = [];
+    private static array $instances = [];
 
-    /** @var string */
-    private $id;
+    private string $id;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
     /** @var Type|Type[]|null */
-    private $itemType;
+    private self|array|null $itemType = null;
 
-    /** @var bool */
-    private $nullable;
+    private bool $nullable;
 
     /** @var int|int[]|null */
-    private $size;
+    private array|int|null $size = null;
 
-    /** @var string|null */
-    private $specific;
+    private ?string $specific;
 
-    /** @var Encoding|null */
-    private $encoding;
+    private ?Encoding $encoding;
 
-    /** @var Locale|null */
-    private $locale;
+    private ?Locale $locale;
 
     /**
      * @param Type|Type[]|null $itemType
@@ -98,8 +92,8 @@ class Type
         string $id,
         string $type,
         bool $nullable = false,
-        $itemType = null,
-        $size = null,
+        self|array|null $itemType = null,
+        array|int|null $size = null,
         ?string $specific = null,
         ?Encoding $encoding = null,
         ?Locale $locale = null
@@ -114,22 +108,13 @@ class Type
         $this->locale = $locale;
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|int[]|null $size [optional]
-     * @param string|null $specific [optional]
-     * @param Encoding|null $encoding [optional]
-     * @param Locale|null $locale [optional]
-     * @param bool $nullable [optional]
-     * @return self
-     */
     public static function get(
         string $type,
-        $size = null,
-        $specific = null,
-        $encoding = null,
-        $locale = null,
-        ?bool $nullable = null
+        mixed $size = null,
+        mixed $specific = null,
+        mixed $encoding = null,
+        mixed $locale = null,
+        mixed $nullable = null
     ): self
     {
         $args = func_get_args();
@@ -168,9 +153,7 @@ class Type
             }
         }
 
-        if ($nullable === null) {
-            $nullable = false;
-        }
+        $nullable ??= false;
 
         // normalize "array" to "array<mixed>"
         if ($type === self::PHP_ARRAY) {
@@ -227,46 +210,22 @@ class Type
         return self::get(self::BOOL, $nullable);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|null $size
-     * @param string|null $sign
-     * @return self
-     */
-    public static function int($size = null, $sign = null, ?bool $nullable = null): self
+    public static function int(mixed $size = null, mixed $sign = null, mixed $nullable = null): self
     {
         return self::get(self::INT, $size, $sign, $nullable);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|null $size
-     * @return self
-     */
-    public static function uint($size = null, ?bool $nullable = null): self
+    public static function uint(mixed $size = null, mixed $nullable = null): self
     {
         return self::get(self::INT, $size, Sign::UNSIGNED, $nullable);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|null $size
-     * @return self
-     */
-    public static function float($size = null, ?bool $nullable = null): self
+    public static function float(mixed $size = null, mixed $nullable = null): self
     {
         return self::get(self::FLOAT, $size, $nullable);
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @param int|null $size
-     * @param string|null $fixed
-     * @param Encoding|null $encoding
-     * @param Locale|null $locale
-     * @return self
-     */
-    public static function string($size = null, $fixed = null, $encoding = null, $locale = null, ?bool $nullable = null): self
+    public static function string(mixed $size = null, mixed $fixed = null, mixed $encoding = null, mixed $locale = null, mixed $nullable = null): self
     {
         return self::get(self::STRING, $size, $fixed, $encoding, $locale, $nullable);
     }
@@ -276,29 +235,17 @@ class Type
         return self::get(self::PHP_CALLABLE, $nullable);
     }
 
-    /**
-     * @param ResourceType|string|null $resourceType
-     * @return self
-     */
-    public static function resource($resourceType = null, ?bool $nullable = null): self
+    public static function resource(mixed $resourceType = null, mixed $nullable = null): self
     {
         return self::get(self::RESOURCE, $resourceType, $nullable);
     }
 
-    /**
-     * @param string|self $itemType
-     * @return self
-     */
-    public static function arrayOf($itemType, bool $nullable = false): self
+    public static function arrayOf(self|string $itemType, bool $nullable = false): self
     {
         return self::collectionOf(self::PHP_ARRAY, $itemType, $nullable);
     }
 
-    /**
-     * @param string|self $itemType
-     * @return self
-     */
-    public static function collectionOf(string $type, $itemType, bool $nullable = false): self
+    public static function collectionOf(string $type, self|string $itemType, bool $nullable = false): self
     {
         Check::types($itemType, [self::STRING, self::class]);
 
@@ -315,11 +262,7 @@ class Type
         return self::$instances[$id];
     }
 
-    /**
-     * @param string|self|bool ...$itemTypes
-     * @return self
-     */
-    public static function tupleOf(...$itemTypes): self
+    public static function tupleOf(bool|self|string ...$itemTypes): self
     {
         $nullable = false;
         if (is_bool(end($itemTypes))) {
@@ -353,7 +296,6 @@ class Type
 
     /**
      * Converts string in syntax like "Foo<Bar,Baz<int>>" to a Type instance
-     * @return self
      */
     public static function fromId(string $id): self
     {
@@ -483,7 +425,7 @@ class Type
      * Returns type of items or array of types for Tuple
      * @return self|self[]|null
      */
-    public function getItemType()
+    public function getItemType(): array|null|self
     {
         return $this->itemType;
     }
@@ -493,7 +435,7 @@ class Type
      *
      * @return int|int[]|null
      */
-    public function getSize()
+    public function getSize(): array|int|null
     {
         return $this->size;
     }
@@ -641,11 +583,8 @@ class Type
 
     /**
      * Returns new instance of type. Works only on simple class types with public constructor.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     * @param mixed ...$arguments
-     * @return object
      */
-    public function getInstance(...$arguments)
+    public function getInstance(mixed ...$arguments): object
     {
         $className = $this->type;
 

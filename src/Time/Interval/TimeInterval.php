@@ -45,19 +45,17 @@ use function round;
  */
 class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 {
-    use StrictBehaviorMixin;
     use IntervalDumpMixin;
+    use StrictBehaviorMixin;
 
     public const MIN = Time::MIN;
     public const MAX = '47:59:59.999999';
 
     public const DEFAULT_FORMAT = 'H:i:s.u| - H:i:s.u';
 
-    /** @var Time */
-    private $start;
+    private Time $start;
 
-    /** @var Time */
-    private $end;
+    private Time $end;
 
     final public function __construct(Time $start, Time $end)
     {
@@ -199,9 +197,7 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     public function format(string $format = self::DEFAULT_FORMAT, ?DateTimeIntervalFormatter $formatter = null): string
     {
-        if ($formatter === null) {
-            $formatter = new SimpleDateTimeIntervalFormatter();
-        }
+        $formatter ??= new SimpleDateTimeIntervalFormatter();
 
         return $formatter->format($this, $format);
     }
@@ -236,7 +232,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -248,7 +243,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -270,7 +264,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval $interval
-     * @return bool
      */
     public function contains(self $interval): bool
     {
@@ -297,7 +290,6 @@ class TimeInterval implements ModuloInterval, DateOrTimeInterval, Pokeable
 
     /**
      * @param TimeInterval $interval
-     * @return bool
      */
     public function touches(self $interval): bool
     {

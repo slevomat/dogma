@@ -21,7 +21,6 @@ use Dogma\Pokeable;
 use Dogma\ShouldNotHappenException;
 use Dogma\StrictBehaviorMixin;
 use Dogma\Time\Date;
-use ReturnTypeWillChange;
 use Traversable;
 use function array_map;
 use function array_merge;
@@ -38,12 +37,12 @@ use function sprintf;
  */
 class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Pokeable
 {
-    use StrictBehaviorMixin;
-    use IntervalSetNormalizeMixin;
     use IntervalSetDumpMixin;
+    use IntervalSetNormalizeMixin;
+    use StrictBehaviorMixin;
 
     /** @var list<DateInterval> */
-    private $intervals;
+    private array $intervals;
 
     /**
      * @param list<DateInterval> $intervals
@@ -139,11 +138,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         return count($this->intervals);
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset): DateInterval
+    public function offsetGet(mixed $offset): DateInterval
     {
         if (isset($this->intervals[$offset])) {
             return $this->intervals[$offset];
@@ -152,10 +147,7 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
         throw new ShouldNotHappenException(sprintf('Offset %d does not exist.', $offset));
     }
 
-	/**
-	 * @param mixed $offset
-	 */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->intervals[$offset]);
     }
@@ -178,7 +170,6 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -267,7 +258,6 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
      * Remove another set of intervals from this one.
      *
      * @phpstan-pure
-     * @return self
      */
     public function subtract(self $set): self
     {
@@ -303,14 +293,13 @@ class DateIntervalSet extends IntervalSet implements DateOrTimeIntervalSet, Poke
     /** @phpstan-pure */
     public function invert(): self
     {
-        return (new static([DateInterval::all()]))->subtract($this);
+        return new static([DateInterval::all()])->subtract($this);
     }
 
     /**
      * Intersect with another set of intervals.
      *
      * @phpstan-pure
-     * @return self
      */
     public function intersect(self $set): self
     {

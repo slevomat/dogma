@@ -32,16 +32,12 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     public const DEFAULT_FORMAT = 'Y-m';
 
-    /** @var string */
-    private $value;
+    private ?string $value = null;
 
-    /**
-     * @param string|Date|DateTimeInterface|null $value
-     */
-    final public function __construct($value = null)
+    final public function __construct(Date|DateTimeInterface|null|string $value = null)
     {
         if ($value === null) {
-            $this->value = (new Date())->format(self::DEFAULT_FORMAT);
+            $this->value = new Date()->format(self::DEFAULT_FORMAT);
             return;
         }
 
@@ -110,7 +106,6 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -121,7 +116,6 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {

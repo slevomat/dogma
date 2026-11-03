@@ -55,16 +55,11 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public const DEFAULT_FORMAT = 'Y-m-d';
 
-    /** @var int */
-    private $julianDay;
+    private ?int $julianDay = null;
 
-    /** @var DateTime|null */
-    private $dateTime;
+    private ?DateTime $dateTime = null;
 
-    /**
-     * @param int|string $julianDayOrDateString
-     */
-    final public function __construct($julianDayOrDateString = 'today')
+    final public function __construct(int|string $julianDayOrDateString = 'today')
     {
         if (is_int($julianDayOrDateString)) {
             Check::range($julianDayOrDateString, self::MIN_DAY_NUMBER, self::MAX_DAY_NUMBER);
@@ -82,7 +77,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         $dateString = str_replace(array_keys($replacements), array_values($replacements), strtolower($julianDayOrDateString));
 
         try {
-            $this->dateTime = (new DateTime($dateString))->setTime(0, 0, 0);
+            $this->dateTime = new DateTime($dateString)->setTime(0, 0, 0);
             $this->julianDay = self::calculateDayNumber($this->dateTime);
         } catch (Throwable $e) {
             throw new InvalidDateTimeException($dateString, $e);
@@ -227,7 +222,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * Returns Julian day number (count of days since January 1st, 4713 B.C.)
-     * @return int
      */
     public static function calculateDayNumber(DateTimeInterface $dateTime): int
     {
@@ -236,11 +230,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return gregoriantojd(intval($m), intval($d), intval($y));
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $other
-     * @return DateInterval
-     */
-    public function diff($other, bool $absolute = false): DateInterval
+    public function diff(self|DateTimeInterface|string $other, bool $absolute = false): DateInterval
     {
         if (is_string($other)) {
             $other = new DateTime($other);
@@ -248,14 +238,10 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
             $other = new DateTime($other->format());
         }
 
-        return (new DateTime($this->format()))->diff($other, $absolute);
+        return new DateTime($this->format())->diff($other, $absolute);
     }
 
-    /**
-     * @param DateTimeInterface|Date|string $other
-     * @return DateSpan
-     */
-    public function difference($other, bool $absolute = false): DateSpan
+    public function difference(self|DateTimeInterface|string $other, bool $absolute = false): DateSpan
     {
         $interval = $this->diff($other, $absolute);
 
@@ -264,17 +250,16 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function getStart(?DateTimeZone $timeZone = null): DateTime
     {
-        return (new DateTime($this->format(), $timeZone))->setTime(0, 0, 0);
+        return new DateTime($this->format(), $timeZone)->setTime(0, 0, 0);
     }
 
     public function getEnd(?DateTimeZone $timeZone = null): DateTime
     {
-        return (new DateTime($this->format(), $timeZone))->setTime(23, 59, 59, 999999);
+        return new DateTime($this->format(), $timeZone)->setTime(23, 59, 59, 999999);
     }
 
     /**
      * @param self $other
-     * @return int
      */
     public function compare(Comparable $other): int
     {
@@ -285,7 +270,6 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     /**
      * @param self $other
-     * @return bool
      */
     public function equals(Equalable $other): bool
     {
@@ -294,11 +278,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay === $other->julianDay;
     }
 
-    /**
-     * @param Date|string $date
-     * @return bool
-     */
-    public function isBefore($date): bool
+    public function isBefore(self|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -307,11 +287,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay < $date->julianDay;
     }
 
-    /**
-     * @param Date|string $date
-     * @return bool
-     */
-    public function isAfter($date): bool
+    public function isAfter(self|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -320,11 +296,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay > $date->julianDay;
     }
 
-    /**
-     * @param Date|string $date
-     * @return bool
-     */
-    public function isSameOrBefore($date): bool
+    public function isSameOrBefore(self|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -333,11 +305,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay <= $date->julianDay;
     }
 
-    /**
-     * @param Date|string $date
-     * @return bool
-     */
-    public function isSameOrAfter($date): bool
+    public function isSameOrAfter(self|string $date): bool
     {
         if (is_string($date)) {
             $date = new static($date);
@@ -346,12 +314,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay >= $date->julianDay;
     }
 
-    /**
-     * @param Date|string $sinceDate
-     * @param Date|string $untilDate
-     * @return bool
-     */
-    public function isBetween($sinceDate, $untilDate): bool
+    public function isBetween(self|string $sinceDate, self|string $untilDate): bool
     {
         if (is_string($sinceDate)) {
             $sinceDate = new static($sinceDate);
@@ -377,11 +340,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return $this->julianDay < $today->julianDay;
     }
 
-    /**
-     * @param int|string|DayOfWeek $day
-     * @return bool
-     */
-    public function isDayOfWeek($day): bool
+    public function isDayOfWeek(DayOfWeek|int|string $day): bool
     {
         if (is_int($day)) {
             $day = DayOfWeek::get($day);
@@ -397,11 +356,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
         return (($this->julianDay % 7) + 1) > DayOfWeek::FRIDAY;
     }
 
-    /**
-     * @param int|string|Month $month
-     * @return bool
-     */
-    public function isMonth($month): bool
+    public function isMonth(Month|int|string $month): bool
     {
         if (is_int($month)) {
             $month = Month::get($month);

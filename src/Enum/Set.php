@@ -14,20 +14,13 @@ use Dogma\Equalable;
 interface Set extends Equalable
 {
 
-    /**
-     * @return string|int
-     */
-    public function getValue();
+    public function getValue(): int|string;
 
     /**
      * @return string[]|int[]
      */
     public function getValues(): array;
 
-    /**
-     * @param int|string $value
-     * @return bool
-     */
-    public function equalsValue($value): bool;
+    public function equalsValue(int|string $value): bool;
 
 }

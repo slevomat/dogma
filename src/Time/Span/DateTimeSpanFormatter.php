@@ -92,7 +92,7 @@ class DateTimeSpanFormatter
     public const FORMAT_FULL_UNITS = '[yz, ][mo, ]df[, hl][, ik][, Sr]';
 
     /** @var string[] */
-    private static $specialCharacters = [
+    private static array $specialCharacters = [
         self::YEARS,
         self::YEARS_FRACTION,
         self::YEARS_UNIT,
@@ -147,17 +147,13 @@ class DateTimeSpanFormatter
         self::PRETTY_SINGLE_UNITS,
     ];
 
-    /** @var string */
-    private $format;
+    private string $format;
 
-    /** @var int */
-    private $maxDecimals;
+    private int $maxDecimals;
 
-    /** @var string */
-    private $decimalPoint;
+    private string $decimalPoint;
 
-    /** @var Translator|null */
-    private $translator;
+    private ?Translator $translator;
 
     public function __construct(
         string $format = self::FORMAT_DEFAULT,
@@ -255,9 +251,7 @@ class DateTimeSpanFormatter
      * p    Pretty, two values, units                   "2w, 1d", "2w", "2w, -1d"
      * Q    Pretty, single value                        "15 days", "2 weeks", "13 days"
      * q    Pretty, single value, units                 "15d", "2w", "13d"
-     *
-     * @return string
-     */
+	 */
     public function format(
         DateTimeSpan $span,
         ?string $format = null,
@@ -265,9 +259,9 @@ class DateTimeSpanFormatter
         ?string $decimalPoint = null
     ): string
     {
-        $format = $format ?? $this->format;
-        $maxDecimals = $maxDecimals ?? $this->maxDecimals;
-        $decimalPoint = $decimalPoint ?? $this->decimalPoint;
+        $format ??= $this->format;
+        $maxDecimals ??= $this->maxDecimals;
+        $decimalPoint ??= $this->decimalPoint;
 
         $result = $group = '';
         $last = null;
@@ -604,19 +598,15 @@ class DateTimeSpanFormatter
     private function formatUnit(string $unit, string $modifier, ?int $number = null): string
     {
         $unit = $this->getUnit($unit, $number);
-        switch ($modifier) {
-            case Formatting::UPPER_MODIFIER:
-                return Str::upper($unit);
-            case Formatting::CAPITALIZE_MODIFIER:
-                return Str::firstUpper($unit);
-            default:
-                return $unit;
-        }
+        return match ($modifier) {
+            Formatting::UPPER_MODIFIER => Str::upper($unit),
+            Formatting::CAPITALIZE_MODIFIER => Str::firstUpper($unit),
+            default => $unit,
+        };
     }
 
     /**
      * (Override for other plural rules or use Translator.)
-     * @return string
      */
     protected function getUnit(string $unit, ?int $number = null): string
     {
