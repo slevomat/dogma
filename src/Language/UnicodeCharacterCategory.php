@@ -9,97 +9,94 @@
 
 namespace Dogma\Language;
 
-use Dogma\Enum\StringEnum;
-
-class UnicodeCharacterCategory extends StringEnum
+enum UnicodeCharacterCategory: string
 {
 
-    public const OTHER = 'C';
-    public const CONTROL = 'Cc';
-    public const FORMAT = 'Cf';
-    public const PRIVATE_USE = 'Co';
-    public const SURROGATE = 'Cs';
+    case Other = 'C';
+    case Control = 'Cc';
+    case Format = 'Cf';
+    case PrivateUse = 'Co';
+    case Surrogate = 'Cs';
 
-    public const LETTER = 'L';
-    public const LOWER_CASE_LETTER = 'Ll';
-    public const MODIFIER_LETTER = 'Lm';
-    public const OTHER_LETTER = 'Lo';
-    public const TITLE_CASE_LETTER = 'Lt';
-    public const UPPER_CASE_LETTER = 'Lu';
+    case Letter = 'L';
+    case LowerCaseLetter = 'Ll';
+    case ModifierLetter = 'Lm';
+    case OtherLetter = 'Lo';
+    case TitleCaseLetter = 'Lt';
+    case UpperCaseLetter = 'Lu';
 
-    public const MARK = 'M';
-    public const SPACING_MARK = 'Mc';
-    public const ENCLOSING_MARK = 'Me';
-    public const NONSPACING_MARK = 'Mn';
+    case Mark = 'M';
+    case SpacingMark = 'Mc';
+    case EnclosingMark = 'Me';
+    case NonspacingMark = 'Mn';
 
-    public const NUMBER = 'N';
-    public const DECIMAL_NUMBER = 'Nd';
-    public const LETTER_NUMBER = 'Nl';
-    public const OTHER_NUMBER = 'No';
+    case Number = 'N';
+    case DecimalNumber = 'Nd';
+    case LetterNumber = 'Nl';
+    case OtherNumber = 'No';
 
-    public const PUNCTUATION = 'P';
-    public const CONNECTOR_PUNCTUATION = 'Pc';
-    public const DASH_PUNCTUATION = 'Pd';
-    public const CLOSE_PUNCTUATION = 'Pe';
-    public const FINAL_PUNCTUATION = 'Pf';
-    public const INITIAL_PUNCTUATION = 'Pi';
-    public const OTHER_PUNCTUATION = 'Po';
-    public const OPEN_PUNCTUATION = 'Ps';
+    case Punctuation = 'P';
+    case ConnectorPunctuation = 'Pc';
+    case DashPunctuation = 'Pd';
+    case ClosePunctuation = 'Pe';
+    case FinalPunctuation = 'Pf';
+    case InitialPunctuation = 'Pi';
+    case OtherPunctuation = 'Po';
+    case OpenPunctuation = 'Ps';
 
-    public const SYMBOL = 'S';
-    public const CURRENCY_SYMBOL = 'Sc';
-    public const MODIFIER_SYMBOL = 'Sk';
-    public const MATH_SYMBOL = 'Sm';
-    public const OTHER_SYMBOL = 'So';
+    case Symbol = 'S';
+    case CurrencySymbol = 'Sc';
+    case ModifierSymbol = 'Sk';
+    case MathSymbol = 'Sm';
+    case OtherSymbol = 'So';
 
-    public const SEPARATOR = 'Z';
-    public const LINE_SEPARATOR = 'Zl';
-    public const PARAGRAPH_SEPARATOR = 'Zp';
-    public const SPACE_SEPARATOR = 'Zs';
+    case Separator = 'Z';
+    case LineSeparator = 'Zl';
+    case ParagraphSeparator = 'Zp';
+    case SpaceSeparator = 'Zs';
 
-    /** @var string[] */
-    private static array $names = [
-        self::OTHER => 'Other',
-        self::CONTROL => 'Control',
-        self::FORMAT => 'Format',
-        self::PRIVATE_USE => 'Private Use',
-        self::SURROGATE => 'Surrogate',
-        self::LETTER => 'Letter',
-        self::LOWER_CASE_LETTER => 'Lower case Letter',
-        self::MODIFIER_LETTER => 'Modifier Letter',
-        self::OTHER_LETTER => 'Other Letter',
-        self::TITLE_CASE_LETTER => 'Title case Letter',
-        self::UPPER_CASE_LETTER => 'Upper case Letter',
-        self::MARK => 'Mark',
-        self::SPACING_MARK => 'Spacing Mark',
-        self::ENCLOSING_MARK => 'Enclosing Mark',
-        self::NONSPACING_MARK => 'Nonspacing Mark',
-        self::NUMBER => 'Number',
-        self::DECIMAL_NUMBER => 'Decimal Number',
-        self::LETTER_NUMBER => 'Letter Number',
-        self::OTHER_NUMBER => 'Other Number',
-        self::PUNCTUATION => 'Punctuation',
-        self::CONNECTOR_PUNCTUATION => 'Connector Punctuation',
-        self::DASH_PUNCTUATION => 'Dash Punctuation',
-        self::CLOSE_PUNCTUATION => 'Close Punctuation',
-        self::FINAL_PUNCTUATION => 'Final Punctuation',
-        self::INITIAL_PUNCTUATION => 'Initial Punctuation',
-        self::OTHER_PUNCTUATION => 'Other Punctuation',
-        self::OPEN_PUNCTUATION => 'Open Punctuation',
-        self::SYMBOL => 'Symbol',
-        self::CURRENCY_SYMBOL => 'Currency Symbol',
-        self::MODIFIER_SYMBOL => 'Modifier Symbol',
-        self::MATH_SYMBOL => 'Math Symbol',
-        self::OTHER_SYMBOL => 'Other Symbol',
-        self::SEPARATOR => 'Separator',
-        self::LINE_SEPARATOR => 'Line Separator',
-        self::PARAGRAPH_SEPARATOR => 'Paragraph Separator',
-        self::SPACE_SEPARATOR => 'Space Separator',
+    private const array NAMES = [
+        self::Other->value => 'Other',
+        self::Control->value => 'Control',
+        self::Format->value => 'Format',
+        self::PrivateUse->value => 'Private Use',
+        self::Surrogate->value => 'Surrogate',
+        self::Letter->value => 'Letter',
+        self::LowerCaseLetter->value => 'Lower case Letter',
+        self::ModifierLetter->value => 'Modifier Letter',
+        self::OtherLetter->value => 'Other Letter',
+        self::TitleCaseLetter->value => 'Title case Letter',
+        self::UpperCaseLetter->value => 'Upper case Letter',
+        self::Mark->value => 'Mark',
+        self::SpacingMark->value => 'Spacing Mark',
+        self::EnclosingMark->value => 'Enclosing Mark',
+        self::NonspacingMark->value => 'Nonspacing Mark',
+        self::Number->value => 'Number',
+        self::DecimalNumber->value => 'Decimal Number',
+        self::LetterNumber->value => 'Letter Number',
+        self::OtherNumber->value => 'Other Number',
+        self::Punctuation->value => 'Punctuation',
+        self::ConnectorPunctuation->value => 'Connector Punctuation',
+        self::DashPunctuation->value => 'Dash Punctuation',
+        self::ClosePunctuation->value => 'Close Punctuation',
+        self::FinalPunctuation->value => 'Final Punctuation',
+        self::InitialPunctuation->value => 'Initial Punctuation',
+        self::OtherPunctuation->value => 'Other Punctuation',
+        self::OpenPunctuation->value => 'Open Punctuation',
+        self::Symbol->value => 'Symbol',
+        self::CurrencySymbol->value => 'Currency Symbol',
+        self::ModifierSymbol->value => 'Modifier Symbol',
+        self::MathSymbol->value => 'Math Symbol',
+        self::OtherSymbol->value => 'Other Symbol',
+        self::Separator->value => 'Separator',
+        self::LineSeparator->value => 'Line Separator',
+        self::ParagraphSeparator->value => 'Paragraph Separator',
+        self::SpaceSeparator->value => 'Space Separator',
     ];
 
     public function getName(): string
     {
-        return self::$names[$this->getValue()];
+        return self::NAMES[$this->value];
     }
 
 }

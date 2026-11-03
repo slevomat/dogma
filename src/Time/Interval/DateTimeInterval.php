@@ -97,15 +97,15 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     public static function createFromStartAndLength(DateTime $start, DateTimeUnit $unit, int $amount): self
     {
-        if ($unit->equalsValue(DateTimeUnit::QUARTER)) {
-            $unit = DateTimeUnit::month();
+        if ($unit === DateTimeUnit::Quarter) {
+            $unit = DateTimeUnit::Month;
             $amount *= 3;
-        } elseif ($unit->equalsValue(DateTimeUnit::MILISECOND)) {
-            $unit = DateTimeUnit::microsecond();
+        } elseif ($unit === DateTimeUnit::Milisecond) {
+            $unit = DateTimeUnit::Microsecond;
             $amount *= 1000;
         }
 
-        return new static($start, $start->modify('+' . $amount . ' ' . $unit->getValue()));
+        return new static($start, $start->modify('+' . $amount . ' ' . $unit->value));
     }
 
     public static function createFromDateTimeInterfaces(DateTimeInterface $start, DateTimeInterface $end): self
@@ -416,29 +416,29 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
     private function createReference(DateTimeUnit $unit, int $amount): DateTime
     {
-        switch ($unit->getValue()) {
-            case DateTimeUnit::YEAR:
+        switch ($unit->value) {
+            case DateTimeUnit::Year->value:
                 $year = $this->start->getYear();
                 if ($amount > 1) {
                     $year = IntCalc::roundDownTo($year, $amount);
                 }
 
                 return DateTime::createFromComponents($year, 1, 1, 0, 0, 0, 0, $this->start->getTimezone());
-            case DateTimeUnit::QUARTER:
+            case DateTimeUnit::Quarter->value:
                 if ($amount > 1) {
                     throw new NotImplementedException('Behavior of quarters for amount larger than 1 is not defined.');
                 }
                 $month = IntCalc::roundDownTo($this->start->getMonth() - 1, 3) + 1;
 
                 return DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
-            case DateTimeUnit::MONTH:
+            case DateTimeUnit::Month->value:
                 $month = $this->start->getMonth();
                 if ($amount > 1) {
                     $month = IntCalc::roundDownTo($month - 1, $amount) + 1;
                 }
 
                 return DateTime::createFromComponents($this->start->getYear(), $month, 1, 0, 0, 0, 0, $this->start->getTimezone());
-            case DateTimeUnit::WEEK:
+            case DateTimeUnit::Week->value:
                 if ($amount > 1) {
                     $year = (int) $this->start->format('o');
                     $week = (int) $this->start->format('W');
@@ -450,33 +450,33 @@ class DateTimeInterval implements Interval, DateOrTimeInterval
 
                     return $this->start->modify('-' . ($dayOfWeek - 1) . ' days')->setTime(0, 0, 0, 0);
                 }
-            case DateTimeUnit::DAY:
+            case DateTimeUnit::Day->value:
                 $day = $this->start->getDay();
                 if ($amount > 1) {
                     $day = IntCalc::roundDownTo($day - 1, $amount) + 1;
                 }
 
                 return DateTime::createFromComponents($this->start->getYear(), $this->start->getMonth(), $day, 0, 0, 0, 0, $this->start->getTimezone());
-            case DateTimeUnit::HOUR:
+            case DateTimeUnit::Hour->value:
                 $hours = range(0, 23, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $hours);
 
                 return $reference;
-            case DateTimeUnit::MINUTE:
-            case DateTimeUnit::SECOND:
+            case DateTimeUnit::Minute->value:
+            case DateTimeUnit::Second->value:
                 $units = range(0, 59, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $units);
 
                 return $reference;
-            case DateTimeUnit::MILISECOND:
+            case DateTimeUnit::Milisecond->value:
                 $miliseconds = range(0, 999, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $miliseconds);
 
                 return $reference;
-            case DateTimeUnit::MICROSECOND:
+            case DateTimeUnit::Microsecond->value:
                 $microseconds = range(0, 999999, $amount);
                 /** @var DateTime $reference */
                 $reference = TimeCalc::roundDownTo($this->start, $unit, $microseconds);

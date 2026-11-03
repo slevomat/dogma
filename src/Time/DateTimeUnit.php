@@ -9,77 +9,26 @@
 
 namespace Dogma\Time;
 
-use Dogma\Enum\StringEnum;
 use function in_array;
 
 /**
  * Ať běží rychle a na nic se neptá
  * než bude duše má za chvíli mrtvá
  */
-class DateTimeUnit extends StringEnum
+enum DateTimeUnit: string
 {
 
-    public const YEAR = 'year';
-    public const QUARTER = 'quarter';
-    public const MONTH = 'month';
-    public const WEEK = 'week';
-    public const DAY = 'day';
+    case Year = 'year';
+    case Quarter = 'quarter';
+    case Month = 'month';
+    case Week = 'week';
+    case Day = 'day';
 
-    public const HOUR = 'hour';
-    public const MINUTE = 'minute';
-    public const SECOND = 'second';
-    public const MILISECOND = 'milisecond';
-    public const MICROSECOND = 'microsecond';
-
-    public static function year(): self
-    {
-        return self::get(self::YEAR);
-    }
-
-    public static function quarter(): self
-    {
-        return self::get(self::QUARTER);
-    }
-
-    public static function month(): self
-    {
-        return self::get(self::MONTH);
-    }
-
-    public static function week(): self
-    {
-        return self::get(self::WEEK);
-    }
-
-    public static function day(): self
-    {
-        return self::get(self::DAY);
-    }
-
-    public static function hour(): self
-    {
-        return self::get(self::HOUR);
-    }
-
-    public static function minute(): self
-    {
-        return self::get(self::MINUTE);
-    }
-
-    public static function second(): self
-    {
-        return self::get(self::SECOND);
-    }
-
-    public static function milisecond(): self
-    {
-        return self::get(self::MILISECOND);
-    }
-
-    public static function microsecond(): self
-    {
-        return self::get(self::MICROSECOND);
-    }
+    case Hour = 'hour';
+    case Minute = 'minute';
+    case Second = 'second';
+    case Milisecond = 'milisecond';
+    case Microsecond = 'microsecond';
 
     /**
      * @return string[]
@@ -87,11 +36,11 @@ class DateTimeUnit extends StringEnum
     public static function getDateUnits(): array
     {
         return [
-            self::YEAR,
-            self::QUARTER,
-            self::MONTH,
-            self::WEEK,
-            self::DAY,
+            self::Year->value,
+            self::Quarter->value,
+            self::Month->value,
+            self::Week->value,
+            self::Day->value,
         ];
     }
 
@@ -101,11 +50,11 @@ class DateTimeUnit extends StringEnum
     public static function getTimeUnits(): array
     {
         return [
-            self::HOUR,
-            self::MINUTE,
-            self::SECOND,
-            self::MILISECOND,
-            self::MICROSECOND,
+            self::Hour->value,
+            self::Minute->value,
+            self::Second->value,
+            self::Milisecond->value,
+            self::Microsecond->value,
         ];
     }
 
@@ -115,26 +64,26 @@ class DateTimeUnit extends StringEnum
     public static function getComparisonFormats(): array
     {
         return [
-            self::YEAR => 'Y',
-            self::MONTH => 'Ym',
-            self::WEEK => 'oW',
-            self::DAY => 'Ymd',
-            self::HOUR => 'YmdH',
-            self::MINUTE => 'YmdHi',
-            self::SECOND => 'YmdHis',
-            self::MILISECOND => 'YmdHisv',
-            self::MICROSECOND => 'YmdHisu',
+            self::Year->value => 'Y',
+            self::Month->value => 'Ym',
+            self::Week->value => 'oW',
+            self::Day->value => 'Ymd',
+            self::Hour->value => 'YmdH',
+            self::Minute->value => 'YmdHi',
+            self::Second->value => 'YmdHis',
+            self::Milisecond->value => 'YmdHisv',
+            self::Microsecond->value => 'YmdHisu',
         ];
     }
 
     public function isDate(): bool
     {
-        return in_array($this->getValue(), self::getDateUnits(), true);
+        return in_array($this->value, self::getDateUnits(), true);
     }
 
     public function isTime(): bool
     {
-        return in_array($this->getValue(), self::getTimeUnits(), true);
+        return in_array($this->value, self::getTimeUnits(), true);
     }
 
     /**
@@ -142,7 +91,7 @@ class DateTimeUnit extends StringEnum
      */
     public function getComparisonFormat(): string
     {
-        return self::getComparisonFormats()[$this->getValue()];
+        return self::getComparisonFormats()[$this->value];
     }
 
 }

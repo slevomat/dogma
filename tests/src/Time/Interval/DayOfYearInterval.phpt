@@ -49,15 +49,15 @@ Assert::exception(static function (): void {
 
 
 createFromStartAndLength:
-Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::quarter(), 2), new DayOfYearInterval($startDay, new DayOfYear('07-10')));
-Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::month(), 2), new DayOfYearInterval($startDay, new DayOfYear('03-10')));
-Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::week(), 2), new DayOfYearInterval($startDay, new DayOfYear('01-24')));
-Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::day(), 2), new DayOfYearInterval($startDay, new DayOfYear('01-12')));
+Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Quarter, 2), new DayOfYearInterval($startDay, new DayOfYear('07-10')));
+Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Month, 2), new DayOfYearInterval($startDay, new DayOfYear('03-10')));
+Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Week, 2), new DayOfYearInterval($startDay, new DayOfYear('01-24')));
+Assert::equal(DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Day, 2), new DayOfYearInterval($startDay, new DayOfYear('01-12')));
 Assert::exception(static function () use ($startDay): void {
-    DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::hour(), 2);
+    DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Hour, 2);
 }, InvalidDateTimeUnitException::class);
 Assert::exception(static function () use ($startDay): void {
-    DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::year(), 2);
+    DayOfYearInterval::createFromStartAndLength($startDay, DateTimeUnit::Year, 2);
 }, InvalidDateTimeUnitException::class);
 
 

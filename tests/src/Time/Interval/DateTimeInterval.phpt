@@ -62,16 +62,16 @@ Assert::exception(static function (): void {
 
 
 createFromStartAndLength:
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::year(), 2), new DateTimeInterval($startTime, new DateTime('2002-01-10 00:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::quarter(), 2), new DateTimeInterval($startTime, new DateTime('2000-07-10 00:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::month(), 2), new DateTimeInterval($startTime, new DateTime('2000-03-10 00:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::week(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-24 00:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::day(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-12 00:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::hour(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 02:00')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::minute(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:02')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::second(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:02')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::milisecond(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:00.002')));
-Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::microsecond(), 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:00.000002')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Year, 2), new DateTimeInterval($startTime, new DateTime('2002-01-10 00:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Quarter, 2), new DateTimeInterval($startTime, new DateTime('2000-07-10 00:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Month, 2), new DateTimeInterval($startTime, new DateTime('2000-03-10 00:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Week, 2), new DateTimeInterval($startTime, new DateTime('2000-01-24 00:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Day, 2), new DateTimeInterval($startTime, new DateTime('2000-01-12 00:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Hour, 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 02:00')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Minute, 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:02')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Second, 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:02')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Milisecond, 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:00.002')));
+Assert::equal(DateTimeInterval::createFromStartAndLength($startTime, DateTimeUnit::Microsecond, 2), new DateTimeInterval($startTime, new DateTime('2000-01-10 00:00:00.000002')));
 
 
 createFromDateAndTimeInterval:

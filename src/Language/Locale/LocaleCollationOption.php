@@ -9,15 +9,10 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\StringEnum;
-
 interface LocaleCollationOption
 {
 
-    /**
-     * @return LocaleCollationOption
-     */
-    public static function get(string $value): StringEnum;
+    public static function parse(string $value): static;
 
     public function getCollatorValue(): int;
 

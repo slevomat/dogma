@@ -343,28 +343,28 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
     public function isDayOfWeek(DayOfWeek|int|string $day): bool
     {
         if (is_int($day)) {
-            $day = DayOfWeek::get($day);
+            $day = DayOfWeek::from($day);
         } elseif (is_string($day)) {
             $day = DayOfWeek::getByName($day);
         }
 
-        return (($this->julianDay % 7) + 1) === $day->getValue();
+        return (($this->julianDay % 7) + 1) === $day->value;
     }
 
     public function isWeekend(): bool
     {
-        return (($this->julianDay % 7) + 1) > DayOfWeek::FRIDAY;
+        return (($this->julianDay % 7) + 1) > DayOfWeek::Friday->value;
     }
 
     public function isMonth(Month|int|string $month): bool
     {
         if (is_int($month)) {
-            $month = Month::get($month);
+            $month = Month::from($month);
         } elseif (is_string($month)) {
             $month = Month::getByName($month);
         }
 
-        return (int) $this->format('n') === $month->getValue();
+        return (int) $this->format('n') === $month->value;
     }
 
     // getters ---------------------------------------------------------------------------------------------------------
@@ -392,7 +392,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function getMonthEnum(): Month
     {
-        return Month::get((int) $this->format('n'));
+        return Month::from((int) $this->format('n'));
     }
 
     public function getDay(): int
@@ -407,7 +407,7 @@ class Date implements DateOrDateTime, Pokeable, Dumpable
 
     public function getDayOfWeekEnum(): DayOfWeek
     {
-        return DayOfWeek::get(($this->julianDay % 7) + 1);
+        return DayOfWeek::from(($this->julianDay % 7) + 1);
     }
 
     public function fillValues(DateTimeValues $values): void

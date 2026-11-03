@@ -9,29 +9,26 @@
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\StringEnum;
 use Dogma\Language\Collator;
 use function strtolower;
 
-class LocaleColAlternate extends StringEnum implements LocaleCollationOption
+enum LocaleColAlternate: string implements LocaleCollationOption
 {
 
-    public const NON_IGNORABLE = 'non-ignorable';
-    public const SHIFTED = 'shifted';
+    case NonIgnorable = 'non-ignorable';
+    case Shifted = 'shifted';
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = strtolower($value);
-
-        return parent::validateValue($value);
+        return self::from(strtolower($value));
     }
 
     public function getCollatorValue(): int
     {
         return [
-            self::NON_IGNORABLE => Collator::NON_IGNORABLE,
-            self::SHIFTED => Collator::SHIFTED,
-        ][$this->getValue()];
+            self::NonIgnorable->value => Collator::NON_IGNORABLE,
+            self::Shifted->value => Collator::SHIFTED,
+        ][$this->value];
     }
 
 }

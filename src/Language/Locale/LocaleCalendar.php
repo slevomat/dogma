@@ -7,37 +7,34 @@
  * For the full copyright and license information read the file 'license.md'; distributed with this source code
  */
 
-// spell-check-ignore: roc ROC
+// spell-check-ignore: roc
 
 namespace Dogma\Language\Locale;
 
-use Dogma\Enum\StringEnum;
 use function strtolower;
 
-class LocaleCalendar extends StringEnum
+enum LocaleCalendar: string
 {
 
-    public const BUDDHIST = 'buddhist';
-    public const CHINESE = 'chinese';
-    public const COPTIC = 'coptic';
-    public const DANGI = 'dangi';
-    public const ETHIOPIC = 'ethiopic';
-    public const ETHIOPIC_AMETE_ALEM = 'ethiopic-amete-alem';
-    public const GREGORIAN = 'gregorian';
-    public const HEBREW = 'hebrew';
-    public const INDIAN = 'indian';
-    public const ISLAMIC = 'islamic';
-    public const ISLAMIC_CIVIL = 'islamic-civil';
-    public const ISO8601 = 'iso8601';
-    public const JAPANESE = 'japanese';
-    public const PERSIAN = 'persian';
-    public const ROC = 'roc';
+    case Buddhist = 'buddhist';
+    case Chinese = 'chinese';
+    case Coptic = 'coptic';
+    case Dangi = 'dangi';
+    case Ethiopic = 'ethiopic';
+    case EthiopicAmeteAlem = 'ethiopic-amete-alem';
+    case Gregorian = 'gregorian';
+    case Hebrew = 'hebrew';
+    case Indian = 'indian';
+    case Islamic = 'islamic';
+    case IslamicCivil = 'islamic-civil';
+    case Iso8601 = 'iso8601';
+    case Japanese = 'japanese';
+    case Persian = 'persian';
+    case Roc = 'roc';
 
-    public static function validateValue(string &$value): bool
+    public static function parse(string $value): self
     {
-        $value = strtolower($value);
-
-        return parent::validateValue($value);
+        return self::from(strtolower($value));
     }
 
 }

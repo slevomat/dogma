@@ -56,8 +56,8 @@ class TimeCalc
         $allowedValues ??= [0];
 
         $dayOverflow = false;
-        switch ($unit->getValue()) {
-            case DateTimeUnit::HOUR:
+        switch ($unit->value) {
+            case DateTimeUnit::Hour->value:
                 /** @var callable $cb */
                 $cb = [ModuloCalc::class, $method];
                 [$hours, $overflow] = $cb($value->getHours() + $value->getMinutes() / 60 + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 24);
@@ -68,7 +68,7 @@ class TimeCalc
                 $seconds = 0;
                 $microseconds = 0;
                 break;
-            case DateTimeUnit::MINUTE:
+            case DateTimeUnit::Minute->value:
                 /** @var callable $cb */
                 $cb = [ModuloCalc::class, $method];
                 [$minutes, $overflow] = $cb($value->getMinutes() + $value->getSeconds() / 3600 + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
@@ -89,7 +89,7 @@ class TimeCalc
                 $seconds = 0;
                 $microseconds = 0;
                 break;
-            case DateTimeUnit::SECOND:
+            case DateTimeUnit::Second->value:
                 /** @var callable $cb */
                 $cb = [ModuloCalc::class, $method];
                 [$seconds, $overflow] = $cb($value->getSeconds() + $value->getMicroseconds() / 3600 / 1000000, $allowedValues, 60);
@@ -118,7 +118,7 @@ class TimeCalc
                 }
                 $microseconds = 0;
                 break;
-            case DateTimeUnit::MILISECOND:
+            case DateTimeUnit::Milisecond->value:
                 /** @var callable $cb */
                 $cb = [ModuloCalc::class, $method];
                 [$miliseconds, $overflow] = $cb($value->getMicroseconds() / 1000, $allowedValues, 1000);
@@ -156,7 +156,7 @@ class TimeCalc
                 }
                 $microseconds = $miliseconds * 1000;
                 break;
-            case DateTimeUnit::MICROSECOND:
+            case DateTimeUnit::Microsecond->value:
                 /** @var callable $cb */
                 $cb = [ModuloCalc::class, $method];
                 [$microseconds, $overflow] = $cb($value->getMicroseconds(), $allowedValues, 1000000);

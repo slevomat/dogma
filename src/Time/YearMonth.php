@@ -146,7 +146,7 @@ class YearMonth implements Comparable, Equalable, Dumpable
 
     public function getMonthEnum(): Month
     {
-        return Month::get((int) explode('-', $this->value)[1]);
+        return Month::from((int) explode('-', $this->value)[1]);
     }
 
     public function getIntValue(): int

@@ -10,7 +10,7 @@ use Error;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-$aspell = ResourceType::get(ResourceType::ASPELL);
+$aspell = ResourceType::from(ResourceType::Aspell->value);
 
 $resource = Type::resource();
 $resourceAspell = Type::resource($aspell);

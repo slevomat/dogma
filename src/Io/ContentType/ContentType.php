@@ -9,14 +9,37 @@
 
 namespace Dogma\Io\ContentType;
 
-use Dogma\Enum\PartialStringEnum;
+use Dogma\InvalidRegularExpressionException;
+use Dogma\InvalidValueException;
 use Dogma\Str;
 use function array_search;
 use function is_string;
+use function preg_match;
 use function str_contains;
 
-class ContentType extends PartialStringEnum
+final readonly class ContentType
 {
+
+    public string $value;
+
+    public function __construct(string $value)
+    {
+        if (!self::validateValue($value)) {
+            throw new InvalidValueException($value, self::class);
+        }
+
+        $this->value = $value;
+    }
+
+    public static function from(string $value): self
+    {
+        return new self($value);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
 
     public const APPLICATION_1D_INTERLEAVED_PARITYFEC = 'application/1d-interleaved-parityfec';
     public const APPLICATION_3GPDASH_QOE_REPORT_XML = 'application/3gpdash-qoe-report+xml';
@@ -1817,8 +1840,7 @@ class ContentType extends PartialStringEnum
     public const VIDEO_X_SGI_MOVIE = 'video/x-sgi-movie';
     public const X_CONFERENCE_X_COOLTALK = 'x-conference/x-cooltalk';
 
-    /** @var string[] */
-    private static array $extensions = [
+    private const array EXTENSIONS = [
         '123' => self::APPLICATION_VND_LOTUS_1_2_3,
         '3dml' => self::TEXT_VND_IN3D_3DML,
         '3g2' => self::VIDEO_3GPP2,
@@ -2524,8 +2546,7 @@ class ContentType extends PartialStringEnum
         'zoo' => self::APPLICATION_X_ZOO,
     ];
 
-    /** @var bool[] */
-    private static array $compressed = [
+    private const array COMPRESSED = [
         self::APPLICATION_GZIP => true,
         self::APPLICATION_X_BZIP => true,
         self::APPLICATION_X_BZIP2 => true,
@@ -2537,8 +2558,7 @@ class ContentType extends PartialStringEnum
         self::APPLICATION_X_XZ => true,
     ];
 
-    /** @var bool[] */
-    private static array $archive = [
+    private const array ARCHIVE = [
         // uncompressed
         self::APPLICATION_VND_EFI_ISO => false,
         self::APPLICATION_X_CPIO => false,
@@ -2575,10 +2595,21 @@ class ContentType extends PartialStringEnum
         return BaseContentType::getValueRegexp() . '\\/[0-9a-z.+-]+';
     }
 
+    public static function validateValue(string &$value): bool
+    {
+        $regexp = '/^' . self::getValueRegexp() . '?$/';
+        $result = preg_match($regexp, $value);
+        if ($result === false) {
+            throw new InvalidRegularExpressionException($regexp);
+        }
+
+        return (bool) $result;
+    }
+
     public static function findByExtension(string $extension): ?self
     {
-        if (isset(self::$extensions[$extension])) {
-            return self::get(self::$extensions[$extension]);
+        if (isset(self::EXTENSIONS[$extension])) {
+            return self::from(self::EXTENSIONS[$extension]);
         } else {
             return null;
         }
@@ -2586,74 +2617,74 @@ class ContentType extends PartialStringEnum
 
     public function getBaseType(): BaseContentType
     {
-        return BaseContentType::get(Str::toFirst($this->getValue(), '/'));
+        return BaseContentType::from(Str::toFirst($this->value, '/'));
     }
 
     public function getExtension(): ?string
     {
-        $extension = array_search($this->getValue(), self::$extensions, true);
+        $extension = array_search($this->value, self::EXTENSIONS, true);
 
         return is_string($extension) ? $extension : null;
     }
 
     public function isAudio(): bool
     {
-        return Str::toFirst($this->getValue(), '/') === BaseContentType::AUDIO;
+        return Str::toFirst($this->value, '/') === BaseContentType::AUDIO;
     }
 
     public function isArchive(): bool
     {
-        return isset(self::$archive[$this->getValue()]);
+        return isset(self::ARCHIVE[$this->value]);
     }
 
     public function isCompressed(): bool
     {
-        return isset(self::$compressed[$this->getValue()]);
+        return isset(self::COMPRESSED[$this->value]);
     }
 
     public function isCsv(): bool
     {
-        return $this->getValue() === self::TEXT_CSV;
+        return $this->value === self::TEXT_CSV;
     }
 
     public function isFont(): bool
     {
-        return Str::toFirst($this->getValue(), '/') === BaseContentType::FONT;
+        return Str::toFirst($this->value, '/') === BaseContentType::FONT;
     }
 
     public function isHtml(): bool
     {
-        return str_contains(Str::fromFirst($this->getValue(), '/'), 'html');
+        return str_contains(Str::fromFirst($this->value, '/'), 'html');
     }
 
     public function isImage(): bool
     {
-        return Str::toFirst($this->getValue(), '/') === BaseContentType::IMAGE;
+        return Str::toFirst($this->value, '/') === BaseContentType::IMAGE;
     }
 
     public function isJson(): bool
     {
-        return str_contains(Str::fromFirst($this->getValue(), '/'), 'json');
+        return str_contains(Str::fromFirst($this->value, '/'), 'json');
     }
 
     public function isPdf(): bool
     {
-        return $this->getValue() === self::APPLICATION_PDF;
+        return $this->value === self::APPLICATION_PDF;
     }
 
     public function isText(): bool
     {
-        return Str::toFirst($this->getValue(), '/') === BaseContentType::TEXT;
+        return Str::toFirst($this->value, '/') === BaseContentType::TEXT;
     }
 
     public function isVideo(): bool
     {
-        return Str::toFirst($this->getValue(), '/') === BaseContentType::VIDEO;
+        return Str::toFirst($this->value, '/') === BaseContentType::VIDEO;
     }
 
     public function isXml(): bool
     {
-        return str_contains(Str::fromFirst($this->getValue(), '/'), 'xml');
+        return str_contains(Str::fromFirst($this->value, '/'), 'xml');
     }
 
 }

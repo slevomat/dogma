@@ -65,13 +65,13 @@ Assert::exception(static function (): void {
 
 
 createFromStartAndLength:
-Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::year(), 2), new NightInterval($startDate, new Date('2002-01-09')));
-Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::quarter(), 2), new NightInterval($startDate, new Date('2000-07-09')));
-Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::month(), 2), new NightInterval($startDate, new Date('2000-03-09')));
-Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::week(), 2), new NightInterval($startDate, new Date('2000-01-23')));
-Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::day(), 2), new NightInterval($startDate, new Date('2000-01-11')));
+Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Year, 2), new NightInterval($startDate, new Date('2002-01-09')));
+Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Quarter, 2), new NightInterval($startDate, new Date('2000-07-09')));
+Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Month, 2), new NightInterval($startDate, new Date('2000-03-09')));
+Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Week, 2), new NightInterval($startDate, new Date('2000-01-23')));
+Assert::equal(NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Day, 2), new NightInterval($startDate, new Date('2000-01-11')));
 Assert::exception(static function () use ($startDate): void {
-    NightInterval::createFromStartAndLength($startDate, DateTimeUnit::hour(), 2);
+    NightInterval::createFromStartAndLength($startDate, DateTimeUnit::Hour, 2);
 }, InvalidDateTimeUnitException::class);
 
 

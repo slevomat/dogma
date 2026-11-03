@@ -19,8 +19,6 @@ parameters:
         # misleading
         - '~Parameter .* of static method Dogma\\Type::get\(\) expects~' # parameters magic
         - '~Variable \$result in PHPDoc tag @var does not exist~' # while ($result = array_shift($sources)) {
-        - '~Parameter #1 \$value of static method Dogma\\Enum\\(Int|String)(Enum|Set)::isValid\(\) expects (int|string), int\|string given.~'
-        - '~Method Dogma\\Enum\\(Int|String)Set::getConstantNames\(\) should return array<string> but returns array<(int|string), int\|string\|false>.~'
         - '~Parameter #(1|2) (\.\.\.)?\$arr(1|2)? of function array_[a-z_]+ expects array(<int\|string, mixed>|<mixed>)?, array(<mixed>)?\|\(callable\) given.~' # callables filtered out
         -
             message: "~Result of && is always false~" # phpstan bug with is_subclass_of
@@ -53,6 +51,3 @@ parameters:
             identifier: impure.functionCall
         -
             identifier: impure.methodCall
-
-        # interface
-        - '~^PHPDoc tag @return with type Dogma\\Language\\Locale\\LocaleCollationOption is not subtype of native type Dogma\\Enum\\StringEnum~'

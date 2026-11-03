@@ -9,46 +9,45 @@
 
 namespace Dogma\System;
 
-use Dogma\Enum\StringEnum;
 use const PHP_OS;
 
 /**
  * PHP_OS_FAMILY values (PHP 7.2+)
  */
-class Os extends StringEnum
+enum Os: string
 {
 
-    public const WINDOWS = 'Windows';
-    public const BSD = 'BSD';
-    public const DARWIN = 'Darwin';
-    public const SOLARIS = 'Solaris';
-    public const LINUX = 'Linux';
-    public const UNKNOWN = 'Unknown';
+    case Windows = 'Windows';
+    case Bsd = 'BSD';
+    case Darwin = 'Darwin';
+    case Solaris = 'Solaris';
+    case Linux = 'Linux';
+    case Unknown = 'Unknown';
 
     private const array FAMILIES = [
-        'CYGWIN_NT-5.1' => self::WINDOWS,
-        'Darwin' => self::DARWIN,
-        'FreeBSD' => self::BSD,
-        'HP-UX' => self::UNKNOWN,
-        'IRIX64' => self::UNKNOWN,
-        'Linux' => self::LINUX,
-        'NetBSD' => self::BSD,
-        'OpenBSD' => self::BSD,
-        'SunOS' => self::SOLARIS,
-        'Unix' => self::UNKNOWN,
-        'WIN32' => self::WINDOWS,
-        'WINNT' => self::WINDOWS,
-        'Windows' => self::WINDOWS,
+        'CYGWIN_NT-5.1' => self::Windows->value,
+        'Darwin' => self::Darwin->value,
+        'FreeBSD' => self::Bsd->value,
+        'HP-UX' => self::Unknown->value,
+        'IRIX64' => self::Unknown->value,
+        'Linux' => self::Linux->value,
+        'NetBSD' => self::Bsd->value,
+        'OpenBSD' => self::Bsd->value,
+        'SunOS' => self::Solaris->value,
+        'Unix' => self::Unknown->value,
+        'WIN32' => self::Windows->value,
+        'WINNT' => self::Windows->value,
+        'Windows' => self::Windows->value,
     ];
 
     public static function family(): string
     {
-        return self::FAMILIES[PHP_OS] ?? self::UNKNOWN;
+        return self::FAMILIES[PHP_OS] ?? self::Unknown->value;
     }
 
     public static function isWindows(): bool
     {
-        return self::family() === self::WINDOWS;
+        return self::family() === self::Windows->value;
     }
 
 }

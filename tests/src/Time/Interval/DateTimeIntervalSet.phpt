@@ -117,8 +117,8 @@ createFromDateIntervalAndWeekDayHoursSet:
 Assert::equal(DateTimeIntervalSet::createFromDateIntervalAndWeekDayHoursSet(
     DateInterval::createFromString('2000-01-01 - 2000-01-02'),
     new WeekDayHoursSet([
-        new WeekDayHours(DayOfWeek::monday(), new TimeIntervalSet([TimeInterval::createFromString('10:00 - 11:00')])),
-        new WeekDayHours(DayOfWeek::sunday(), new TimeIntervalSet([TimeInterval::createFromString('12:00 - 13:00')])),
+        new WeekDayHours(DayOfWeek::Monday, new TimeIntervalSet([TimeInterval::createFromString('10:00 - 11:00')])),
+        new WeekDayHours(DayOfWeek::Sunday, new TimeIntervalSet([TimeInterval::createFromString('12:00 - 13:00')])),
     ])
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00'),
@@ -132,8 +132,8 @@ Assert::equal(DateTimeIntervalSet::createFromDateIntervalSetAndWeekDayHoursSet(
         DateInterval::createFromString('2000-01-08 - 2000-01-09'),
     ]),
     new WeekDayHoursSet([
-        new WeekDayHours(DayOfWeek::monday(), new TimeIntervalSet([TimeInterval::createFromString('10:00 - 11:00')])),
-        new WeekDayHours(DayOfWeek::sunday(), new TimeIntervalSet([TimeInterval::createFromString('12:00 - 13:00')])),
+        new WeekDayHours(DayOfWeek::Monday, new TimeIntervalSet([TimeInterval::createFromString('10:00 - 11:00')])),
+        new WeekDayHours(DayOfWeek::Sunday, new TimeIntervalSet([TimeInterval::createFromString('12:00 - 13:00')])),
     ])
 ), new DateTimeIntervalSet([
     DateTimeInterval::createFromString('2000-01-02 12:00 - 2000-01-02 13:00'),

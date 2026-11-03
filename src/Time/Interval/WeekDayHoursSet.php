@@ -42,7 +42,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
     final public function __construct(array $weekDayHoursList)
     {
         foreach ($weekDayHoursList as $weekDayHours) {
-            $day = $weekDayHours->getDay()->getValue();
+            $day = $weekDayHours->getDay()->value;
             if (isset($this->weekDayHours[$day])) {
                 throw new InvalidWeekDayHoursSetException($weekDayHours->getDay());
             }
@@ -58,7 +58,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
     ): self
     {
         $dayItems = [];
-        foreach (DayOfWeek::getInstances() as $day) {
+        foreach (DayOfWeek::cases() as $day) {
             if ($days->containsDay($day)) {
                 $dayItems[] = WeekDayHours::createFromOpeningTime($day, $opening, $break);
             }
@@ -132,7 +132,7 @@ class WeekDayHoursSet implements Pokeable, Dumpable, IteratorAggregate
 
     public function getByDay(DayOfWeek $dayOfWeek): ?WeekDayHours
     {
-        $day = $dayOfWeek->getValue();
+        $day = $dayOfWeek->value;
 
         return $this->getByDayNumber($day);
     }

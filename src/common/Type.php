@@ -108,7 +108,7 @@ class Type
                     }
                     break;
                 case $specific === null && (is_string($arg) || $arg instanceof ResourceType):
-                    $specific = $arg instanceof ResourceType ? $arg->getValue() : $arg;
+                    $specific = $arg instanceof ResourceType ? $arg->value : $arg;
                     self::checkSpecific($type, $specific);
                     if ($specific === Sign::SIGNED) {
                         $specific = null;
@@ -138,7 +138,7 @@ class Type
         $id = $type;
         if ($size !== null || $specific !== null || $encoding !== null || $locale !== null) {
             $id .= '(' . implode(',', Arr::flatten(Arr::filter(
-                [$size, $specific, $encoding ? $encoding->getValue() : null, $locale ? $locale->getValue() : null]
+                [$size, $specific, $encoding !== null ? $encoding->value : null, $locale ? $locale->getValue() : null]
             ))) . ')';
         }
         if ($nullable) {
@@ -174,7 +174,7 @@ class Type
         if ($type === self::STRING && $specific === Length::FIXED) {
             return;
         }
-        if ($type === self::RESOURCE && ResourceType::isValid((string) $specific)) {
+        if ($type === self::RESOURCE && $specific !== null && ResourceType::tryFrom($specific) !== null) {
             return;
         }
         throw new InvalidTypeException($type, "$type($specific)");
@@ -300,11 +300,11 @@ class Type
                             $specific = ['s' => Sign::SIGNED, 'u' => Sign::UNSIGNED, 'f' => Length::FIXED][$match[2]];
                         }
                         break;
-                    case $specific === null && ($param === Sign::SIGNED || $param === Sign::UNSIGNED || $param === Length::FIXED || ResourceType::isValid($param)):
+                    case $specific === null && ($param === Sign::SIGNED || $param === Sign::UNSIGNED || $param === Length::FIXED || ResourceType::tryFrom($param) !== null):
                         $specific = $param;
                         break;
                     case $encoding === null && preg_match('/^' . Encoding::getValueRegexp() . '$/', $param):
-                        $encoding = Encoding::get($param);
+                        $encoding = Encoding::from($param);
                         break;
                     case $locale === null && preg_match('/^' . Locale::getValueRegexp() . '$/', $param):
                         $locale = Locale::get($param);
@@ -393,7 +393,7 @@ class Type
 
     public function getResourceType(): ?ResourceType
     {
-        return $this->type === self::RESOURCE && $this->specific ? ResourceType::get($this->specific) : null;
+        return $this->type === self::RESOURCE && $this->specific ? ResourceType::from($this->specific) : null;
     }
 
     /**

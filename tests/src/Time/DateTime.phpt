@@ -5,7 +5,6 @@ namespace Dogma\Tests\Time;
 use DateTime as PhpDateTime;
 use DateTimeImmutable;
 use DateTimeZone;
-use Dogma\InvalidValueException;
 use Dogma\Tester\Assert;
 use Dogma\Time\Date;
 use Dogma\Time\DateTime;
@@ -16,10 +15,11 @@ use Dogma\Time\Month;
 use Dogma\Time\Span\DateTimeSpan;
 use Dogma\Time\Time;
 use Dogma\Time\TimeZone;
+use ValueError;
 
 require_once __DIR__ . '/../bootstrap.php';
 
-TimeZone::setDefault(TimeZone::get(TimeZone::EUROPE_PRAGUE));
+TimeZone::setDefault(TimeZone::from(TimeZone::EUROPE_PRAGUE));
 
 $utcTimeZone = new DateTimeZone('UTC');
 $localTimeZone = TimeZone::getDefault();
@@ -153,27 +153,27 @@ Assert::true($dateTime->equals($dateTimeByOffset));
 
 
 equalsUpTo:
-Assert::false($dateTime->equalsUpTo(new DateTime('2001-02-03 04:05:06.007008'), DateTimeUnit::year()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-02-03 04:05:06.007008'), DateTimeUnit::year()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-02-03 04:05:06.007008'), DateTimeUnit::month()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-03 04:05:06.007008'), DateTimeUnit::month()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-03 04:05:06.007008'), DateTimeUnit::day()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 04:05:06.007008'), DateTimeUnit::day()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 04:05:06.007008'), DateTimeUnit::hour()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:05:06.007008'), DateTimeUnit::hour()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:05:06.007008'), DateTimeUnit::minute()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:06.007008'), DateTimeUnit::minute()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:06.007008'), DateTimeUnit::second()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.007008'), DateTimeUnit::second()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.007008'), DateTimeUnit::milisecond()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000008'), DateTimeUnit::milisecond()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000008'), DateTimeUnit::microsecond()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000006'), DateTimeUnit::microsecond()));
+Assert::false($dateTime->equalsUpTo(new DateTime('2001-02-03 04:05:06.007008'), DateTimeUnit::Year));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-02-03 04:05:06.007008'), DateTimeUnit::Year));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-02-03 04:05:06.007008'), DateTimeUnit::Month));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-03 04:05:06.007008'), DateTimeUnit::Month));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-03 04:05:06.007008'), DateTimeUnit::Day));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 04:05:06.007008'), DateTimeUnit::Day));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 04:05:06.007008'), DateTimeUnit::Hour));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:05:06.007008'), DateTimeUnit::Hour));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:05:06.007008'), DateTimeUnit::Minute));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:06.007008'), DateTimeUnit::Minute));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:06.007008'), DateTimeUnit::Second));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.007008'), DateTimeUnit::Second));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.007008'), DateTimeUnit::Milisecond));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000008'), DateTimeUnit::Milisecond));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000008'), DateTimeUnit::Microsecond));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-02 03:04:05.000006'), DateTimeUnit::Microsecond));
 
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-04-02 03:04:05.000006'), DateTimeUnit::quarter()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-03-02 03:04:05.000006'), DateTimeUnit::quarter()));
-Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-03 03:04:05.000006'), DateTimeUnit::week()));
-Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-01 03:04:05.000006'), DateTimeUnit::week()));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-04-02 03:04:05.000006'), DateTimeUnit::Quarter));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-03-02 03:04:05.000006'), DateTimeUnit::Quarter));
+Assert::false($dateTime->equalsUpTo(new DateTime('2000-01-03 03:04:05.000006'), DateTimeUnit::Week));
+Assert::true($dateTime->equalsUpTo(new DateTime('2000-01-01 03:04:05.000006'), DateTimeUnit::Week));
 
 
 timeOffsetEquals:
@@ -280,21 +280,21 @@ $sunday = new Date('2016-11-06');
 
 
 isDayOfWeek:
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::monday()));
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::tuesday()));
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::wednesday()));
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::thursday()));
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::friday()));
-Assert::false($dateTime->isDayOfWeek(DayOfWeek::saturday()));
-Assert::true($dateTime->isDayOfWeek(DayOfWeek::sunday()));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Monday));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Tuesday));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Wednesday));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Thursday));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Friday));
+Assert::false($dateTime->isDayOfWeek(DayOfWeek::Saturday));
+Assert::true($dateTime->isDayOfWeek(DayOfWeek::Sunday));
 
 Assert::true($monday->isDayOfWeek(1));
-Assert::true($monday->isDayOfWeek(DayOfWeek::monday()));
+Assert::true($monday->isDayOfWeek(DayOfWeek::Monday));
 Assert::false($monday->isDayOfWeek(7));
-Assert::false($monday->isDayOfWeek(DayOfWeek::sunday()));
+Assert::false($monday->isDayOfWeek(DayOfWeek::Sunday));
 Assert::exception(static function () use ($monday): void {
     $monday->isDayOfWeek(8);
-}, InvalidValueException::class);
+}, ValueError::class);
 
 
 isWeekend:
@@ -308,46 +308,46 @@ Assert::true($sunday->isWeekend());
 
 
 isMonth:
-Assert::true($dateTime->isMonth(Month::january()));
-Assert::false($dateTime->isMonth(Month::february()));
-Assert::false($dateTime->isMonth(Month::march()));
-Assert::false($dateTime->isMonth(Month::april()));
-Assert::false($dateTime->isMonth(Month::may()));
-Assert::false($dateTime->isMonth(Month::june()));
-Assert::false($dateTime->isMonth(Month::july()));
-Assert::false($dateTime->isMonth(Month::august()));
-Assert::false($dateTime->isMonth(Month::september()));
-Assert::false($dateTime->isMonth(Month::october()));
-Assert::false($dateTime->isMonth(Month::november()));
-Assert::false($dateTime->isMonth(Month::december()));
+Assert::true($dateTime->isMonth(Month::January));
+Assert::false($dateTime->isMonth(Month::February));
+Assert::false($dateTime->isMonth(Month::March));
+Assert::false($dateTime->isMonth(Month::April));
+Assert::false($dateTime->isMonth(Month::May));
+Assert::false($dateTime->isMonth(Month::June));
+Assert::false($dateTime->isMonth(Month::July));
+Assert::false($dateTime->isMonth(Month::August));
+Assert::false($dateTime->isMonth(Month::September));
+Assert::false($dateTime->isMonth(Month::October));
+Assert::false($dateTime->isMonth(Month::November));
+Assert::false($dateTime->isMonth(Month::December));
 
 Assert::true($monday->isMonth(11));
-Assert::true($monday->isMonth(Month::november()));
+Assert::true($monday->isMonth(Month::November));
 Assert::false($monday->isMonth(12));
-Assert::false($monday->isMonth(Month::december()));
+Assert::false($monday->isMonth(Month::December));
 Assert::exception(static function () use ($monday): void {
     $monday->isMonth(13);
-}, InvalidValueException::class);
+}, ValueError::class);
 
 
 getDayOfWeekEnum:
-Assert::equal($monday->getDayOfWeekEnum(), DayOfWeek::monday());
-Assert::equal($friday->getDayOfWeekEnum(), DayOfWeek::friday());
-Assert::equal($saturday->getDayOfWeekEnum(), DayOfWeek::saturday());
-Assert::equal($sunday->getDayOfWeekEnum(), DayOfWeek::sunday());
+Assert::equal($monday->getDayOfWeekEnum(), DayOfWeek::Monday);
+Assert::equal($friday->getDayOfWeekEnum(), DayOfWeek::Friday);
+Assert::equal($saturday->getDayOfWeekEnum(), DayOfWeek::Saturday);
+Assert::equal($sunday->getDayOfWeekEnum(), DayOfWeek::Sunday);
 
 
 getMonthEnum:
-Assert::equal($monday->getMonthEnum(), Month::november());
+Assert::equal($monday->getMonthEnum(), Month::November);
 
 
 // rounding ------------------------------------------------------------------------------------------------------------
 
-$hour = DateTimeUnit::hour();
-$minute = DateTimeUnit::minute();
-$second = DateTimeUnit::second();
-$milisecond = DateTimeUnit::milisecond();
-$microsecond = DateTimeUnit::microsecond();
+$hour = DateTimeUnit::Hour;
+$minute = DateTimeUnit::Minute;
+$second = DateTimeUnit::Second;
+$milisecond = DateTimeUnit::Milisecond;
+$microsecond = DateTimeUnit::Microsecond;
 $hours = [0, 8, 16];
 $minutes = [0, 15, 30, 45];
 $seconds = [0, 15, 30, 45];
