@@ -47,11 +47,17 @@ class Locale
     public static function get(string $value): self
     {
         $value = PhpLocale::canonicalize($value);
+        if ($value === null) {
+            throw new InvalidArgumentException('Invalid locale.');
+        }
 
         if (isset(self::$instances[$value])) {
             return self::$instances[$value];
         } else {
             $components = PhpLocale::parseLocale($value);
+            if ($components === null) {
+                throw new InvalidArgumentException('Invalid locale.');
+            }
             $keywords = PhpLocale::getKeywords($value);
             if ($keywords) {
                 $components['keywords'] = $keywords;
@@ -106,6 +112,9 @@ class Locale
             }));
         }
         $value = PhpLocale::canonicalize($value);
+        if ($value === null) {
+            throw new InvalidArgumentException('Invalid locale.');
+        }
 
         if (isset(self::$instances[$value])) {
             return self::$instances[$value];
@@ -130,7 +139,7 @@ class Locale
             $locale = self::get($locale);
         }
 
-        return PhpLocale::filterMatches($this->value, $locale->getValue(), false);
+        return PhpLocale::filterMatches($this->value, $locale->getValue(), false) ?? false;
     }
 
     /**
@@ -202,7 +211,7 @@ class Locale
      */
     public function getVariants(): array
     {
-        return PhpLocale::getAllVariants($this->value);
+        return PhpLocale::getAllVariants($this->value) ?? [];
     }
 
     public function getVariant(int $n): ?string

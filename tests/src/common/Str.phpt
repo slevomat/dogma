@@ -145,6 +145,7 @@ Assert::same(Str::findTag(' {foo\\} foo} ', '{', '}', '\\', '\\'), [1, 11]);
 Assert::same(Str::findTag(' {foo} ', '{', '}', null, null, 1), [1, 5]);
 Assert::same(Str::findTag(' {foo} ', '{', '}', null, null, 2), [null, null]);
 Assert::same(Str::findTag(' {foo} {foo} ', '{', '}', null, null, 5), [7, 5]);
+Assert::same(Str::findTag(' {foo\\}bar} ', '{', '}', null, '\\'), [1, 10]);
 
 
 levenshtein:
