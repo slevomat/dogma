@@ -21,7 +21,7 @@ class Console
 {
     use StrictBehaviorMixin;
 
-    public bool $debug;
+    public ?bool $debug = null;
 
     public function write(string ...$params): self
     {
